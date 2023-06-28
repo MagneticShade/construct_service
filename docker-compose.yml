@@ -1,7 +1,20 @@
 version: "3"
 
 services:
-  fastapi:
-    build: app
+  telegram_bot:
+    build: ./telegram_bot
+    environment:
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+
+  backend:
     ports:
       - "8000:8000"
+    build: ./backend
+  
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:3000"
+
+  database:
+    image: mongo

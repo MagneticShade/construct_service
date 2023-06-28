@@ -1,18 +1,7 @@
-# ConstructService
+# Template Constructor
 
-## How to run
-
-Build
-```bash
-docker compose build
-```
-
-Start
-```bash
-docker compose up -d
-```
-
-Stop
-```bash
-docker compose down
-```
+## MicroServices
+- Telegram Bot
+- Backend
+- Frontend
+- Database
