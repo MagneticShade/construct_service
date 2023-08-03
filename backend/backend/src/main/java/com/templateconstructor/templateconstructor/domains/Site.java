@@ -21,6 +21,7 @@ public class Site {
     private List<Template> templates;
 
     public Site() {
+
     }
 
     @JsonCreator
