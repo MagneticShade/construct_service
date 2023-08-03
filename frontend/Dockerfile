@@ -1,7 +1,9 @@
-FROM node:10
-WORKDIR /code
-COPY package.json /code
+FROM node:18-alpine as BUILD_IMAGE
+WORKDIR /app/react-app
+
+COPY . .
 RUN npm install
-COPY . /code
+RUN npm run build
+RUN npm install typescript
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]

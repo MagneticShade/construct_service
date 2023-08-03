@@ -1,0 +1,25 @@
+{
+  "blanks": [
+    {
+      "id": 1,
+      "imgUrl": "https://sun75-1.userapi.com/impg/UKI56aq8svqVi1EoHFDX7h8d87f_R215rgIBwg/0XT2nBCX8sc.jpg?size=1157x749&quality=95&sign=c1a7bcf56a7069bef7336b7c7c3ba517&type=album",
+      "tags": [
+        "Образовательная",
+        "Молодеж",
+        "ИТ"
+      ],
+      "type": 1
+
+    },
+    {
+      "id": 2,
+      "imgUrl": "https://sun75-1.userapi.com/impg/sL7PWrnhmZyftWIM1gXpIgNnVTLBMlWVKdjlfQ/RG145ezM-PA.jpg?size=750x371&quality=95&sign=e8ded13fdec010a1f19934b3b2fd40b4&type=album",
+      "tags": [
+        "Бизнес",
+        "Би",
+        "Знес"
+      ],
+      "type": 2
+    }
+  ]
+}
