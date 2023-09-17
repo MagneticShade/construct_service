@@ -13,7 +13,7 @@ import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { axiosInstance, getTemplates } from "@/src/axios";
 import { setTemp } from "@/src/store/slice/EditSlice";
 import { Link } from "react-router-dom";
-import TwoBlock from "@/src/forms/Twoblock/TwoBlock";
+
 
 const PageEdit = () => {
     const [buttonActive, setButtonActive] = useState(false);
