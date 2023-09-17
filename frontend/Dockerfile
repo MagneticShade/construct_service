@@ -3,7 +3,7 @@ WORKDIR /app/react-app
 
 COPY . .
 RUN npm install
-RUN npm run build
 RUN npm install typescript
-EXPOSE 3000
-CMD ["npm", "run", "preview", "--", "--https"]
+RUN npm run build
+EXPOSE 5173:5173
+CMD ["npm", "run", "preview"]

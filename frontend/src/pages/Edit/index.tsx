@@ -1,6 +1,6 @@
 import { Swiper } from "swiper/react";
 
-import maskProject from "@/public/maskProject.png";
+import maskProject from "/maskProject.png";
 import { SwiperSlide } from "swiper/react";
 import { useEffect, useState } from "react";
 import EditForm from "./EditForm";

@@ -8,7 +8,7 @@ export default defineConfig({
     base:"/constructorpractice/",
     preview: {
         host: true,
-        port: 3000,
+        port: 5173,
     },
     resolve: {
         alias: [{ find: "@", replacement: path.resolve(__dirname, ".") }],
