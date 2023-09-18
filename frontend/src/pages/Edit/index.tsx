@@ -50,7 +50,7 @@ const PageEdit = () => {
     return (
         <>
             <img
-                src={"./maskProject.png"}
+                src="/constructorpractice/maskProject.png"
                 alt=""
                 className="absolute z-0 w-full h-screen object-cover"
             />

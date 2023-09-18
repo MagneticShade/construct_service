@@ -9,7 +9,7 @@ const Home = () => {
                         <img src="./mask.png" alt="mask" className="h-[50%]" />
                     </div>
                 </div>
-                <Menu userImg="./user.jpg" />
+                <Menu userImg="/constructorpractice/user.jpg" />
             </div>
         </>
     );
