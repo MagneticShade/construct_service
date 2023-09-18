@@ -1,7 +1,7 @@
 import { LinkButton } from "../../shared/Buttons/LinkButton";
 import { Category } from "../../shared/Category";
 import BlanksItem from "@/src/shared/BlanksItem";
-import maskProject from "@/public/maskProject.png";
+import maskProject from "/maskProject.png";
 import BlanksItemForm from "./BlanksItemForm";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/src/hooks/useAppDispatch";

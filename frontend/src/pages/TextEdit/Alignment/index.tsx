@@ -1,7 +1,7 @@
 
 import AlignLeft from "@/src/assets/icons/alignLeft.svg";
-import AlignCenter from "@/src/assets/icons/AlignCenter.svg";
-import AlignRight from "@/src/assets/icons/AlignRight.svg";
+import AlignCenter from "@/src/assets/icons/alignCenter.svg";
+import AlignRight from "@/src/assets/icons/alignRight.svg";
 
 
 const Alignment = () => {

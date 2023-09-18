@@ -1,6 +1,6 @@
 import { ProfileAvatar } from "@/src/shared/Avatar";
 import { useState } from "react";
-import cat from "@/public/cat.jpg";
+import cat from "/cat.jpg";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { Filter } from "@/src/shared/Filter";
 import { InputDefault } from "@/src/shared/Inputs/InputDefault";

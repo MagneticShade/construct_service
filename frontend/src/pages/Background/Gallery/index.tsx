@@ -2,7 +2,7 @@ import { LinkButton } from "../../../shared/Buttons/LinkButton";
 import { Category } from "../../../shared/Category";
 import { Filter } from "../../../shared/Filter";
 import BlanksItem from "@/src/shared/BlanksItem";
-import maskProject from "@/public/maskProject.png";
+import maskProject from "/maskProject.png";
 import { Link } from "react-router-dom";
 
 const PageGallery = () => {

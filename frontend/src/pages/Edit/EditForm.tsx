@@ -1,6 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useState } from "react";
-import FormBlock from "./FormBlock";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { Filter } from "../../shared/Filter";
@@ -10,6 +9,7 @@ import { setActive } from "../../store/slice/ButtonSlice";
 import useDraggableBlock from "@/src/hooks/useDragble";
 import { axiosInstance, getTemplates } from "@/src/axios";
 import { setTemp } from "@/src/store/slice/EditSlice";
+import TwoBlockPreview from "@/src/shared/FormsPrev/TwoBlockPreview";
 // import { setTemp } from "@/src/store/slice/EditSlice";
 
 const EditForm = () => {
@@ -77,7 +77,7 @@ const EditForm = () => {
         }
         await axiosInstance
             .post(`/api/templates`, {
-                name: "",
+                name: "troshkinBlock",
                 localId: "",
                 modules: [""],
                 order: "",
@@ -111,6 +111,16 @@ const EditForm = () => {
         dispatch(setActive(!isActive));
     }
 
+    async function addTemplate() {
+        await axiosInstance.post(`/api/templates/`, {
+            name: "string",
+            localId: "string",
+            modules: ["string"],
+            order: "string",
+            background: "string",
+            textAlign: "string",
+        });
+    }
     return (
         <>
             <div
@@ -175,6 +185,7 @@ const EditForm = () => {
                                         onTouchEnd={() => {
                                             setIsDraggingSlide(false); // Сбрасываем флаг перетаскивания при отпускании
                                         }}
+                                        onClick={() => addTemplate()}
                                     >
                                         <div
                                             className={`p-[20px] bg-white rounded-[15px] flex gap-[10px] justify-center items-center transition-all duration-200 ${
@@ -193,7 +204,7 @@ const EditForm = () => {
                         <span className=" block pt-[40px] text-[16px] font-[600] opacity-60 text-center">
                             Эта форма лучше всего подойдет для
                         </span>
-                        <FormBlock h={100} w={100} />
+                        <TwoBlockPreview h={100} w={100} />
                     </div>
 
                     <button

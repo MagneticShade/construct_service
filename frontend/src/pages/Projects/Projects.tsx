@@ -1,6 +1,6 @@
 import { FC, useState,useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import maskProject from "@/public/maskProject.png";
+import maskProject from "/maskProject.png";
 import "swiper/css";
 import useLongPress from "@/src/hooks/useLongPress.ts";
 import { SelectedBlock } from "./SelectedBlock";

@@ -1,6 +1,6 @@
 import { Swiper } from "swiper/react";
 
-import maskProject from "@/public/maskProject.png";
+import maskProject from "/maskProject.png";
 import { SwiperSlide } from "swiper/react";
 import { useEffect, useState } from "react";
 import EditForm from "./EditForm";
@@ -13,7 +13,8 @@ import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { axiosInstance, getTemplates } from "@/src/axios";
 import { setTemp } from "@/src/store/slice/EditSlice";
 import { Link } from "react-router-dom";
-import TwoBlock from "@/src/forms/Twoblock/TwoBlock";
+import TwoBlockPreview from "@/src/shared/FormsPrev/TwoBlockPreview";
+
 
 const PageEdit = () => {
     const [buttonActive, setButtonActive] = useState(false);
@@ -88,8 +89,7 @@ const PageEdit = () => {
                                                         : ""
                                                 }`}
                                             >
-                                                <div className="w-[65px] h-[65px] shadow-md bg-gradient-to-b shadow-[rgba(0,0,0,0.25)] from-[#9E9E9E] to-white"></div>
-                                                <div className="w-[65px] h-[65px] shadow-md bg-gradient-to-b shadow-[rgba(0,0,0,0.25)] from-[#9E9E9E] to-white"></div>
+                                               <TwoBlockPreview h={70} w={70}/>
                                                 <span
                                                     className={`absolute -bottom-8 text-white transition-all duration-200 ${
                                                         activeIndex === i

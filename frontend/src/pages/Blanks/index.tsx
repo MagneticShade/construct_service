@@ -1,5 +1,5 @@
 import { useState } from "react";
-import maskProject from "@/public/maskProject.png";
+import maskProject from "/maskProject.png";
 import BlanksItem from "@/src/shared/BlanksItem";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";

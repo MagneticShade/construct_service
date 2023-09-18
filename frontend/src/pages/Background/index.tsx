@@ -6,8 +6,7 @@ import { PagePallete } from "@/src/shared/Pallete";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { useAppDispatch } from "@/src/hooks/useAppDispatch";
 import { addOpacity, setColor } from "@/src/store/slice/ColorSlice";
-import useCanvas from "@/src/hooks/useCanvas";
-import useRandomColor from "@/src/hooks/useRandomColor";
+import Procedur from "./Procedur";
 
 const PageBackgroundEdit = () => {
     const [index, setIndex] = useState<number>(0);
@@ -42,19 +41,6 @@ const PageBackgroundEdit = () => {
     // Забираем значение валю из инпута
     const [valueRange, setValueRange] = useState(1);
 
-    // Создаем рандомнй цвет для бэкграунда и самих кругов
-    const [canvasBackground, setCanvasBackground] = useState(useRandomColor());
-    const [circleColor, setCircleColor] = useState(useRandomColor());
-
-    // хук делающий канвас (НУЖНО ПОМЕНЯТЬ ЛОГИКУ ВНИТРИ НЕГО)
-    const canvasRef = useCanvas(valueRange, circleColor);
-
-    // функция по нажатию на ревреш, что бы передать другие рандомные цвета
-    const handleColorChange = () => {
-        setCanvasBackground(useRandomColor());
-        setCircleColor(useRandomColor());
-    };
-
     return (
         <div className=" overflow-auto h-full">
             <div className="container pt-10">
@@ -64,41 +50,38 @@ const PageBackgroundEdit = () => {
                     setIndex={setIndex}
                 />
             </div>
-            <div className="relative w-full h-[250px] flex justify-center items-center">
-                {/* Сам канвас */}
-                <canvas
-                    ref={canvasRef}
-                    className={`w-full h-full mt-1 z-0 absolute`}
-                    style={{ background: canvasBackground }}
-                ></canvas>
-                {/* Блоки находящиеся внутри канваса */}
-                <div className="container relative z-10">
-                    <FormBlock h={100} w={100} />
-                </div>
-
-                <div className="w-full left-0 mt-[30px] flex justify-center absolute bottom-0 cursor-pointer">
-                    {/* Кнопка рефреш */}
-                    <span onClick={() => handleColorChange()}>Refresh</span>
-                </div>
-            </div>
 
             {index === 0 && (
                 // компонент эквалайзера
-                <Equalizer
-                    handleChange={(e) => setValueRange(e)}
-                    state={valueRange}
-                />
+                <>
+                    <Procedur valueRange={valueRange}>
+                        <FormBlock h={100} w={100} />
+                    </Procedur>
+                    <Equalizer
+                        handleChange={(e) => setValueRange(e)}
+                        state={valueRange}
+                    />
+                </>
             )}
             {index === 2 && (
-                // Компонент паллетки
-                <PagePallete
-                    color={color}
-                    checked={checked}
-                    setChecked={setChecked}
-                    value={value}
-                    handleSliderChange={handleSliderChange}
-                    setHex={setHex}
-                />
+                <>
+                    <div
+                    style={{
+                        background: color
+                    }}
+                     className="w-full h-[250px] flex justify-center items-center">
+                        <FormBlock h={100} w={100} />
+                    </div>
+                    // Компонент паллетки
+                    <PagePallete
+                        color={color}
+                        checked={checked}
+                        setChecked={setChecked}
+                        value={value}
+                        handleSliderChange={handleSliderChange}
+                        setHex={setHex}
+                    />
+                </>
             )}
         </div>
     );
