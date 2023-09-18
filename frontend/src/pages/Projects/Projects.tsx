@@ -38,7 +38,7 @@ const Projects: FC = () => {
     }
     useEffect(()=> {
         getProjects()
-    },[location])
+    },[location.pathname])
 
     async function handleDeleteProject(){
        await axiosInstance.delete(`/api/project/delete/${extractId(userProjects[activeIndex])}`);
