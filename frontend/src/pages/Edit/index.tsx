@@ -1,6 +1,5 @@
 import { Swiper } from "swiper/react";
 
-import maskProject from "/maskProject.png";
 import { SwiperSlide } from "swiper/react";
 import { useEffect, useState } from "react";
 import EditForm from "./EditForm";
@@ -51,7 +50,7 @@ const PageEdit = () => {
     return (
         <>
             <img
-                src={maskProject}
+                src={"./maskProject.png"}
                 alt=""
                 className="absolute z-0 w-full h-screen object-cover"
             />
