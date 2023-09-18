@@ -2,6 +2,7 @@ version: '3'
 
 services:
   frontend:
-    build: "./frontend/practice"
+    build: "./"
     ports:
-      - "80:3000"
+      - "5173:5173"
+
