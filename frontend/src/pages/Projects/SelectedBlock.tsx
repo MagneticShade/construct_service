@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import gsap from "gsap";
 import useDraggableBlock from "@/src/hooks/useDragble";
 import { DeleteButton } from "@/src/shared/Buttons/DeleteButton";
+import { tg } from "@/src/tg";
 
 interface ISelectedBlockProps extends IProjectProps {
     setModalStatus: (status: boolean) => void;
@@ -31,6 +32,7 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
     };
 
     const handleDelete = () => {
+        tg.offEvent("viewportChanged", projectMove)
         handleDeleteProject();
         setModalStatus(false);
     };
@@ -39,7 +41,11 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
         dropZoneId: "dropZone",
         onDragEnd: handleDelete,
     }); // хук который позволяет делать свайп
+    tg.onEvent("viewportChanged", projectMove)
 
+    function projectMove(){
+        tg.expand();
+    }
     return (
         <div
             ref={spawn}

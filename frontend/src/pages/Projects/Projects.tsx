@@ -19,7 +19,7 @@ const Projects: FC = () => {
         setModalStatus(!modalStatus);
         setSelectedImageWidth({ margin: rect.top, height: rect.height });
         console.log(rect.height);
-        tg.impactOccurred("heavy");
+        tg.HapticFeedback.impactOccurred("heavy");
     };
     const longPress = useLongPress(openModalWindow);
 
