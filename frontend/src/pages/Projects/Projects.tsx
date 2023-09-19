@@ -6,6 +6,7 @@ import useLongPress from "@/src/hooks/useLongPress.ts";
 import { SelectedBlock } from "./SelectedBlock";
 import { axiosInstance, userId } from "@/src/axios";
 import { useLocation } from "react-router-dom";
+import { tg } from "@/src/tg";
 
 const Projects: FC = () => {
     const [selectedImageWidth, setSelectedImageWidth] = useState<any>();
@@ -18,6 +19,7 @@ const Projects: FC = () => {
         setModalStatus(!modalStatus);
         setSelectedImageWidth({ margin: rect.top, height: rect.height });
         console.log(rect.height);
+        tg.impactOccurred("heavy");
     };
     const longPress = useLongPress(openModalWindow);
 

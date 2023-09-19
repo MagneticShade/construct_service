@@ -11,18 +11,17 @@ import { PageDefaultProfile } from "./pages/Profile";
 import { PageTextEdit } from "./pages/TextEdit";
 import YourSite from "./pages/YourSite";
 import { useEffect } from "react";
+import { tg } from "./tg";
 
 function App() {
-    const tg = window.Telegram.WebApp;
-
-    const initDataUnsafe = tg.initData;
 
     useEffect(() => {
         tg.ready();
+        tg.expand();
     }, []);
     return (
         <>
-            {initDataUnsafe}
+            
             <Home />
             <Routes>
                 <Route path="/" element={<></>} />

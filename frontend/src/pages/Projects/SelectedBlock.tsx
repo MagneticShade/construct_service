@@ -71,7 +71,7 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
                         className="w-full object-cover animate-shake select-none z-10"
                         onContextMenu={handleContextMenu}
                     ></div>
-                    <div className="w-[300px] py-[10px] bg-[#EEEEEE] opacity-70 absolute  left-1/2 -translate-x-1/2 rounded-[16px] mt-4 z-0">
+                    <div className="w-[300px] select-none py-[10px] bg-[#EEEEEE] opacity-70 absolute  left-1/2 -translate-x-1/2 rounded-[16px] mt-4 z-0">
                         <Link
                             to={"edit/"}
                             className=" block px-[18px] w-full border-b border-b-[#A6A0A0] text-[16px] whitespace-nowrap ] mb-[5px]"
