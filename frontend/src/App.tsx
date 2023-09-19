@@ -66,7 +66,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/list/edit/background"
+                    path="/constructorpractice/list/edit/background/:id"
                     element={
                         <Modal>
                             <PageBackgroundEdit />
@@ -82,7 +82,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/text/"
+                    path="/constructorpractice/list/edit/text/:id"
                     element={
                         <Modal>
                             <PageTextEdit />

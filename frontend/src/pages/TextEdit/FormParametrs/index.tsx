@@ -4,40 +4,45 @@ import { CheckedButton } from "@/src/shared/Buttons/CheckedButton";
 import _ from "lodash";
 import { useCallback, useState } from "react";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
+import { useParams } from "react-router-dom";
 
 const FormParametrs = () => {
     const edit = useAppSelector((state) => state.edit);
-     
+
     const template = edit.templates[edit.activeIndex];
-    const name = typeof template !== "string" && template.name
-    const [inputText, setInputText] = useState(name as string);
-    
+    // const name = typeof template !== "string" && template.name
+    // const [inputText, setInputText] = useState(name as string);
+
     // Создайте функцию, которая будет вызываться с задержкой
-    const debouncedConsoleLog = useCallback(
-        _.debounce((text) => {
-            
+    const [align, setAlign] = useState("right");
+    const [value, setValue] = useState("");
+    const [active, setActive] = useState(false);
+    const [textColor, setTextColor] = useState('red')
+
+    const { id } = useParams();
+    const debounced = useCallback(
+        _.debounce((text, align) => {
             if (typeof template !== "string") {
-                axiosInstance.put(`/api/templates/update${template.id}`, {
+                axiosInstance.put(`/api/templates/update${id}`, {
                     name: text,
                     localId: template.local_id,
                     modules: template.modules,
                     order: template.order,
                     background: template.background,
-                    textAlign: template.textAlign,
+                    textAlign: align,
                 });
-                setActive(true)
+                setActive(true);
             }
         }, 500),
         []
     );
+
     const handleInputChange = (e: any) => {
-        setActive(false)
-        const newText = e.target.value;
-        setInputText(newText);
-        // Вызываем функцию с задержкой после каждого изменения
-        debouncedConsoleLog(newText);
+        setActive(false);
+        setValue(e.target.value);
     };
-    const [active, setActive] = useState(false);
+    debounced(value, align);
+
 
     return (
         <>
@@ -51,19 +56,13 @@ const FormParametrs = () => {
                 </p>
             </div>
             <div className="pt-4">
-                {/* <InputDefault
-                    handleChange={debouncedConsoleLog}
-                    name="nameForm"
-                    type="text"
-                    placeholder="Название Формы "
-                /> */}
                 <div className="relative">
                     <input
                         name={"nameForm"}
                         type="text"
                         className={`text-[16px] text-[#999] not-italic font-medium capitalize tracking-[-1.2px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5`}
                         placeholder="Название Формы "
-                        value={inputText}
+                        value={value}
                         onChange={handleInputChange}
                     />
                     {active && (
@@ -76,10 +75,16 @@ const FormParametrs = () => {
                     Цвет текста
                 </span>
 
-                <div className="w-[200px] h-[30px] bg-black rounded-[10px]"></div>
+                <label
+                    htmlFor=""
+                    className="w-[200px] h-[30px] bg-black rounded-[10px]"
+                    style={{background: textColor}}
+                >
+                    <input type="color" onChange={(e) => setTextColor(e.target.value)} className="w-full h-full opacity-0" />
+                </label>
             </div>
             <div className="pt-8">
-                <Alignment />
+                <Alignment setAlign={setAlign} />
             </div>
             <div className="flex justify-between items-center pt-8">
                 <span>

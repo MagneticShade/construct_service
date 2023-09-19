@@ -1,9 +1,9 @@
 import { axiosInstance, getTemplates } from "@/src/axios";
 
 import TwoBlock from "@/src/forms/Twoblock/TwoBlock";
-import { useAppDispatch } from "@/src/hooks/useAppDispatch";
 
-import { Template, setTemp } from "@/src/store/slice/YourSiteSlice";
+
+import { Template } from "@/src/store/slice/YourSiteSlice";
 import { useEffect, useState } from "react";
 
 const YourSite = () => {
@@ -12,13 +12,12 @@ const YourSite = () => {
         // console.log(data);
     });
 
-    const dispath = useAppDispatch();
     const [getTemplate, setGetTemplate] = useState<Template[]>([]);
+    console.log(getTemplate);
+    
     async function get() {
         const data = await getTemplates();
         setGetTemplate(await data);
-        dispath(setTemp(await data));
-        console.log(await data);
     }
 
     useEffect(() => {
@@ -28,18 +27,21 @@ const YourSite = () => {
     return (
         <>
             <div className="h-screen overflow-y-scroll">
-                {getTemplate.map((e, i) => {
+                {getTemplate.map((item, i) => {
+                    console.log(item.textAlign);
+                    
                     return (
                         <>
                             <TwoBlock
-                                background={e.background}
-                                id={e.id}
-                                localId={e.local_id}
-                                module={e.modules}
-                                name={e.name}
-                                order={e.order}
-                                textAlign={e.textAlign}
+                                background={item.background}
+                                id={item.id}
+                                localId={item.local_id}
+                                module={item.modules}
+                                name={item.name}
+                                order={item.order}
+                                textAlign={item.textAlign}
                                 key={i}
+                                // color={}
                             />
 
                             {/* {e.modules.length === 5 && (

@@ -15,7 +15,7 @@ const TwoBlock: FC<ITwoBlockProps> = ({
     textAlign,
 }) => {
     const [modules, setModules] = useState<any>([]);
-    console.log(module);
+
     function extractId(jsonString: string) {
         const match = jsonString.match(/"(\$oid)":\s*"([^"]+)"/);
         if (match) {
@@ -25,17 +25,19 @@ const TwoBlock: FC<ITwoBlockProps> = ({
         }
     }
     useEffect(() => {
+        console.log(module);
+        
         module.forEach((e: any) => {
+         
             axiosInstance
                 .get(`/api/modules${extractId(e)}`)
-                .then(async ({ data }) => {
+                .then(({ data }) => {
                     setModules((prev: any) => [...prev, data]);
                 });
         });
-
-        console.log(modules);
     }, []);
-
+    console.log(modules);
+    
     return (
         <>
             <div
@@ -49,21 +51,21 @@ const TwoBlock: FC<ITwoBlockProps> = ({
                     {name}
                 </h2>
                 <div className="flex w-full justify-center gap-[58px] flex-wrap">
-                    {modules.map((item: any, i:number) => {
+                    {modules.map((item: any, i: number) => {
                         return (
                             <div
                                 key={i}
                                 style={{
                                     background: item.background,
-                                    color: item.textColor,
+                                    color: item.color,
                                     textAlign: textAlign as TextAlign,
                                 }}
                                 className="w-[589px] h-[620px] shadow-md p-20 duration-200 hover:shadow-my hover:-translate-y-2"
                             >
-                                <h2 className="text-[58px] leading-[1] text-black font-[700]">
+                                <h2 className="text-[58px] leading-[1] font-[700] w-full">
                                     {item.header}
                                 </h2>
-                                <p className="text-black opacity-80 font-[500] pt-5">
+                                <p className="opacity-80 font-[500] pt-5">
                                     {item.subheader}
                                 </p>
                             </div>

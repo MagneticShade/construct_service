@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Filter } from "../../shared/Filter";
 import FormBlock from "../Edit/FormBlock";
 import Equalizer from "@/src/shared/Equalizer";
@@ -7,6 +7,8 @@ import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { useAppDispatch } from "@/src/hooks/useAppDispatch";
 import { addOpacity, setColor } from "@/src/store/slice/ColorSlice";
 import Procedur from "./Procedur";
+import { axiosInstance } from "@/src/axios";
+import { useParams } from "react-router-dom";
 
 const PageBackgroundEdit = () => {
     const [index, setIndex] = useState<number>(0);
@@ -41,6 +43,28 @@ const PageBackgroundEdit = () => {
     // Забираем значение валю из инпута
     const [valueRange, setValueRange] = useState(1);
 
+    const [template, setTemplate] = useState([]);
+    useEffect(() => {
+        axiosInstance
+            .get("/api/templates")
+            .then((data) => setTemplate(data.data));
+    }, []);
+
+    console.log(template[0]);
+    const {id} = useParams()
+    console.log(id);
+    const addColor = () => {
+        if (template[0] ) {
+            axiosInstance.put(`/api/templates/update${id}`, {
+                background: color != null ? color : '#333',
+            });
+        }   
+    };
+    useEffect(() => {
+        addColor();
+    }, [color]);
+
+
     return (
         <div className=" overflow-auto h-full">
             <div className="container pt-10">
@@ -65,12 +89,16 @@ const PageBackgroundEdit = () => {
             )}
             {index === 2 && (
                 <>
+                    {console.log(color)}
                     <div
-                    style={{ background: index === 2 ? color + opacity : "" }}
-                     className="w-full h-[250px] flex justify-center items-center">
+                        style={{
+                            background: index === 2 ? color + opacity : "",
+                        }}
+                        className="w-full h-[250px] flex justify-center items-center"
+                    >
                         <FormBlock h={100} w={100} />
                     </div>
-                     {/* Компонент паллетки */}
+                    {/* Компонент паллетки */}
                     <PagePallete
                         color={color}
                         checked={checked}

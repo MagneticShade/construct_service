@@ -22,6 +22,7 @@ const PageEdit = () => {
     const activeId = useAppSelector((state) => state.edit.activeId);
     const edit = useAppSelector((state) => state.edit);
     const [activeIndex, setActiveIndex] = useState<number>(0);
+
     const backspaceLongPress = useLongPress(() => {
         setButtonActive(!buttonActive);
 
@@ -50,6 +51,8 @@ const PageEdit = () => {
     if (edit.templates === "") {
         dispatch(setActive(true));
     }
+
+
     return (
         <>
             <img
@@ -58,7 +61,8 @@ const PageEdit = () => {
                 className="absolute z-0 w-full h-screen object-cover"
             />
             <div className="container" id="dropZone">
-                <Categories />
+                {edit.templates[activeIndex] &&  edit.templates && <Categories tempalteId={edit.templates[activeIndex].id} />}
+
                 <div className="forms pt-[273px]">
                     <Swiper
                         spaceBetween={13}
@@ -108,7 +112,9 @@ const PageEdit = () => {
                                                         : "-translate-y-10"
                                                 }`}
                                             >
-                                                {_.name === '' ? "Название формы" : _.name}
+                                                {_.name === ""
+                                                    ? "Название формы"
+                                                    : _.name}
                                             </span>
                                         </div>
                                     </SwiperSlide>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Alignment from "./Alignment";
 import { axiosInstance } from "@/src/axios";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
@@ -17,6 +17,13 @@ const FormHeadersParametrs = ({}: Props) => {
     const [secondModuleHeader, setSecondModuleHeader] = useState("");
     const [secondModuleSubHeader, setSecondModuleSubHeader] = useState("");
 
+    const [textColor, setTextColor] = useState('red')
+    const [backgroundColor, setBackgroundColor] = useState('red')
+    console.log(textColor);
+
+    
+    const [align, setAlign] = useState("center");
+    console.log(align);
     function extractId(jsonString: string) {
         const match = jsonString.match(/"(\$oid)":\s*"([^"]+)"/);
         if (match) {
@@ -35,34 +42,33 @@ const FormHeadersParametrs = ({}: Props) => {
                     });
             });
     }, []);
-
     
-    // const debouncedConsoleLog = useCallback(
-    //     _.debounce(async (mok) => {
-    //         if (typeof template !== "string") {
-    //             debugger;
-    //             await axiosInstance.put(
-    //                 `/api/modules/update${mok[activeModule].id}`,
-    //                 {
-    //                     background: mok[activeModule].background,
-    //                     header:
-    //                         activeModule === 0
-    //                             ? firstModuleHeader
-    //                             : secondModuleHeader,
-    //                     subheader:
-    //                         activeModule === 0
-    //                             ? firstModuleSubHeader
-    //                             : secondModuleSubHeader,
-    //                     textAlign: mok[activeModule].textAlign,
-    //                     order: mok[activeModule].order,
-    //                     color: mok[activeModule].color,
-    //                 }
-    //             );
-    //         }
-    //     }, 500),
-    //     []
-    // );
-
+    const debounced = useCallback(
+        _.debounce(async (mok, textColor, align, backgroundColor) => {
+            // debugger
+            if (typeof template !== "string") {
+                await axiosInstance.put(
+                    `/api/modules/update${mok[activeModule].id}`,
+                    {
+                        background: backgroundColor,
+                        header:
+                            activeModule === 0
+                                ? firstModuleHeader
+                                : secondModuleHeader,
+                        subheader:
+                            activeModule === 0
+                                ? firstModuleSubHeader
+                                : secondModuleSubHeader,
+                        textAlign: align,
+                        order: mok[activeModule].order,
+                        color: textColor,
+                    }
+                );
+            }
+        }, 200),
+        [textColor, align]
+    );
+    debounced(modules, textColor, align, backgroundColor);
     return (
         <div className="pt-4 h-full">
             <div className="relative">
@@ -105,7 +111,7 @@ const FormHeadersParametrs = ({}: Props) => {
                 name="nameForm"
                 type="text"
                 className="text-[16px] text-[#999] not-italic font-medium mt-[43px] mb-[12px] capitalize tracking-[-1.2px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5"
-                placeholder="Название Формы"
+                placeholder="Название Модуля"
                 value={
                     activeModule === 0 ? firstModuleHeader : secondModuleHeader
                 }
@@ -139,7 +145,7 @@ const FormHeadersParametrs = ({}: Props) => {
                 name="nameForm"
                 type="text"
                 className="text-[16px] mb-[29px] text-[#999] not-italic font-medium capitalize tracking-[-1.2px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5"
-                placeholder="Название Формы"
+                placeholder="Описание"
                 value={
                     activeModule === 1
                         ? secondModuleSubHeader
@@ -150,10 +156,11 @@ const FormHeadersParametrs = ({}: Props) => {
                         ? setFirstModuleSubHeader(e.target.value)
                         : setSecondModuleSubHeader(e.target.value);
                     if (typeof template !== "string") {
+                        // debugger
                         axiosInstance.put(
                             `/api/modules/update${modules[activeModule].id}`,
                             {
-                                background: modules[activeModule].background,
+                                background: backgroundColor,
                                 header:
                                     activeModule === 0
                                         ? firstModuleHeader
@@ -162,9 +169,9 @@ const FormHeadersParametrs = ({}: Props) => {
                                     activeModule === 0
                                         ? e.target.value
                                         : secondModuleSubHeader,
-                                textAlign: modules[activeModule].textAlign,
+                                textAlign: align,
                                 order: modules[activeModule].order,
-                                color: modules[activeModule].color,
+                                color: textColor,
                             }
                         );
                     }
@@ -172,15 +179,34 @@ const FormHeadersParametrs = ({}: Props) => {
             />
 
             <div className="grid gap-[12px]">
-                <Alignment />
-                <Alignment />
+                <Alignment setAlign={setAlign}/>
+                <Alignment setAlign={setAlign}/>
             </div>
             <div className="flex items-center justify-between pt-8">
                 <span className="font-medium text-[#B6B6B6] spacing leading-[143.4%] text-center text-[18px]">
                     Цвет текста
                 </span>
 
-                <div className="w-[200px] h-[30px] bg-black rounded-[10px]"></div>
+                <label
+                    className="w-[200px] h-[30px] bg-black rounded-[10px]"
+                    style={{background: textColor}}
+                >
+                    <input name={'textColor'} type="color" value={textColor} onChange={(e) => setTextColor(e.target.value)} className="w-full h-full opacity-0" />
+                </label>
+
+            </div>
+            <div className="flex items-center justify-between pt-8">
+                <span className="font-medium text-[#B6B6B6] spacing leading-[143.4%] text-center text-[18px]">
+                    цвет фона 
+                </span>
+
+                <label
+                    className="w-[200px] h-[30px] bg-black rounded-[10px]"
+                    style={{background: backgroundColor}}
+                >
+                    <input name="backgroundColor" type="color" value={backgroundColor} onChange={(e) => setBackgroundColor(e.target.value)} className="w-full h-full opacity-0" />
+                </label>
+
             </div>
         </div>
     );
