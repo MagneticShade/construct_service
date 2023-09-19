@@ -45,7 +45,7 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
 
     function projectMove(this:any){
         tg.expand();
-        this.viewportHeight = tg.viewportStableHeight();
+        this.viewportHeight = tg.viewportStableHeight;
     }
     return (
         <div
@@ -78,8 +78,8 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
                         className="w-full object-cover animate-shake select-none z-10"
                         onContextMenu={handleContextMenu}
                     ></div>
-                    {tg.viewportHeight()}
-                    {tg.viewportStableHeight()}
+                    {tg.viewportHeight}
+                    {tg.viewportStableHeight}
                     <div className="w-[300px] select-none py-[10px] bg-[#EEEEEE] opacity-70 absolute  left-1/2 -translate-x-1/2 rounded-[16px] mt-4 z-0">
                         <Link
                             to={"edit/"}
