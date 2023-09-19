@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import gsap from "gsap";
 import useDraggableBlock from "@/src/hooks/useDragble";
 import { DeleteButton } from "@/src/shared/Buttons/DeleteButton";
-import { tg } from "@/src/tg";
+
 
 interface ISelectedBlockProps extends IProjectProps {
     setModalStatus: (status: boolean) => void;
@@ -32,7 +32,7 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
     };
 
     const handleDelete = () => {
-        tg.offEvent("viewportChanged", projectMove)
+        // tg.offEvent("viewportChanged", projectMove)
         handleDeleteProject();
         setModalStatus(false);
     };
@@ -41,12 +41,12 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
         dropZoneId: "dropZone",
         onDragEnd: handleDelete,
     }); // хук который позволяет делать свайп
-    tg.onEvent("viewportChanged", projectMove)
+    // tg.onEvent("viewportChanged", projectMove)
 
-    function projectMove(this:any){
-        tg.expand();
-        this.viewportHeight = tg.viewportStableHeight;
-    }
+    // function projectMove(this:any){
+    //     tg.expand();
+    //     this.viewportHeight = tg.viewportStableHeight;
+    // }
     return (
         <div
             ref={spawn}
@@ -78,8 +78,6 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
                         className="w-full object-cover animate-shake select-none z-10"
                         onContextMenu={handleContextMenu}
                     ></div>
-                    {tg.viewportHeight}
-                    {tg.viewportStableHeight}
                     <div className="w-[300px] select-none py-[10px] bg-[#EEEEEE] opacity-70 absolute  left-1/2 -translate-x-1/2 rounded-[16px] mt-4 z-0">
                         <Link
                             to={"edit/"}

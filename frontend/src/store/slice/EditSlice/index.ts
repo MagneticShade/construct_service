@@ -12,10 +12,14 @@ export interface Template {
 
 export interface openState {
     templates: Template[] | '';
+    activeId:string;
+    activeIndex:number
 }
 
 const initialState: openState = {
     templates: [],
+    activeId:"",
+    activeIndex:0
 };
 
 export const editSlice = createSlice({
@@ -25,8 +29,14 @@ export const editSlice = createSlice({
         setTemp(state, action) {
             state.templates = action.payload
         },
+        setActiveId(state, action) {
+            state.activeId = action.payload
+        },
+        setActiveIndexEdit(state, action) {
+            state.activeIndex = action.payload
+        },
     },
 });
 
-export const { setTemp } = editSlice.actions;
+export const { setTemp, setActiveId, setActiveIndexEdit} = editSlice.actions;
 export default editSlice.reducer;

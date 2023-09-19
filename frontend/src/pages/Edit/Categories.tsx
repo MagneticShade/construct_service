@@ -5,7 +5,7 @@ const Categories = () => {
     return (
         <div className="tags relative pt-10 flex flex-wrap gap-[9px] justify-center">
             <Category handleMass={() => {}} mass={[]} title="Кнопка действия" />
-            <Link to="/constructorpractice/background/">
+            <Link to="/constructorpractice/list/edit/background">
                 <Category handleMass={() => {}} mass={[]} title="Фон" />
             </Link>
             <Category handleMass={() => {}} mass={[]} title="Соц. сети" />

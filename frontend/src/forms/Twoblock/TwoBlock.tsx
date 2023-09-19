@@ -1,5 +1,6 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { ITwoBlockProps } from "./TwoBlockInterface";
+import { axiosInstance } from "@/src/axios";
 
 enum TextAlign {
     Left = "left",
@@ -9,33 +10,49 @@ enum TextAlign {
 
 const TwoBlock: FC<ITwoBlockProps> = ({
     background,
-    id,
     module,
     name,
     textAlign,
 }) => {
+    const [modules, setModules] = useState<any>([]);
     console.log(module);
+    function extractId(jsonString: string) {
+        const match = jsonString.match(/"(\$oid)":\s*"([^"]+)"/);
+        if (match) {
+            return match[2]; // Возвращаем значение ID (вторая группа регулярного выражения)
+        } else {
+            return null; // Возвращаем null, если ID не найден
+        }
+    }
+    useEffect(() => {
+        module.forEach((e: any) => {
+            axiosInstance
+                .get(`/api/modules${extractId(e)}`)
+                .then(async ({ data }) => {
+                    setModules((prev: any) => [...prev, data]);
+                });
+        });
+
+        console.log(modules);
+    }, []);
 
     return (
         <>
-            {module.map((item) => {
-                console.log(module[0]);
-                
-                
-                return (
-                    <div
-                        key={id}
-                        style={{
-                            background: background,
-                            textAlign: textAlign as TextAlign,
-                        }}
-                        className="pt-[160px] pb-[320px]  border-b border-b-black"
-                    >
-                        <h2 className="font-[500] text-[58px] text-black mb-[58px]">
-                            {name}
-                        </h2>
-                        <div className="flex w-full justify-center gap-[58px] flex-wrap">
+            <div
+                style={{
+                    background: background,
+                    textAlign: textAlign as TextAlign,
+                }}
+                className="pt-[160px] pb-[320px]  border-b border-b-black"
+            >
+                <h2 className="font-[500] text-[58px] text-black mb-[58px]">
+                    {name}
+                </h2>
+                <div className="flex w-full justify-center gap-[58px] flex-wrap">
+                    {modules.map((item: any, i:number) => {
+                        return (
                             <div
+                                key={i}
                                 style={{
                                     background: item.background,
                                     color: item.textColor,
@@ -44,13 +61,16 @@ const TwoBlock: FC<ITwoBlockProps> = ({
                                 className="w-[589px] h-[620px] shadow-md p-20 duration-200 hover:shadow-my hover:-translate-y-2"
                             >
                                 <h2 className="text-[58px] leading-[1] text-black font-[700]">
-                                    {module[0].header}
+                                    {item.header}
                                 </h2>
                                 <p className="text-black opacity-80 font-[500] pt-5">
-                                    {module[0].subHeader}
+                                    {item.subheader}
                                 </p>
                             </div>
-                            <div
+                        );
+                    })}
+
+                    {/* <div
                                 style={{
                                     background: item.background,
                                     color: item.textColor,
@@ -64,11 +84,9 @@ const TwoBlock: FC<ITwoBlockProps> = ({
                                 <p className="text-black opacity-80 font-[500] pt-5">
                                     {module[1].subHeader}
                                 </p>
-                            </div>
-                        </div>
-                    </div>
-                );
-            })}
+                            </div> */}
+                </div>
+            </div>
         </>
     );
 };

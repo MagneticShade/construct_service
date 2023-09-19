@@ -81,7 +81,7 @@ const EditForm = () => {
                 localId: "",
                 modules: [""],
                 order: "",
-                background: "",
+                background: "#333",
                 textAlign: "",
             })
             .then(async ({ data }) => {
@@ -91,20 +91,20 @@ const EditForm = () => {
                 )[0].id;
             });
         await axiosInstance.post(`/api/modules/add?templateId=${targetTemp}`, {
-            background: "",
+            background: "#fff",
             header: "",
             subheader: "",
             textAlign: "",
             order: "",
-            color: "",
+            color: "#abf",
         });
         await axiosInstance.post(`/api/modules/add?templateId=${targetTemp}`, {
-            background: "",
+            background: "#fff",
             header: "",
             subheader: "",
             textAlign: "",
             order: "",
-            color: "",
+            color: "#abf",
         });
         // const res = await get();
         

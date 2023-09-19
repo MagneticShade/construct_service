@@ -11,7 +11,7 @@ import Procedur from "./Procedur";
 const PageBackgroundEdit = () => {
     const [index, setIndex] = useState<number>(0);
     const color = useAppSelector((state) => state.color.ColorHex);
-
+    const opacity = useAppSelector((state) => state.color.opacity);
     const [checked, setChecked] = useState<boolean>(false);
     const [value, setValue] = useState<number>(100);
 
@@ -66,13 +66,11 @@ const PageBackgroundEdit = () => {
             {index === 2 && (
                 <>
                     <div
-                    style={{
-                        background: color
-                    }}
+                    style={{ background: index === 2 ? color + opacity : "" }}
                      className="w-full h-[250px] flex justify-center items-center">
                         <FormBlock h={100} w={100} />
                     </div>
-                    // Компонент паллетки
+                     {/* Компонент паллетки */}
                     <PagePallete
                         color={color}
                         checked={checked}

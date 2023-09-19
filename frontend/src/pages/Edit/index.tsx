@@ -10,14 +10,16 @@ import { setActive } from "@/src/store/slice/ButtonSlice";
 import { Categories } from "./Categories";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { axiosInstance, getTemplates } from "@/src/axios";
-import { setTemp } from "@/src/store/slice/EditSlice";
-import { Link } from "react-router-dom";
+import {
+    setActiveId,
+    setActiveIndexEdit,
+    setTemp,
+} from "@/src/store/slice/EditSlice";
 import TwoBlockPreview from "@/src/shared/FormsPrev/TwoBlockPreview";
-
 
 const PageEdit = () => {
     const [buttonActive, setButtonActive] = useState(false);
-    const [activeId, setActiveId] = useState<string>("");
+    const activeId = useAppSelector((state) => state.edit.activeId);
     const edit = useAppSelector((state) => state.edit);
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const backspaceLongPress = useLongPress(() => {
@@ -26,7 +28,7 @@ const PageEdit = () => {
         const template = edit.templates[activeIndex];
         if (typeof template !== "string") {
             // Здесь TypeScript знает, что template - это объект типа Template
-            setActiveId(template.id);
+            dispatch(setActiveId(template.id));
         }
     });
 
@@ -34,10 +36,11 @@ const PageEdit = () => {
     async function get() {
         const response = await getTemplates();
         dispatch(setTemp(await response));
-        
     }
     useEffect(() => {
         get();
+        setActiveIndex(0);
+        dispatch(setActiveIndexEdit(0));
     }, [dispatch]);
 
     async function delTemp() {
@@ -67,10 +70,20 @@ const PageEdit = () => {
                                 slidesPerView: 1.2,
                             },
                         }}
-                        onActiveIndexChange={(e) =>
-                            setActiveIndex((e.realIndex = e.activeIndex))
-                        }
                         initialSlide={0}
+                        onActiveIndexChange={(e) => {
+                            setActiveIndex((e.realIndex = e.activeIndex));
+                            dispatch(
+                                setActiveIndexEdit(
+                                    (e.realIndex = e.activeIndex)
+                                )
+                            );
+                            const template = edit.templates[activeIndex];
+                            if (typeof template !== "string") {
+                                // Здесь TypeScript знает, что template - это объект типа Template
+                                dispatch(setActiveId(template.id));
+                            }
+                        }}
                     >
                         {edit.templates !== "" &&
                             edit.templates.map((_, i) => {
@@ -80,26 +93,24 @@ const PageEdit = () => {
                                         key={i}
                                         className="w-auto flex justify-center"
                                     >
-                                        <Link to={"background"}>
-                                            <div
-                                                className={`py-[30px] px-[26px] bg-white rounded-[15px] flex gap-[10px] justify-center items-center transition-all duration-200 ${
+                                        <div
+                                            className={`py-[30px] px-[26px] bg-white rounded-[15px] flex gap-[10px] justify-center items-center transition-all duration-200 ${
+                                                activeIndex === i
+                                                    ? "scale-[1.2]"
+                                                    : ""
+                                            }`}
+                                        >
+                                            <TwoBlockPreview h={70} w={70} />
+                                            <span
+                                                className={`absolute -bottom-8 text-white transition-all duration-200 ${
                                                     activeIndex === i
-                                                        ? "scale-[1.2]"
-                                                        : ""
+                                                        ? "translate-y-0"
+                                                        : "-translate-y-10"
                                                 }`}
                                             >
-                                               <TwoBlockPreview h={70} w={70}/>
-                                                <span
-                                                    className={`absolute -bottom-8 text-white transition-all duration-200 ${
-                                                        activeIndex === i
-                                                            ? "translate-y-0"
-                                                            : "-translate-y-10"
-                                                    }`}
-                                                >
-                                                    Название формы
-                                                </span>
-                                            </div>
-                                        </Link>
+                                                {_.name === '' ? "Название формы" : _.name}
+                                            </span>
+                                        </div>
                                     </SwiperSlide>
                                 );
                             })}

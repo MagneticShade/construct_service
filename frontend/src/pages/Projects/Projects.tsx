@@ -1,11 +1,11 @@
-import { FC, useState,useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import maskProject from "/maskProject.png";
 import "swiper/css";
 import useLongPress from "@/src/hooks/useLongPress.ts";
 import { SelectedBlock } from "./SelectedBlock";
 import { axiosInstance, getProjects } from "@/src/axios";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { tg } from "@/src/tg";
 
 const Projects: FC = () => {
@@ -13,7 +13,7 @@ const Projects: FC = () => {
     const [modalStatus, setModalStatus] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [userProjects, setUserProjects] = useState([]);
-    const location = useLocation()
+    const location = useLocation();
     const openModalWindow = (e: any) => {
         const rect = e.target.getBoundingClientRect();
         setModalStatus(!modalStatus);
@@ -23,30 +23,33 @@ const Projects: FC = () => {
     };
     const longPress = useLongPress(openModalWindow);
 
-    function extractId(jsonString:string) {
+    function extractId(jsonString: string) {
         const match = jsonString.match(/"(\$oid)":\s*"([^"]+)"/);
         if (match) {
-          return match[2]; // Возвращаем значение ID (вторая группа регулярного выражения)
+            return match[2]; // Возвращаем значение ID (вторая группа регулярного выражения)
         } else {
-          return null; // Возвращаем null, если ID не найден
+            return null; // Возвращаем null, если ID не найден
         }
-      }
-      async function get() {
-        const data = await getProjects()
-        console.log(await data);
-        
-        setUserProjects( await data)
-        console.log(await data);
-        
-       
     }
-    useEffect(()=> {
-        get()
-    },[location.pathname])
+    async function get() {
+        const data = await getProjects();
+        console.log(await data);
 
-    async function handleDeleteProject(){
-       await axiosInstance.delete(`/api/project/delete/${extractId(userProjects[activeIndex])}`);
-       await get()
+        setUserProjects(await data);
+        console.log(await data);
+    }
+    useEffect(() => {
+        async function asyncGet() {
+            await get();
+        }
+        asyncGet();
+    }, [location.pathname]);
+
+    async function handleDeleteProject() {
+        await axiosInstance.delete(
+            `/api/project/delete/${extractId(userProjects[activeIndex])}`
+        );
+        await get();
     }
     return (
         <>
@@ -78,15 +81,19 @@ const Projects: FC = () => {
                 {userProjects.map((_, i) => {
                     return (
                         <SwiperSlide
-                            style={{ backgroundImage: `url(${maskProject})` }}
+                            style={{
+                                backgroundImage: `url(${maskProject})`,
+                            }}
                             {...longPress}
-
                             className={`w-full h-[276px] transition-all duration-200  ${
-                                activeIndex === i ? "!scale-[1.1] " : "" 
+                                activeIndex === i ? "!scale-[1.1] " : ""
                             }`}
-                            key={i}
+                            key={i++}
                         >
-                            
+                            <Link
+                                className=" block w-full h-full"
+                                to="/constructorpractice/yoursite/"
+                            ></Link>
                         </SwiperSlide>
                     );
                 })}
