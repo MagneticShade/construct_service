@@ -4,7 +4,7 @@ import maskProject from "/maskProject.png";
 import "swiper/css";
 import useLongPress from "@/src/hooks/useLongPress.ts";
 import { SelectedBlock } from "./SelectedBlock";
-import { axiosInstance, userId } from "@/src/axios";
+import { axiosInstance, getProjects } from "@/src/axios";
 import { useLocation } from "react-router-dom";
 import { tg } from "@/src/tg";
 
@@ -31,20 +31,22 @@ const Projects: FC = () => {
           return null; // Возвращаем null, если ID не найден
         }
       }
-      async function getProjects() {
-        const {data} = await axiosInstance.get(`/api/project/own/${userId}`)
+      async function get() {
+        const data = await getProjects()
+        console.log(await data);
+        
         setUserProjects( await data)
-        console.log(data);
+        console.log(await data);
         
        
     }
     useEffect(()=> {
-        getProjects()
+        get()
     },[location.pathname])
 
     async function handleDeleteProject(){
        await axiosInstance.delete(`/api/project/delete/${extractId(userProjects[activeIndex])}`);
-       await getProjects()
+       await get()
     }
     return (
         <>
