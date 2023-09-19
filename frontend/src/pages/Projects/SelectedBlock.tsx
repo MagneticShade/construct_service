@@ -42,10 +42,10 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
         onDragEnd: handleDelete,
     }); // хук который позволяет делать свайп
     tg.onEvent("viewportChanged", projectMove)
-    let mass = [1]
-    function projectMove(){
+
+    function projectMove(this:any){
         tg.expand();
-        mass.push(mass[mass.length-1]++)
+        this.viewportHeight = tg.viewportStableHeight();
     }
     return (
         <div
@@ -78,9 +78,8 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
                         className="w-full object-cover animate-shake select-none z-10"
                         onContextMenu={handleContextMenu}
                     ></div>
-                    {mass.map(e=>{
-                        return e
-                    })}
+                    {tg.viewportHeight()}
+                    {tg.viewportStableHeight()}
                     <div className="w-[300px] select-none py-[10px] bg-[#EEEEEE] opacity-70 absolute  left-1/2 -translate-x-1/2 rounded-[16px] mt-4 z-0">
                         <Link
                             to={"edit/"}
