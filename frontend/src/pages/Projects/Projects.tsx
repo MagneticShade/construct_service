@@ -5,7 +5,7 @@ import "swiper/css";
 import useLongPress from "@/src/hooks/useLongPress.ts";
 import { SelectedBlock } from "./SelectedBlock";
 import { axiosInstance, getProjects } from "@/src/axios";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { tg } from "@/src/tg";
 
 const Projects: FC = () => {
@@ -13,7 +13,6 @@ const Projects: FC = () => {
     const [modalStatus, setModalStatus] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [userProjects, setUserProjects] = useState([]);
-    const location = useLocation();
     const openModalWindow = (e: any) => {
         const rect = e.target.getBoundingClientRect();
         setModalStatus(!modalStatus);

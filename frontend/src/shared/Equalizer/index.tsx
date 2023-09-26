@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import  { FC } from "react";
 import { IEqualizerProps } from "./EqualizerInterface";
 
 const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
@@ -12,7 +12,7 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     max={5}
                     min={1}
                     style={{
-                        appearance: "slider-vertical",
+                        // appearance: "slider-vertical",
                         width: "20px",
                     }}
                     onChange={(e) =>
@@ -26,7 +26,7 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     max={10}
                     min={3}
                     style={{
-                        appearance: "slider-vertical",
+                        // appearance: "slider-vertical",
                         width: "20px",
                     }}
                     onChange={(e) =>
@@ -40,7 +40,7 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     max={30}
                     min={1}
                     style={{
-                        appearance: "slider-vertical",
+                        // appearance: "slider-vertical",
                         width: "20px",
                     }}
                     onChange={(e) =>
@@ -54,7 +54,7 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     max={50}
                     min={10}
                     style={{
-                        appearance: "slider-vertical",
+                        // appearance: "slider-vertical",
                         width: "20px",
                     }}
                     onChange={(e) =>
@@ -68,7 +68,7 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     max={5}
                     min={1}
                     style={{
-                        appearance: "slider-vertical",
+                        // appearance: "slider-vertical",
                         width: "20px",
                     }}
                     onChange={(e) =>
@@ -82,7 +82,7 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     max={5}
                     min={1}
                     style={{
-                        appearance: "slider-vertical",
+                        // appearance: "slider-vertical",
                         width: "20px",
                     }}
                     onChange={(e) =>
