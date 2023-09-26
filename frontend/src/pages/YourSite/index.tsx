@@ -29,7 +29,7 @@ const YourSite = () => {
         <>
             <div className="h-screen overflow-y-scroll">
                 {getTemplate.length && getTemplate.map((item, i) => {
-                    console.log(item.modules);
+                    console.log(item);
                     // debugger
                     return (
                         <>
@@ -42,7 +42,7 @@ const YourSite = () => {
                                 order={item.order}
                                 textAlign={item.textAlign}
                                 key={i}
-                                // color={}
+                                // color={item.color}
                             />
 
                             {/* {e.modules.length === 5 && (

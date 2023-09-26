@@ -11,22 +11,27 @@ import { useAppSelector } from "@/src/hooks/useAppSelector";
 const FormParametrs = () => {
     const [align, setAlign] = useState("right");
     const [value, setValue] = useState("");
-    const [backgroundColor, setBackgroundColor] = useState("blue");
+    const [textColor, setTextColor] = useState("blue");
     const { id } = useParams();
     const activeIndex = useAppSelector((state) => state.formIndex.index);
     const updateTemplate = () => {
+        debugger
         axiosInstance.put(`/api/templates/update${id}`, {
             name: value,
-            background: backgroundColor,
             textAlign: align,
+            color: textColor,
         });
     };
-    useQuery("repoData", () =>
+
+    useQuery("repoData", () =>{
+
         axiosInstance.get("api/templates").then((res) => {
+            console.log(res);
+            
             setAlign(res.data[activeIndex].textAlign);
             setValue(res.data[activeIndex].name);
-            setBackgroundColor(res.data[activeIndex].background);
-        })
+            setTextColor(res.data[activeIndex].color);
+        })}
     );
     return (
         <>
@@ -63,13 +68,13 @@ const FormParametrs = () => {
                     htmlFor=""
                     className="w-[200px] h-[30px] bg-black rounded-[10px]"
                     style={{
-                        background: backgroundColor,
+                        background: textColor,
                     }}
                 >
                     <input
                         type="color"
-                        value={backgroundColor}
-                        onChange={(e) => setBackgroundColor(e.target.value)}
+                        value={textColor}
+                        onChange={(e) => setTextColor(e.target.value)}
                         className="w-full h-full opacity-0"
                     />
                 </label>

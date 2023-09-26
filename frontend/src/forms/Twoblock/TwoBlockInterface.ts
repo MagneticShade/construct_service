@@ -1,6 +1,3 @@
-
-
-
 export interface ITwoBlockProps {
     background: string;
     id: string;
@@ -9,4 +6,5 @@ export interface ITwoBlockProps {
     name: string;
     order: string;
     textAlign?: string;
+    color?: string;
 }

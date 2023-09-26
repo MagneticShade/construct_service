@@ -1,4 +1,4 @@
 export interface IEqualizerProps {
-    handleChange: any;
-    state:any
+    handleChange: (status: any) => void;
+    state:any;
 }

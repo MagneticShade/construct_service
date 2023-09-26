@@ -9,6 +9,7 @@ import { addOpacity, setColor } from "@/src/store/slice/ColorSlice";
 import Procedur from "./Procedur";
 import { axiosInstance } from "@/src/axios";
 import { useParams } from "react-router-dom";
+import { SubmitButton } from "@/src/shared/Buttons/SubmitButton";
 
 const PageBackgroundEdit = () => {
     const [index, setIndex] = useState<number>(0);
@@ -49,7 +50,7 @@ const PageBackgroundEdit = () => {
         vectorX: 0,
         vectorY: 5,
     });
-    console.log(valueRange);
+    console.log(color);
     
     const [template, setTemplate] = useState([]);
     useEffect(() => {
@@ -71,7 +72,12 @@ const PageBackgroundEdit = () => {
     useEffect(() => {
         addColor();
     }, [color]);
-
+    const updateTemplate = () => {
+        debugger;
+        axiosInstance.patch(`/api/templates/update${id}`, {
+            background: color
+        });
+    };
     return (
         <div className=" overflow-auto h-full">
             <div className="container pt-10">
@@ -85,7 +91,12 @@ const PageBackgroundEdit = () => {
             {index === 0 && (
                 // компонент эквалайзера
                 <>
-                    <Procedur valueRange={valueRange.speed} blur={valueRange.blur} count={valueRange.count} size={valueRange.size}>
+                    <Procedur
+                        valueRange={valueRange.speed}
+                        blur={valueRange.blur}
+                        count={valueRange.count}
+                        size={valueRange.size}
+                    >
                         <FormBlock h={100} w={100} />
                     </Procedur>
                     <Equalizer
@@ -116,6 +127,11 @@ const PageBackgroundEdit = () => {
                     />
                 </>
             )}
+            <SubmitButton
+                buttonActive={false}
+                title="Отправить"
+                handleClick={updateTemplate}
+            />
         </div>
     );
 };

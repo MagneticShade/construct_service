@@ -106,7 +106,7 @@ const EditForm = () => {
             color: "#abf",
         });
         await get();
-        
+
         dispatch(setActive(!isActive));
     }
 

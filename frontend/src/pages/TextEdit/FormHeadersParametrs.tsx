@@ -12,15 +12,11 @@ const FormHeadersParametrs: FC = () => {
     const [backgroundColor, setBackgroundColor] = useState("red");
     const [activeModule, setActiveModule] = useState<number>(0);
     const activeIndex = useAppSelector((state) => state.formIndex.index);
-    const {
-        isLoading,
-        error,
-        data = [],
-    } = useQuery("repoData", () =>
+    const { data = [] } = useQuery("repoData", () =>
         axiosInstance.get("/api/templates").then((res) => res.data)
     );
-    console.log(error);
-    
+    console.log(data);
+
     const moduleId = () => {
         if (data[activeIndex]) {
             return JSON.parse(data[activeIndex].modules[activeModule])._id.$oid;
@@ -52,7 +48,7 @@ const FormHeadersParametrs: FC = () => {
     };
     useEffect(() => {
         getModule();
-    }, [activeModule]);
+    }, [data, activeModule]);
 
     return (
         <div className="pt-4 h-full">
@@ -82,48 +78,45 @@ const FormHeadersParametrs: FC = () => {
                     </div>
                 </div>
             </div>
-            {isLoading ? (
-                <div className="w-full h-[200px] text-[64px] mt-[200px]">
-                    loading
+
+            <>
+                <div className="mt-60">
+                    <h1 className="pt-4 text-xl font-bold text-center">
+                        Параметры {activeModule + 1}-ого модуля
+                    </h1>
+                    <p className="descr font-semibold text-black/60 spacing leading-[143.4%] text-center text-[14px] pt-4">
+                        Введи необходимую информацию, <br />
+                        Введи заголовок, <br />
+                        Введи подзаголовок
+                    </p>
                 </div>
-            ) : (
-                <>
-                    <div className="mt-60">
-                        <h1 className="pt-4 text-xl font-bold text-center">
-                            Параметры {activeModule + 1}-ого модуля
-                        </h1>
-                        <p className="descr font-semibold text-black/60 spacing leading-[143.4%] text-center text-[14px] pt-4">
-                            Введи необходимую информацию, <br />
-                            Введи заголовок, <br />
-                            Введи подзаголовок
-                        </p>
-                    </div>
-                    <input
-                        name="nameModule"
-                        type="text"
-                        className="text-[16px] text-[#999] not-italic font-medium mt-[43px] mb-[12px] capitalize tracking-[-1.2px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5"
-                        placeholder="Название Модуля"
-                        onChange={(e) =>
-                            setValue({ ...value, nameModule: e.target.value })
-                        }
-                        value={value.nameModule}
-                    />
+                <input
+                    name="nameModule"
+                    type="text"
+                    className="text-[16px] text-[#999] not-italic font-medium mt-[43px] mb-[12px] capitalize tracking-[-1.2px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5"
+                    placeholder="Название Модуля"
+                    onChange={(e) =>
+                        setValue({ ...value, nameModule: e.target.value })
+                    }
+                    value={value.nameModule}
+                />
 
-                    <input
-                        name="descrModule"
-                        type="text"
-                        className="text-[16px] mb-[29px] text-[#999] not-italic font-medium capitalize tracking-[-1.2px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5"
-                        placeholder="Описание"
-                        onChange={(e) =>
-                            setValue({ ...value, descrModule: e.target.value })
-                        }
-                        value={value.descrModule}
-                    />
+                <input
+                    name="descrModule"
+                    type="text"
+                    className="text-[16px] mb-[29px] text-[#999] not-italic font-medium capitalize tracking-[-1.2px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5"
+                    placeholder="Описание"
+                    onChange={(e) =>
+                        setValue({ ...value, descrModule: e.target.value })
+                    }
+                    value={value.descrModule}
+                />
 
-                    <div className="grid gap-[12px]">
-                        <Alignment align={align} setAlign={setAlign} />
-                    </div>
-                    <div className="flex items-center justify-between pt-8">
+                <div className="grid gap-[12px]">
+                    <Alignment align={align} setAlign={setAlign} />
+                </div>
+                <div className="h-[250px]">
+                    <div className="flex items-center justify-between pt-8 ">
                         <span className="font-medium text-[#B6B6B6] spacing leading-[143.4%] text-center text-[18px]">
                             Цвет текста
                         </span>
@@ -141,7 +134,7 @@ const FormHeadersParametrs: FC = () => {
                             />
                         </label>
                     </div>
-                    <div className="flex items-center justify-between pt-8">
+                    <div className="flex items-center justify-between pt-8 ">
                         <span className="font-medium text-[#B6B6B6] spacing leading-[143.4%] text-center text-[18px]">
                             цвет фона
                         </span>
@@ -161,13 +154,14 @@ const FormHeadersParametrs: FC = () => {
                             />
                         </label>
                     </div>
-                    <SubmitButton
-                        buttonActive={false}
-                        title="Отправить на сайт"
-                        handleClick={() => updateModule()}
-                    />
-                </>
-            )}
+                </div>
+
+                <SubmitButton
+                    buttonActive={false}
+                    title="Отправить на сайт"
+                    handleClick={() => updateModule()}
+                />
+            </>
         </div>
     );
 };

@@ -33,7 +33,7 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
 
     const handleDelete = () => {
         // tg.offEvent("viewportChanged", projectMove)
-        handleDeleteProject();
+        handleDeleteProject;
         setModalStatus(false);
     };
     const { position, isDragging, handleStart } = useDraggableBlock({
@@ -114,7 +114,7 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
                 <DeleteButton
                     title="Удалить"
                     buttonActive={false}
-                    handleClick={handleDeleteProject}
+                    handleClick={() => handleDeleteProject()}
                 />
             </div>
         </div>

@@ -6,53 +6,53 @@ import backArr from "../../assets/icons/backArr.svg";
 import { IModalProps } from "./ModalInterface";
 
 const Modal: FC<IModalProps> = ({ children }) => {
-    let y: number | null = null;
-    let x: number | null = null;
+    // let y: number | null = null;
+    // let x: number | null = null;
 
-    const handleTouchStart = (e: any) => {
-        const firstTouch = e.touches[0];
-        y = firstTouch.clientY;
-        x = firstTouch.clientY;
-    };
+    // const handleTouchStart = (e: any) => {
+    //     const firstTouch = e.touches[0];
+    //     y = firstTouch.clientY;
+    //     x = firstTouch.clientY;
+    // };
 
-    const handleTouchMove = (e: any) => {
-        if (!y || !x) {
-            return false;
-        }
+    // const handleTouchMove = (e: any) => {
+    //     if (!y || !x) {
+    //         return false;
+    //     }
 
-        let y2 = e.touches[0].clientY;
-        let x2 = e.touches[0].clientY;
-        let yDiff = y2 - y;
-        let xDiff = x2 - x;
+    //     let y2 = e.touches[0].clientY;
+    //     let x2 = e.touches[0].clientY;
+    //     let yDiff = y2 - y;
+    //     let xDiff = x2 - x;
 
-        if (Math.abs(xDiff) > Math.abs(yDiff)) {
-            if (xDiff > 0) {
-                closeModal();
-                console.log("right");
-            } else {
-                console.log("left");
-            }
-        } else {
-            if (yDiff > 0) {
-                if (yDiff > 10) {
-                    closeModal();
-                    console.log("down");
-                }
-            } else {
-                console.log("top");
-            }
-        }
-        console.log(yDiff);
+    //     if (Math.abs(xDiff) > Math.abs(yDiff)) {
+    //         if (xDiff > 0) {
+    //             closeModal();
+    //             console.log("right");
+    //         } else {
+    //             console.log("left");
+    //         }
+    //     } else {
+    //         if (yDiff > 0) {
+    //             if (yDiff > 10) {
+    //                 closeModal();
+    //                 console.log("down");
+    //             }
+    //         } else {
+    //             console.log("top");
+    //         }
+    //     }
+    //     console.log(yDiff);
 
-        x = null;
-        y = null;
-    };
+    //     x = null;
+    //     y = null;
+    // };
 
     const divRef = useRef(null);
     let navigate = useNavigate();
     const location = useLocation();
     const pathname = location.pathname;
-    const isEdit = /^\/.+\/.+\/.+/.test(pathname);
+    // const isEdit = /^\/.+\/.+\/.+/.test(pathname);
 
     const closeModal = (): void => {
         const object = divRef.current;
@@ -93,8 +93,8 @@ const Modal: FC<IModalProps> = ({ children }) => {
         <div
             ref={divRef}
             className={`fixed top-0 left-0 w-full h-full bg-white`}
-            onTouchStart={isEdit ? () => [] : handleTouchStart}
-            onTouchMove={isEdit ? () => [] : handleTouchMove}
+            // onTouchStart={isEdit ? () => [] : handleTouchStart}
+            // onTouchMove={isEdit ? () => [] : handleTouchMove}
         >
             {invested ? (
                 <button className="p-5 absolute z-20">

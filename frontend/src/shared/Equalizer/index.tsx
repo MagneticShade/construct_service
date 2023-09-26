@@ -1,4 +1,4 @@
-import  { FC } from "react";
+import { FC } from "react";
 import { IEqualizerProps } from "./EqualizerInterface";
 
 const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
