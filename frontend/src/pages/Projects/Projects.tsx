@@ -16,7 +16,6 @@ const Projects: FC = () => {
         const rect = e.target.getBoundingClientRect();
         setModalStatus(!modalStatus);
         setSelectedImageWidth({ margin: rect.top, height: rect.height });
-        console.log(rect.height);
     };
     const longPress = useLongPress(openModalWindow);
 

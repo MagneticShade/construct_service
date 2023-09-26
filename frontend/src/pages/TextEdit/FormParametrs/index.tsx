@@ -7,34 +7,41 @@ import { useParams } from "react-router-dom";
 import { SubmitButton } from "@/src/shared/Buttons/SubmitButton";
 import { useQuery } from "react-query";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
+import Success from "@/src/components/Success";
 
 const FormParametrs = () => {
     const [align, setAlign] = useState("right");
     const [value, setValue] = useState("");
     const [textColor, setTextColor] = useState("blue");
+    const [visible, setVisible] = useState<boolean>(false);
     const { id } = useParams();
     const activeIndex = useAppSelector((state) => state.formIndex.index);
     const updateTemplate = () => {
-        debugger
-        axiosInstance.put(`/api/templates/update${id}`, {
-            name: value,
-            textAlign: align,
-            color: textColor,
-        });
+        axiosInstance
+            .put(`/api/templates/update${id}`, {
+                name: value,
+                textAlign: align,
+                color: textColor,
+            })
+            .then(() => setVisible(true));
     };
-
-    useQuery("repoData", () =>{
-
+    if (visible) {
+        setTimeout(() => {
+            setVisible(false);
+        }, 2500);
+    }
+    useQuery("repoData", () => {
         axiosInstance.get("api/templates").then((res) => {
             console.log(res);
-            
+
             setAlign(res.data[activeIndex].textAlign);
             setValue(res.data[activeIndex].name);
             setTextColor(res.data[activeIndex].color);
-        })}
-    );
+        });
+    });
     return (
         <>
+            <Success visible={visible} title="Форма успешно изменена" />
             <div className="">
                 <h1 className="pt-4 text-xl font-bold text-center">
                     Параметры Текста формы
