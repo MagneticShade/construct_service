@@ -10,48 +10,36 @@ import { setActive } from "@/src/store/slice/ButtonSlice";
 import { Categories } from "./Categories";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { axiosInstance, getTemplates } from "@/src/axios";
-import {
-    setActiveId,
-    setActiveIndexEdit,
-    setTemp,
-} from "@/src/store/slice/EditSlice";
+import { setActiveIndexEdit, setTemp } from "@/src/store/slice/EditSlice";
 import TwoBlockPreview from "@/src/shared/FormsPrev/TwoBlockPreview";
+import { setIndex } from "@/src/store/slice/FormIndexSlice";
 
 const PageEdit = () => {
     const [buttonActive, setButtonActive] = useState(false);
-    const activeId = useAppSelector((state) => state.edit.activeId);
-    const edit = useAppSelector((state) => state.edit);
-    const [activeIndex, setActiveIndex] = useState<number>(0);
-
+    const templates = useAppSelector(state=>state.edit.templates)
     const backspaceLongPress = useLongPress(() => {
         setButtonActive(!buttonActive);
-
-        const template = edit.templates[activeIndex];
-        if (typeof template !== "string") {
-            // Здесь TypeScript знает, что template - это объект типа Template
-            dispatch(setActiveId(template.id));
-        }
     });
+    const activeIndex = useAppSelector((state) => state.formIndex.index);
 
     const dispatch = useAppDispatch();
+
     async function get() {
         const response = await getTemplates();
         dispatch(setTemp(await response));
     }
     useEffect(() => {
         get();
-        setActiveIndex(0);
-        dispatch(setActiveIndexEdit(0));
-    }, [dispatch]);
+
+    }, []);
 
     async function delTemp() {
-        await axiosInstance.delete(`/api/templates/delete${activeId}`);
+        if(typeof templates !== 'string'){
+            await axiosInstance.delete(`/api/templates/delete${templates[activeIndex].id}`);
+        }
+
         await get();
     }
-    if (edit.templates === "") {
-        dispatch(setActive(true));
-    }
-
 
     return (
         <>
@@ -61,7 +49,9 @@ const PageEdit = () => {
                 className="absolute z-0 w-full h-screen object-cover"
             />
             <div className="container" id="dropZone">
-                {edit.templates[activeIndex] &&  edit.templates && <Categories tempalteId={edit.templates[activeIndex].id} />}
+                {templates[activeIndex] && templates && (
+                    <Categories tempalteId={templates[activeIndex].id} />
+                )}
 
                 <div className="forms pt-[273px]">
                     <Swiper
@@ -74,23 +64,25 @@ const PageEdit = () => {
                                 slidesPerView: 1.2,
                             },
                         }}
+                        onSlideChange={(e) => console.log(e.realIndex)}
                         initialSlide={0}
                         onActiveIndexChange={(e) => {
-                            setActiveIndex((e.realIndex = e.activeIndex));
+                            dispatch(setIndex(e.activeIndex));
                             dispatch(
                                 setActiveIndexEdit(
                                     (e.realIndex = e.activeIndex)
                                 )
                             );
-                            const template = edit.templates[activeIndex];
-                            if (typeof template !== "string") {
-                                // Здесь TypeScript знает, что template - это объект типа Template
-                                dispatch(setActiveId(template.id));
-                            }
+                            // dispatch(setIndex(e.realIndex));
+                            // if (typeof template !== "string") {
+                            //     // Здесь TypeScript знает, что template - это объект типа Template
+                            //     dispatch(setActiveId(template.id));
+                            // }
                         }}
                     >
-                        {edit.templates !== "" &&
-                            edit.templates.map((_, i) => {
+                        {templates !== "" &&
+                            templates.map((_: any, i: number) => {
+                                // debugger;
                                 return (
                                     <SwiperSlide
                                         {...backspaceLongPress}

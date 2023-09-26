@@ -41,8 +41,16 @@ const PageBackgroundEdit = () => {
     };
 
     // Забираем значение валю из инпута
-    const [valueRange, setValueRange] = useState(1);
-
+    const [valueRange, setValueRange] = useState({
+        speed: 1,
+        count: 5,
+        size: 20,
+        blur: 20,
+        vectorX: 0,
+        vectorY: 5,
+    });
+    console.log(valueRange);
+    
     const [template, setTemplate] = useState([]);
     useEffect(() => {
         axiosInstance
@@ -51,19 +59,18 @@ const PageBackgroundEdit = () => {
     }, []);
 
     console.log(template[0]);
-    const {id} = useParams()
+    const { id } = useParams();
     console.log(id);
     const addColor = () => {
-        if (template[0] ) {
+        if (template[0]) {
             axiosInstance.put(`/api/templates/update${id}`, {
-                background: color != null ? color : '#333',
+                background: color != null ? color : "#333",
             });
-        }   
+        }
     };
     useEffect(() => {
         addColor();
     }, [color]);
-
 
     return (
         <div className=" overflow-auto h-full">
@@ -78,11 +85,11 @@ const PageBackgroundEdit = () => {
             {index === 0 && (
                 // компонент эквалайзера
                 <>
-                    <Procedur valueRange={valueRange}>
+                    <Procedur valueRange={valueRange.speed} blur={valueRange.blur} count={valueRange.count} size={valueRange.size}>
                         <FormBlock h={100} w={100} />
                     </Procedur>
                     <Equalizer
-                        handleChange={(e) => setValueRange(e)}
+                        handleChange={setValueRange}
                         state={valueRange}
                     />
                 </>

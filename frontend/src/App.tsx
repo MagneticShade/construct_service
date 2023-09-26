@@ -18,6 +18,7 @@ function App() {
     useEffect(() => {
         tg.ready();
         tg.expand();
+        tg.enableClosingConfirmation()
     }, []);
     return (
         <>

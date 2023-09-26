@@ -96,21 +96,23 @@ const Modal: FC<IModalProps> = ({ children }) => {
             onTouchStart={isEdit ? () => [] : handleTouchStart}
             onTouchMove={isEdit ? () => [] : handleTouchMove}
         >
-            <button className="p-5 overflow-hidden absolute z-10">
-                {invested ? (
+            {invested ? (
+                <button className="p-5 absolute z-20">
                     <img
                         src={backArr}
                         onClick={() => history.back()}
                         alt="go back button"
                     />
-                ) : (
+                </button>
+            ) : (
+                <button className="p-5 absolute z-20">
                     <img
                         src={close}
                         onClick={() => closeModal()}
                         alt="close button"
                     />
-                )}
-            </button>
+                </button>
+            )}
 
             {children}
         </div>

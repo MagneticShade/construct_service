@@ -4,15 +4,18 @@ import { FC, ReactNode, useState } from "react";
 
 interface IProcedurProps {
     valueRange: number;
-    children: ReactNode
+    children: ReactNode;
+    blur: number
+    count: number
+    size:number
 }
-const Procedur: FC<IProcedurProps> = ({ children, valueRange }) => {
+const Procedur: FC<IProcedurProps> = ({ children, valueRange, blur, count, size }) => {
     // Создаем рандомнй цвет для бэкграунда и самих кругов
     const [canvasBackground, setCanvasBackground] = useState(useRandomColor());
     const [circleColor, setCircleColor] = useState(useRandomColor());
 
     // хук делающий канвас (НУЖНО ПОМЕНЯТЬ ЛОГИКУ ВНИТРИ НЕГО)
-    const canvasRef = useCanvas(valueRange, circleColor);
+    const canvasRef = useCanvas(valueRange, circleColor, blur, count, size);
 
     // функция по нажатию на ревреш, что бы передать другие рандомные цвета
     const handleColorChange = () => {
@@ -39,3 +42,20 @@ const Procedur: FC<IProcedurProps> = ({ children, valueRange }) => {
 };
 
 export default Procedur;
+// // index.tsx
+// import React, { FC, ReactNode } from "react";
+// import useCanvas from "@/src/hooks/useCanvas";
+// import Bokeh from "./Bokeh"; // Путь к Bokeh.ts
+
+// interface IProcedurProps {
+//   valueRange: number;
+//   children: ReactNode;
+// }
+
+// const Procedur: FC<IProcedurProps> = ({ children, valueRange }) => {
+//   const canvasRef = useCanvas(valueRange, circleColor);
+
+//   // Ваш остальной код компонента Procedur
+// };
+
+// export default Procedur;

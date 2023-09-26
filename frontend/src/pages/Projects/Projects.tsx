@@ -39,11 +39,10 @@ const Projects: FC = () => {
         console.log(await data);
     }
     useEffect(() => {
-        async function asyncGet() {
-            await get();
-        }
-        asyncGet();
-    }, [location.pathname]);
+
+     get();
+
+    }, []);
 
     async function handleDeleteProject() {
         await axiosInstance.delete(
@@ -63,7 +62,7 @@ const Projects: FC = () => {
                         height: selectedImageWidth.height,
                     }}
                     setModalStatus={setModalStatus}
-                    handleDeleteProject={handleDeleteProject}
+                    handleDeleteProject={() => handleDeleteProject()}
                 />
             )}
             <Swiper
