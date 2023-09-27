@@ -8,6 +8,7 @@ import { IModalProps } from "./ModalInterface";
 const Modal: FC<IModalProps> = ({ children }) => {
     let y: number | null = null;
     let x: number | null = null;
+    const swipeThreshold = 5;
 
     const handleTouchStart = (e: any) => {
         const firstTouch = e.touches[0];
@@ -20,10 +21,10 @@ const Modal: FC<IModalProps> = ({ children }) => {
             return false;
         }
 
-        let y2 = e.touches[0].clientY;
-        let x2 = e.touches[0].clientY;
-        let yDiff = y2 - y;
-        let xDiff = x2 - x;
+        const y2 = e.touches[0].clientY;
+        const x2 = e.touches[0].clientY;
+        const yDiff = y2 - y;
+        const xDiff = x2 - x;
 
         if (Math.abs(xDiff) > Math.abs(yDiff)) {
             if (xDiff > 0) {
@@ -33,10 +34,11 @@ const Modal: FC<IModalProps> = ({ children }) => {
                 console.log("left");
             }
         } else {
-            if (yDiff > 0) {
-                if (yDiff > 10) {
+            if (yDiff > 0 && y < swipeThreshold) {
+                if (yDiff > swipeThreshold) {
+                    // Пользователь свайпнул вверх в верхней части экрана
                     closeModal();
-                    console.log("down");
+                    console.log("Swiped up and closed");
                 }
             } else {
                 console.log("top");
@@ -52,7 +54,6 @@ const Modal: FC<IModalProps> = ({ children }) => {
     let navigate = useNavigate();
     const location = useLocation();
     const pathname = location.pathname;
-    const isEdit = /^\/.+\/.+\/.+/.test(pathname);
 
     const closeModal = (): void => {
         const object = divRef.current;
@@ -93,24 +94,26 @@ const Modal: FC<IModalProps> = ({ children }) => {
         <div
             ref={divRef}
             className={`fixed top-0 left-0 w-full h-full bg-white`}
-            onTouchStart={isEdit ? () => [] : handleTouchStart}
-            onTouchMove={isEdit ? () => [] : handleTouchMove}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
         >
-            <button className="p-5 overflow-hidden absolute z-10">
-                {invested ? (
+            {invested ? (
+                <button className="p-5 absolute z-20">
                     <img
                         src={backArr}
                         onClick={() => history.back()}
                         alt="go back button"
                     />
-                ) : (
+                </button>
+            ) : (
+                <button className="p-5 absolute z-20">
                     <img
                         src={close}
                         onClick={() => closeModal()}
                         alt="close button"
                     />
-                )}
-            </button>
+                </button>
+            )}
 
             {children}
         </div>

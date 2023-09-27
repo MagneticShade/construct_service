@@ -5,13 +5,16 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store/store.js";
 import { QueryClientProvider, QueryClient } from "react-query";
+// import { StrictMode } from "react";
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
-                <App />
+
+                    <App />
+
             </QueryClientProvider>
         </Provider>
     </BrowserRouter>

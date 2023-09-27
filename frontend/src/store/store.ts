@@ -5,6 +5,7 @@ import color from './slice/ColorSlice'
 import yourSite from './slice/YourSiteSlice'
 import blanksItem  from './slice/BlanksItemSlice'
 import edit  from './slice/EditSlice'
+import formIndex from './slice/FormIndexSlice'
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
     color,
     yourSite,
     blanksItem,
-    edit
+    edit,
+    formIndex
   },
 })
 

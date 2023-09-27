@@ -2,50 +2,46 @@ import { axiosInstance } from "@/src/axios";
 import Alignment from "../Alignment";
 import { CheckedButton } from "@/src/shared/Buttons/CheckedButton";
 import _ from "lodash";
-import { useCallback, useState } from "react";
-import { useAppSelector } from "@/src/hooks/useAppSelector";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { SubmitButton } from "@/src/shared/Buttons/SubmitButton";
+import { useQuery } from "react-query";
+import { useAppSelector } from "@/src/hooks/useAppSelector";
+import Success from "@/src/components/Success";
 
 const FormParametrs = () => {
-    const edit = useAppSelector((state) => state.edit);
-
-    const template = edit.templates[edit.activeIndex];
-    // const name = typeof template !== "string" && template.name
-    // const [inputText, setInputText] = useState(name as string);
-
-    // Создайте функцию, которая будет вызываться с задержкой
     const [align, setAlign] = useState("right");
     const [value, setValue] = useState("");
-    const [active, setActive] = useState(false);
-    const [textColor, setTextColor] = useState('red')
-
+    const [textColor, setTextColor] = useState("blue");
+    const [visible, setVisible] = useState<boolean>(false);
     const { id } = useParams();
-    const debounced = useCallback(
-        _.debounce((text, align) => {
-            if (typeof template !== "string") {
-                axiosInstance.put(`/api/templates/update${id}`, {
-                    name: text,
-                    localId: template.local_id,
-                    modules: template.modules,
-                    order: template.order,
-                    background: template.background,
-                    textAlign: align,
-                });
-                setActive(true);
-            }
-        }, 500),
-        []
-    );
-
-    const handleInputChange = (e: any) => {
-        setActive(false);
-        setValue(e.target.value);
+    const activeIndex = useAppSelector((state) => state.formIndex.index);
+    const updateTemplate = () => {
+        axiosInstance
+            .put(`/api/templates/update${id}`, {
+                name: value,
+                textAlign: align,
+                color: textColor,
+            })
+            .then(() => setVisible(true));
     };
-    debounced(value, align);
+    if (visible) {
+        setTimeout(() => {
+            setVisible(false);
+        }, 2500);
+    }
+    useQuery("repoData", () => {
+        axiosInstance.get("api/templates").then((res) => {
+            console.log(res);
 
-
+            setAlign(res.data[activeIndex].textAlign);
+            setValue(res.data[activeIndex].name);
+            setTextColor(res.data[activeIndex].color);
+        });
+    });
     return (
         <>
+            <Success visible={visible} title="Форма успешно изменена" />
             <div className="">
                 <h1 className="pt-4 text-xl font-bold text-center">
                     Параметры Текста формы
@@ -63,28 +59,35 @@ const FormParametrs = () => {
                         className={`text-[16px] text-[#999] not-italic font-medium capitalize tracking-[-1.2px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5`}
                         placeholder="Название Формы "
                         value={value}
-                        onChange={handleInputChange}
+                        onChange={(e) => setValue(e.target.value)}
                     />
-                    {active && (
+                    {/* {active && (
                         <div className=" aspect-square w-5 absolute block rotate-180 top-4 rounded-full bg-green-200 text-[30px] right-3"></div>
-                    )}
+                    )} */}
                 </div>
             </div>
             <div className="flex items-center justify-between pt-8">
                 <span className="font-medium text-[#B6B6B6] spacing leading-[143.4%] text-center text-[18px]">
-                    Цвет текста
+                    Цвет фона
                 </span>
 
                 <label
                     htmlFor=""
                     className="w-[200px] h-[30px] bg-black rounded-[10px]"
-                    style={{background: textColor}}
+                    style={{
+                        background: textColor,
+                    }}
                 >
-                    <input type="color" onChange={(e) => setTextColor(e.target.value)} className="w-full h-full opacity-0" />
+                    <input
+                        type="color"
+                        value={textColor}
+                        onChange={(e) => setTextColor(e.target.value)}
+                        className="w-full h-full opacity-0"
+                    />
                 </label>
             </div>
             <div className="pt-8">
-                <Alignment setAlign={setAlign} />
+                <Alignment align={align} setAlign={setAlign} />
             </div>
             <div className="flex justify-between items-center pt-8">
                 <span>
@@ -92,6 +95,11 @@ const FormParametrs = () => {
                 </span>
                 <CheckedButton checked={false} />
             </div>
+            <SubmitButton
+                buttonActive={false}
+                title="Изменить форму"
+                handleClick={() => updateTemplate()}
+            />
         </>
     );
 };

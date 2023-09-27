@@ -16,6 +16,7 @@ const YourSite = () => {
     console.log(getTemplate);
     
     async function get() {
+        
         const data = await getTemplates();
         setGetTemplate(await data);
     }
@@ -27,9 +28,9 @@ const YourSite = () => {
     return (
         <>
             <div className="h-screen overflow-y-scroll">
-                {getTemplate.map((item, i) => {
-                    console.log(item.textAlign);
-                    
+                {getTemplate.length && getTemplate.map((item, i) => {
+                    console.log(item);
+                    // debugger
                     return (
                         <>
                             <TwoBlock
@@ -41,7 +42,7 @@ const YourSite = () => {
                                 order={item.order}
                                 textAlign={item.textAlign}
                                 key={i}
-                                // color={}
+                                // color={item.color}
                             />
 
                             {/* {e.modules.length === 5 && (

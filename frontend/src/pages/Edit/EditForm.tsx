@@ -10,7 +10,6 @@ import useDraggableBlock from "@/src/hooks/useDragble";
 import { axiosInstance, getTemplates } from "@/src/axios";
 import { setTemp } from "@/src/store/slice/EditSlice";
 import TwoBlockPreview from "@/src/shared/FormsPrev/TwoBlockPreview";
-// import { setTemp } from "@/src/store/slice/EditSlice";
 
 const EditForm = () => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -106,8 +105,8 @@ const EditForm = () => {
             order: "",
             color: "#abf",
         });
-        // const res = await get();
-        
+        await get();
+
         dispatch(setActive(!isActive));
     }
 

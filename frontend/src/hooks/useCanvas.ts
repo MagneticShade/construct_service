@@ -3,38 +3,37 @@ import { useEffect, useRef } from "react";
 interface Ball {
     x: number;
     y: number;
-    vx: number;
-    vy: number;
+    vy: number; // Изменяем только vy для вертикального движения
     radius: number;
 }
 
-const useCanvas = (speedRnd: number, circleColor: string) => {
-    // Здесь канвас, который мы берм вне хука
+const useCanvas = (speedRnd: number, circleColor: string, blur: number, count: number, size: number) => {
+    // Здесь канвас, который мы берем вне хука
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
     // Инициализация шариков
     const balls: Ball[] = [];
 
+    // Функция для генерации случайного радиуса в заданном диапазоне
+    const getRandomRadius = () => Math.random() * 40 + size;
+
     // Создание 10 шариков и пуш в balls
-    for (let i = 0; i < 10; i++) {
-        const randomAngle = Math.random() * Math.PI * 2; // Случайный угол
-        const speed = Math.random() * speedRnd; // Случайная скорость
+    for (let i = 0; i < count; i++) {
+        const speed = 0.5; // Случайная скорость
+        const radius = getRandomRadius(); // Генерируем случайный радиус
+
         const ball: Ball = {
-            // Рандомное появление шариков
-            x: Math.random() * 500,
-            y: Math.random() * 500,
-            // Рандомныя скорость от 0 до взятой из инпута
-            vx: Math.cos(randomAngle) * speed,
-            vy: Math.sin(randomAngle) * speed,
-            // Рандомный размер  шариков
-            radius: Math.random() * 20 + 20,
+            x: Math.random() * 500 - radius,
+            y: Math.random() * 500 - radius,
+            vy: speed, // Изменяем только vy для вертикального движения
+            radius: radius, // Присваиваем радиус каждому шарику
         };
         balls.push(ball);
     }
 
-    // Функция вызывающаяся от зменения speedRnd, circleColor
+    // Функция вызывающаяся от изменения speedRnd, circleColor
     useEffect(() => {
-        // инициализвация канваса
+        // инициализация канваса
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext("2d");
@@ -47,27 +46,28 @@ const useCanvas = (speedRnd: number, circleColor: string) => {
             for (let i = 0; i < balls.length; i++) {
                 const ball = balls[i];
 
-                // Обновляем позицию круга
-                ball.x += ball.vx;
-                ball.y += ball.vy;
+                // Обновляем позицию круга только по вертикали, учитывая скорость
+                ball.y += ball.vy * speedRnd;
 
-                // Отталкиваемся от границ холста
-                if (ball.x + 35 > canvas.width || ball.x - 35 < 0) {
-                    ball.vx *= -1; // Меняем направление по горизонтали
-                }
-                if (ball.y + 35 > canvas.height || ball.y - 35 < 0) {
+                // Отталкиваемся от границ холста по вертикали
+                if (
+                    ball.y + ball.radius > canvas.height ||
+                    ball.y - ball.radius < 0
+                ) {
                     ball.vy *= -1; // Меняем направление по вертикали
                 }
 
                 // Ограничиваем движение круга, чтобы он не выходил за границы холста
-                ball.x = Math.min(Math.max(ball.x, 35), canvas.width - 35);
-                ball.y = Math.min(Math.max(ball.y, 35), canvas.height - 35);
+                ball.y = Math.min(
+                    Math.max(ball.y, ball.radius),
+                    canvas.height - ball.radius
+                );
 
                 ctx.beginPath();
                 ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
                 ctx.fillStyle = circleColor; // Используем текущий цвет
 
-                ctx.filter = "blur(40px)"; // Созаднее размытия
+                ctx.filter = `blur(${blur}px)`; // Создание размытия
                 ctx.fill();
             }
 
@@ -75,7 +75,7 @@ const useCanvas = (speedRnd: number, circleColor: string) => {
         };
 
         draw();
-    }, [speedRnd, circleColor]); // Изменения скорости и цвета могут вызывать перерисовку
+    }, [speedRnd, circleColor, blur, count, size]); // Изменения скорости и цвета могут вызывать перерисовку
 
     return canvasRef;
 };
