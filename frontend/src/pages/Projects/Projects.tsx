@@ -7,7 +7,6 @@ import { SelectedBlock } from "./SelectedBlock";
 import { axiosInstance, userId } from "@/src/axios";
 import { Link } from "react-router-dom";
 
-
 const Projects: FC = () => {
     const [selectedImageWidth, setSelectedImageWidth] = useState<any>();
     const [modalStatus, setModalStatus] = useState(false);
@@ -18,11 +17,8 @@ const Projects: FC = () => {
         setSelectedImageWidth({ margin: rect.top, height: rect.height });
     };
     const longPress = useLongPress(openModalWindow);
-
     const [projectOwn, setProjectOwn] = useState<any>([]);
-
-    const [project, setProject] = useState<any>([]);
-
+    const [projects, setProjects] = useState<any>([]);
 
     function extractId() {
         if (projectOwn.length) {
@@ -35,12 +31,16 @@ const Projects: FC = () => {
             .get(`/api/project/own/${userId}`)
             .then((res) => setProjectOwn(res.data));
     };
-    const getProject = () => {
-        if (extractId()) {
-            axiosInstance
-                .get(`/api/project/${extractId()}`)
-                .then((res) => setProject(res.data));
-        }
+    const getProject = async () => {
+        const projectData = await Promise.all(
+            projectOwn.map((item: any) => {
+                const projectId = JSON.parse(item)._id.$oid;
+                return axiosInstance
+                    .get(`/api/project/${projectId}`)
+                    .then((res) => res.data);
+            })
+        );
+        setProjects(projectData);
     };
 
     useEffect(() => {
@@ -89,7 +89,7 @@ const Projects: FC = () => {
                     },
                 }}
             >
-                {projectOwn.map((_: any, i: number) => {
+                {projects.map((item: any, i: number) => {
                     return (
                         <SwiperSlide key={i++} {...longPress}>
                             <Link
@@ -111,7 +111,7 @@ const Projects: FC = () => {
                                             : "-translate-y-10"
                                     }`}
                                 >
-                                    {project.title}
+                                    {item.title}
                                 </span>
                             </Link>
                         </SwiperSlide>
@@ -119,7 +119,7 @@ const Projects: FC = () => {
                 })}
                 <SwiperSlide>
                     <div
-                        className={`w-full h-[276px] transition-all duration-200 text-center flex items-center ml-2`}
+                        className={`w-full h-[276px] transition-all duration-200 text-center flex items-center justify-center`}
                     >
                         <Link
                             to={"/constructorpractice/blanks/1"}

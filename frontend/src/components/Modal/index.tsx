@@ -98,20 +98,18 @@ const Modal: FC<IModalProps> = ({ children }) => {
             onTouchMove={handleTouchMove}
         >
             {invested ? (
-                <button className="p-5 absolute z-20">
-                    <img
-                        src={backArr}
-                        onClick={() => history.back()}
-                        alt="go back button"
-                    />
+                <button
+                    className="w-12 h-12 flex justify-center items-center absolute z-20"
+                    onClick={() => history.back()}
+                >
+                    <img src={backArr} alt="go back button" />
                 </button>
             ) : (
-                <button className="p-5 absolute z-20">
-                    <img
-                        src={close}
-                        onClick={() => closeModal()}
-                        alt="close button"
-                    />
+                <button
+                    className="w-12 h-12 flex justify-center items-center absolute z-20"
+                    onClick={() => closeModal()}
+                >
+                    <img src={close} alt="close button" />
                 </button>
             )}
 

@@ -13,10 +13,9 @@ import { axiosInstance, getTemplates } from "@/src/axios";
 import { setActiveIndexEdit, setTemp } from "@/src/store/slice/EditSlice";
 import TwoBlockPreview from "@/src/shared/FormsPrev/TwoBlockPreview";
 import { setIndex } from "@/src/store/slice/FormIndexSlice";
-
 const PageEdit = () => {
     const [buttonActive, setButtonActive] = useState(false);
-    const templates = useAppSelector(state=>state.edit.templates)
+    const templates = useAppSelector((state) => state.edit.templates);
     const backspaceLongPress = useLongPress(() => {
         setButtonActive(!buttonActive);
     });
@@ -30,12 +29,13 @@ const PageEdit = () => {
     }
     useEffect(() => {
         get();
-
     }, []);
 
     async function delTemp() {
-        if(typeof templates !== 'string'){
-            await axiosInstance.delete(`/api/templates/delete${templates[activeIndex].id}`);
+        if (typeof templates !== "string") {
+            await axiosInstance.delete(
+                `/api/templates/delete${templates[activeIndex].id}`
+            );
         }
 
         await get();
@@ -73,16 +73,10 @@ const PageEdit = () => {
                                     (e.realIndex = e.activeIndex)
                                 )
                             );
-                            // dispatch(setIndex(e.realIndex));
-                            // if (typeof template !== "string") {
-                            //     // Здесь TypeScript знает, что template - это объект типа Template
-                            //     dispatch(setActiveId(template.id));
-                            // }
                         }}
                     >
                         {templates !== "" &&
                             templates.map((_: any, i: number) => {
-                                // debugger;
                                 return (
                                     <SwiperSlide
                                         {...backspaceLongPress}
@@ -112,6 +106,11 @@ const PageEdit = () => {
                                     </SwiperSlide>
                                 );
                             })}
+                        {!templates.length && (
+                            <div className="w-full flex justify-center font-[700] text-white text-[40px] leading-10 text-center">
+                                Выберите форму
+                            </div>
+                        )}
                     </Swiper>
                 </div>
             </div>

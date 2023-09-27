@@ -22,7 +22,7 @@ function App() {
     }, []);
     return (
         <>
-            <Home />
+            {/* <Home /> */}
             <Routes>
                 <Route path="/constructorpractice/" element={<></>} />
                 <Route

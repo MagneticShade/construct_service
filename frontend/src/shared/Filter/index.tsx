@@ -28,7 +28,7 @@ const Filter: FC<IFilterProps> = ({ filterName, setIndex }) => {
         
     }
     return (
-        <div>
+        <div className="mb-4">
             <ul className="relative flex gap-4 pt-4 font-semibold capitalize">
                 {filterName.map((name, id) => (
                     <li
