@@ -18,13 +18,13 @@ function App() {
     useEffect(() => {
         tg.ready();
         tg.expand();
+        tg.enableClosingConfirmation();
     }, []);
     return (
         <>
-            
             <Home />
             <Routes>
-                <Route path="/" element={<></>} />
+                <Route path="/constructorpractice/" element={<></>} />
                 <Route
                     path="/constructorpractice/blanks"
                     element={
