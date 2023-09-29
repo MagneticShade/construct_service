@@ -11,7 +11,6 @@ const Projects: FC = () => {
     const [selectedImageWidth, setSelectedImageWidth] = useState<any>();
     const [modalStatus, setModalStatus] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
-    const [visible, setVisible] = useState<boolean>(true);
     const openModalWindow = (e: any) => {
         const rect = e.target.getBoundingClientRect();
         setModalStatus(!modalStatus);

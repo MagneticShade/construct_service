@@ -5,6 +5,7 @@ import TwoBlock from "@/src/forms/Twoblock/TwoBlock";
 
 import { Template } from "@/src/store/slice/YourSiteSlice";
 import { useEffect, useState } from "react";
+import Header from "./Header";
 
 const YourSite = () => {
    
@@ -33,6 +34,7 @@ const YourSite = () => {
                     // debugger
                     return (
                         <>
+                        <Header />
                             <TwoBlock
                                 background={item.background}
                                 id={item.id}
