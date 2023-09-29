@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-    baseURL: "https://practice-test.ru:8080",
+    baseURL: "http://localhost:8000",
 });
 
 export async function getTemplates() {

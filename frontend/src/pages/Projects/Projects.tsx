@@ -11,6 +11,7 @@ const Projects: FC = () => {
     const [selectedImageWidth, setSelectedImageWidth] = useState<any>();
     const [modalStatus, setModalStatus] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [visible, setVisible] = useState<boolean>(true);
     const openModalWindow = (e: any) => {
         const rect = e.target.getBoundingClientRect();
         setModalStatus(!modalStatus);
@@ -101,15 +102,11 @@ const Projects: FC = () => {
                                         backgroundImage: `url(${maskProject})`,
                                     }}
                                     className={`w-full h-[276px] transition-all duration-200 text-center ${
-                                        activeIndex === i ? "!scale-[1.1] " : ""
+                                        activeIndex === i ? "!scale-[1.1]" : ""
                                     }`}
                                 ></div>
                                 <span
-                                    className={`text-black text-[24px] uppercase absolute -bottom-12 left-1/2 -translate-x-1/2 duration-200 -z-10 ${
-                                        activeIndex === i
-                                            ? ""
-                                            : "-translate-y-10"
-                                    }`}
+                                    className={`text-black text-[24px] uppercase absolute -bottom-12 left-1/2 -translate-x-1/2 duration-200 -z-10`}
                                 >
                                     {item.title}
                                 </span>

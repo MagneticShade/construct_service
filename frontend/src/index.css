@@ -36,10 +36,3 @@ input {
     background: linear-gradient(to top left, #575959, #f8f8f8);
     animation-fill-mode: forwards;
 }
-
-@media screen and (orientation: landscape) {
-    body {
-        transform: rotate(90deg);
-        transform-origin: center;
-    }
-}

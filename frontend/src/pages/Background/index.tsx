@@ -51,7 +51,7 @@ const PageBackgroundEdit = () => {
         vectorY: 5,
     });
     console.log(color);
-    
+
     const [template, setTemplate] = useState([]);
     useEffect(() => {
         axiosInstance
@@ -74,8 +74,8 @@ const PageBackgroundEdit = () => {
     }, [color]);
     const updateTemplate = () => {
         debugger;
-        axiosInstance.patch(`/api/templates/update${id}`, {
-            background: color
+        axiosInstance.patch(`api/templates/partial-update/${id}`, {
+            background: color,
         });
     };
     return (
