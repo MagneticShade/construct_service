@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from pymongo import MongoClient
@@ -35,6 +36,13 @@ class NewProject(BaseModel):
 class Project(NewProject):
     ID: ProjectID
     templates: list[TemplateID]
+
+
+class UpdateProject(BaseModel):
+    title: Optional[str] = None
+    slogan: Optional[str] = None
+    description: Optional[str] = None
+    tags: Optional[list[str]] = None
 
 
 class NewTemplate(BaseModel):
@@ -100,6 +108,19 @@ async def get_project(projectID: ProjectID) -> Project:
     if project is None:
         raise HTTPException(status_code=400, detail="Project not exist")
     return project
+
+
+@app.patch(
+    "/project/{projectID}",
+    tags=["Project"],
+    description="Updates project properties with only provided fields. If field is not provided its value not updates. If project not exist raises 400 error",
+)
+async def patch_project(projectID: ProjectID, updates: UpdateProject) -> None:
+    project = projects_collection.find_one_and_delete({"ID": projectID})
+    if project is None:
+        raise HTTPException(status_code=400, detail="Project not exist")
+    project = Project(**{**project, **updates.model_dump(exclude_none=True)})
+    projects_collection.insert_one(project.model_dump())
 
 
 @app.post(
