@@ -13,6 +13,7 @@ database = mongoClient.get_database("backend")
 users_collection = database.get_collection("users")
 projects_collection = database.get_collection("projects")
 templates_collection = database.get_collection("templates")
+modules_collection = database.get_collection("modules")
 
 
 TelegramID = str
@@ -62,6 +63,26 @@ class UpdateTemplate(BaseModel):
     background_color: Optional[str] = None
     text_color: Optional[str] = None
     text_align: Optional[str] = None
+
+
+class NewModule(BaseModel):
+    background_color: str
+    header_text: str
+    subheader_text: str
+    text_align: str
+    text_color: str
+
+
+class Module(NewModule):
+    ID: ModuleID
+
+
+class UpdateModule(BaseModel):
+    background_color: Optional[str] = None
+    header_text: Optional[str] = None
+    subheader_text: Optional[str] = None
+    text_align: Optional[str] = None
+    text_color: Optional[str] = None
 
 
 @app.get(
@@ -202,3 +223,46 @@ async def patch_template(templateID: TemplateID, updates: UpdateTemplate) -> Non
         raise HTTPException(status_code=400, detail="Template not exist")
     template = Template(**{**template, **updates.model_dump(exclude_none=True)})
     templates_collection.insert_one(template.model_dump())
+
+
+@app.post(
+    "/template/{templateID}/module",
+    tags=["Template", "Module"],
+    description="Creates new module in template. If template not exist raises 400 error",
+)
+async def post_template_module(templateID: TemplateID, module: NewModule) -> ModuleID:
+    template = templates_collection.find_one_and_delete({"ID": templateID})
+    if template is None:
+        raise HTTPException(status_code=400, detail="Template not exist")
+    template = Template(**template.model_dump())
+    moduleID = str(uuid.uuid4())
+    module = Module(**module.model_dump(), ID=moduleID)
+    template.modules.append(moduleID)
+    templates_collection.insert_one(template.model_dump())
+    modules_collection.insert_one(module.model_dump())
+    return moduleID
+
+
+@app.get(
+    "/module/{moduleID}",
+    tags=["Module"],
+    description="Get module by id. If module not exist raises 400 error",
+)
+async def get_module(moduleID: ModuleID) -> Module:
+    module = modules_collection.find_one({"ID": moduleID})
+    if module is None:
+        raise HTTPException(status_code=400, detail="Module not exist")
+    return module
+
+
+@app.patch(
+    "/module/{moduleID}",
+    tags=["module"],
+    description="Updates module properties with only provided fields. If field is not provided its value not updates. If module not exist raises 400 error",
+)
+async def patch_module(moduleID: ModuleID, updates: UpdateModule) -> None:
+    module = modules_collection.find_one_and_delete({"ID": moduleID})
+    if module is None:
+        raise HTTPException(status_code=400, detail="Module not exist")
+    module = module(**{**module, **updates.model_dump(exclude_none=True)})
+    modules_collection.insert_one(module.model_dump())
