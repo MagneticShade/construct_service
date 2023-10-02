@@ -1,7 +1,9 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.responses import FileResponse
 from pymongo import MongoClient
 from pydantic import BaseModel
 import uuid
+import os
 
 app = FastAPI()
 
@@ -36,7 +38,7 @@ class Project(NewProject):
     tags=["User"],
     description="Return user by its telegramID. If user not exist raises 400 error",
 )
-def get_user(telegramID: TelegramID) -> User:
+async def get_user(telegramID: TelegramID) -> User:
     user = users_collection.find_one({"telegramID": telegramID})
     if user is None:
         raise HTTPException(status_code=400, detail="User not exist")
@@ -48,7 +50,7 @@ def get_user(telegramID: TelegramID) -> User:
     tags=["User"],
     description="Creates new user by telegramID. If user exists return 400 error",
 )
-def post_user(telegramID: TelegramID) -> None:
+async def post_user(telegramID: TelegramID) -> None:
     if users_collection.find_one({"telegramID": telegramID}) is not None:
         raise HTTPException(status_code=400, detail="User exist")
     user = User(telegramID=telegramID, projects=[])
@@ -56,7 +58,7 @@ def post_user(telegramID: TelegramID) -> None:
 
 
 @app.put("/user/{telegramID}", tags=["User"], description="Not implemented yet")
-def put_user(telegramID: TelegramID):
+async def put_user(telegramID: TelegramID):
     raise NotImplementedError
 
 
@@ -65,7 +67,7 @@ def put_user(telegramID: TelegramID):
     tags=["User", "Project"],
     description="Creates new project for user by telegramID. If user not exist raise 400 error.",
 )
-def post_user_project(telegramID: TelegramID, project: NewProject) -> ProjectID:
+async def post_user_project(telegramID: TelegramID, project: NewProject) -> ProjectID:
     user = User(**users_collection.find_one_and_delete({"telegramID": telegramID}))
     if user is None:
         raise HTTPException(status_code=400, detail="User not exist")
@@ -78,8 +80,37 @@ def post_user_project(telegramID: TelegramID, project: NewProject) -> ProjectID:
 
 
 @app.get("/project/{projectID}", tags=["Project"], description="")
-def get_project(proejctID: ProjectID) -> Project:
-    project = projects_collection.find_one({"ID": proejctID})
+async def get_project(projectID: ProjectID) -> Project:
+    project = projects_collection.find_one({"ID": projectID})
     if project is None:
         raise HTTPException(status_code=400, detail="Project not exist")
     return project
+
+
+@app.post(
+    "/project/{projectID}/logo",
+    tags=["Project"],
+    description="Replace old logo with new if exist",
+)
+async def post_project_logo(projectID: ProjectID, file: UploadFile = File()) -> None:
+    project = projects_collection.find_one({"ID": projectID})
+    if project is None:
+        raise HTTPException(status_code=400, detail="Project not exist")
+    file.filename = f"{projectID}"
+    contents = await file.read()
+    with open(f"app/logos/{file.filename}", "wb") as f:
+        f.write(contents)
+
+
+@app.get(
+    "/project/{projectID}/logo",
+    tags=["Project"],
+    description="Return logo for project. If project not exist raises 400 error. If logo not exist raises 404 error",
+)
+async def get_project_logo(projectID: ProjectID) -> FileResponse:
+    if projects_collection.find_one({"ID": projectID}) is None:
+        raise HTTPException(status_code=400, detail="Project not exist")
+    path = f"app/logos/{projectID}"
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="Logo not exist")
+    return FileResponse(path, media_type="image/png")
