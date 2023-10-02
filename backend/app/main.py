@@ -57,6 +57,13 @@ class Template(NewTemplate):
     modules: list[ModuleID]
 
 
+class UpdateTemplate(BaseModel):
+    name: Optional[str] = None
+    background_color: Optional[str] = None
+    text_color: Optional[str] = None
+    text_align: Optional[str] = None
+
+
 @app.get(
     "/user/{telegramID}",
     tags=["User"],
@@ -178,7 +185,20 @@ async def post_project_template(
     description="Get template by id. If template not exist raises 400 error",
 )
 async def get_template(templateID: TemplateID) -> Template:
-    template = templates_collection.find_one_and_delete({"ID": templateID})
+    template = templates_collection.find_one({"ID": templateID})
     if template is None:
         raise HTTPException(status_code=400, detail="Template not exist")
     return template
+
+
+@app.patch(
+    "/template/{templateID}",
+    tags=["Template"],
+    description="Updates template properties with only provided fields. If field is not provided its value not updates. If template not exist raises 400 error",
+)
+async def patch_template(templateID: TemplateID, updates: UpdateTemplate) -> None:
+    template = templates_collection.find_one_and_delete({"ID": templateID})
+    if template is None:
+        raise HTTPException(status_code=400, detail="Template not exist")
+    template = Template(**{**template, **updates.model_dump(exclude_none=True)})
+    templates_collection.insert_one(template.model_dump())
