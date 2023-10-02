@@ -37,6 +37,7 @@ class NewProject(BaseModel):
 class Project(NewProject):
     ID: ProjectID
     templates: list[TemplateID]
+    owner: TelegramID
 
 
 class UpdateProject(BaseModel):
@@ -56,6 +57,7 @@ class NewTemplate(BaseModel):
 class Template(NewTemplate):
     ID: TemplateID
     modules: list[ModuleID]
+    project: ProjectID
 
 
 class UpdateTemplate(BaseModel):
@@ -75,6 +77,7 @@ class NewModule(BaseModel):
 
 class Module(NewModule):
     ID: ModuleID
+    template: TemplateID
 
 
 class UpdateModule(BaseModel):
@@ -119,7 +122,9 @@ async def post_user_project(telegramID: TelegramID, project: NewProject) -> Proj
     if user is None:
         raise HTTPException(status_code=400, detail="User not exist")
     projectID = str(uuid.uuid4())
-    project = Project(**project.model_dump(), ID=projectID, templates=[])
+    project = Project(
+        **project.model_dump(), ID=projectID, templates=[], owner=telegramID
+    )
     user.projects.append(projectID)
     users_collection.insert_one(user.model_dump())
     projects_collection.insert_one(project.model_dump())
@@ -161,6 +166,11 @@ async def delete_project(projectID: ProjectID) -> None:
     if project is None:
         raise HTTPException(status_code=400, detail="Project not exist")
     project = Project(**project)
+    user = users_collection.find_one_and_delete({"telegramID": project.owner})
+    if user is not None:
+        user = User(**user)
+        user.projects.remove(project.ID)
+        users_collection.insert_one(user.model_dump())
     for templateID in project.templates:
         template = templates_collection.find_one_and_delete({"ID": templateID})
         template = Template(**template)
@@ -210,7 +220,9 @@ async def post_project_template(
         raise HTTPException(status_code=400, detail="Project not exist")
     project = Project(**project)
     templateID = str(uuid.uuid4())
-    template = Template(**template.model_dump(), ID=templateID, modules=[])
+    template = Template(
+        **template.model_dump(), ID=templateID, modules=[], project=projectID
+    )
     project.templates.append(templateID)
     projects_collection.insert_one(project.model_dump())
     templates_collection.insert_one(template.model_dump())
@@ -252,6 +264,11 @@ async def delete_template(templateID: TemplateID) -> None:
     if template is None:
         raise HTTPException(status_code=400, detail="Template not exist")
     template = Template(**template)
+    project = projects_collection.find_one_and_delete({"ID": template.project})
+    if project is not None:
+        project = Project(**project)
+        project.templates.remove(template.ID)
+        projects_collection.insert_one(project.model_dump())
     for moduleID in template.modules:
         modules_collection.delete_one({"ID": moduleID})
 
@@ -267,7 +284,7 @@ async def post_template_module(templateID: TemplateID, module: NewModule) -> Mod
         raise HTTPException(status_code=400, detail="Template not exist")
     template = Template(**template.model_dump())
     moduleID = str(uuid.uuid4())
-    module = Module(**module.model_dump(), ID=moduleID)
+    module = Module(**module.model_dump(), ID=moduleID, template=templateID)
     template.modules.append(moduleID)
     templates_collection.insert_one(template.model_dump())
     modules_collection.insert_one(module.model_dump())
@@ -308,3 +325,9 @@ async def delete_module(moduleID: ModuleID) -> None:
     module = modules_collection.find_one_and_delete({"ID": moduleID})
     if module is None:
         raise HTTPException(status_code=400, detail="Module not exist")
+    module = Module(**module)
+    template = templates_collection.find_one_and_delete({"ID": module.template})
+    if template is not None:
+        template = Template(**template)
+        template.modules.remove(module.ID)
+        templates_collection.insert_one(template.model_dump())
