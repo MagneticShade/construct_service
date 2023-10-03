@@ -30,7 +30,15 @@ TemplateID = str
 ModuleID = str
 
 
-class User(BaseModel):
+class NewUser(BaseModel):
+    telegramID: TelegramID
+    phone_number: str
+    birthday: str
+    first_name: str
+    last_name: str
+
+
+class User(NewUser):
     telegramID: TelegramID
     projects: list[ProjectID]
 
@@ -113,11 +121,40 @@ async def get_user(telegramID: TelegramID) -> User:
     tags=["User"],
     description="Creates new user by telegramID. If user exists return 400 error",
 )
-async def post_user(telegramID: TelegramID) -> None:
-    if users_collection.find_one({"telegramID": telegramID}) is not None:
+async def post_user(user: NewUser) -> None:
+    if users_collection.find_one({"telegramID": user.telegramID}) is not None:
         raise HTTPException(status_code=400, detail="User exist")
-    user = User(telegramID=telegramID, projects=[])
+    user = User(**user.model_dump(), projects=[])
     users_collection.insert_one(user.model_dump())
+
+
+@app.post(
+    "/user/{telegramID}/image",
+    tags=["User"],
+    description="Replace old user's image with new if exist. If user not exist raises 400 error",
+)
+async def post_user_image(telegramID: TelegramID, file: UploadFile = File()) -> None:
+    user = users_collection.find_one({"telegramID": telegramID})
+    if user is None:
+        raise HTTPException(status_code=400, detail="User not exist")
+    file.filename = f"{telegramID}"
+    contents = await file.read()
+    with open(f"app/images/{file.filename}", "wb") as f:
+        f.write(contents)
+
+
+@app.get(
+    "/user/{telegramID}/image",
+    tags=["User"],
+    description="Return user's image. If user not exist raises 400 error. If logo not exist raises 404 error",
+)
+async def get_user_image(telegramID: TelegramID) -> FileResponse:
+    if users_collection.find_one({"telegramID": telegramID}) is None:
+        raise HTTPException(status_code=400, detail="User not exist")
+    path = f"app/images/{telegramID}"
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="User's image not exist")
+    return FileResponse(path, media_type="image/png")
 
 
 @app.post(
@@ -189,7 +226,7 @@ async def delete_project(projectID: ProjectID) -> None:
 @app.post(
     "/project/{projectID}/logo",
     tags=["Project"],
-    description="Replace old logo with new if exist",
+    description="Replace old logo with new if exist. If project not exist raises 400 error",
 )
 async def post_project_logo(projectID: ProjectID, file: UploadFile = File()) -> None:
     project = projects_collection.find_one({"ID": projectID})
@@ -197,7 +234,7 @@ async def post_project_logo(projectID: ProjectID, file: UploadFile = File()) -> 
         raise HTTPException(status_code=400, detail="Project not exist")
     file.filename = f"{projectID}"
     contents = await file.read()
-    with open(f"app/logos/{file.filename}", "wb") as f:
+    with open(f"app/images/{file.filename}", "wb") as f:
         f.write(contents)
 
 
@@ -209,7 +246,7 @@ async def post_project_logo(projectID: ProjectID, file: UploadFile = File()) -> 
 async def get_project_logo(projectID: ProjectID) -> FileResponse:
     if projects_collection.find_one({"ID": projectID}) is None:
         raise HTTPException(status_code=400, detail="Project not exist")
-    path = f"app/logos/{projectID}"
+    path = f"app/images/{projectID}"
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Logo not exist")
     return FileResponse(path, media_type="image/png")

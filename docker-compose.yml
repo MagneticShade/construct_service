@@ -6,7 +6,7 @@ services:
       - "8000:8000"
     build: ./backend
     volumes:
-      - backend_logos:/code/app/logos
+      - backend_logos:/code/app/images
   
   mongo_backend:
     image: mongo
