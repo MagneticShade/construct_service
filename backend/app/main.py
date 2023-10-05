@@ -1,7 +1,6 @@
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pymongo import MongoClient
 import uuid
 import os
 from app.models import (
@@ -22,6 +21,12 @@ from app.models import (
     UpdateProject,
     UpdateUser,
 )
+from app.database import (
+    users_collection,
+    modules_collection,
+    projects_collection,
+    templates_collection,
+)
 
 app = FastAPI()
 app.add_middleware(
@@ -31,13 +36,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-mongoClient = MongoClient(host="mongo_backend", port=27017)
-database = mongoClient.get_database("backend")
-users_collection = database.get_collection("users")
-projects_collection = database.get_collection("projects")
-templates_collection = database.get_collection("templates")
-modules_collection = database.get_collection("modules")
 
 
 @app.get(
