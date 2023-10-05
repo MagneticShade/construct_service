@@ -78,9 +78,11 @@ async def patch_user(telegramID: TelegramID, updates: UpdateUser) -> None:
 @app.post(
     "/user/{telegramID}/image",
     tags=["User"],
-    description="Replace old user's image with new if exist. If user not exist raises 400 error",
+    description="Replace old user's image with new if exist. If image is not svg raises 400 error. If user not exist raises 400 error",
 )
 async def post_user_image(telegramID: TelegramID, file: UploadFile = File()) -> None:
+    if file.content_type != "image/svg+xml":
+        raise HTTPException(status_code=400, detail="Image must be in svg format")
     user = users_collection.find_one({"telegramID": telegramID})
     if user is None:
         raise HTTPException(status_code=400, detail="User not exist")
@@ -173,9 +175,11 @@ async def delete_project(projectID: ProjectID) -> None:
 @app.post(
     "/project/{projectID}/logo",
     tags=["Project"],
-    description="Replace old logo with new if exist. If project not exist raises 400 error",
+    description="Replace old logo with new if exist. If image is not svg raises 400 error. If project not exist raises 400 error",
 )
 async def post_project_logo(projectID: ProjectID, file: UploadFile = File()) -> None:
+    if file.content_type != "image/svg+xml":
+        raise HTTPException(status_code=400, detail="Image must be in svg format")
     project = projects_collection.find_one({"ID": projectID})
     if project is None:
         raise HTTPException(status_code=400, detail="Project not exist")
