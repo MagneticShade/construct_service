@@ -7,3 +7,4 @@ class UpdateTemplate(BaseModel):
     background_color: Optional[str] = None
     text_color: Optional[str] = None
     text_align: Optional[str] = None
+    scheme: Optional[str] = None

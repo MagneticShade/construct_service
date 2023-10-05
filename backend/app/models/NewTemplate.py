@@ -6,3 +6,4 @@ class NewTemplate(BaseModel):
     background_color: str
     text_color: str
     text_align: str
+    scheme: str
