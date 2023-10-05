@@ -101,7 +101,7 @@ async def get_user_image(telegramID: TelegramID) -> FileResponse:
     path = f"app/images/{telegramID}"
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="User's image not exist")
-    return FileResponse(path, media_type="image/png")
+    return FileResponse(path, media_type="image/svg+xml")
 
 
 @app.post(
@@ -196,7 +196,7 @@ async def get_project_logo(projectID: ProjectID) -> FileResponse:
     path = f"app/images/{projectID}"
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Logo not exist")
-    return FileResponse(path, media_type="image/png")
+    return FileResponse(path, media_type="image/svg+xml")
 
 
 @app.post(
