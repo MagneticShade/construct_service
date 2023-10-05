@@ -1,11 +1,27 @@
-from typing import Optional
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
-from pydantic import BaseModel
 import uuid
 import os
+from app.models import (
+    TelegramID,
+    ModuleID,
+    ProjectID,
+    TemplateID,
+    NewModule,
+    NewTemplate,
+    NewProject,
+    NewUser,
+    Module,
+    Template,
+    Project,
+    User,
+    UpdateModule,
+    UpdateTemplate,
+    UpdateProject,
+    UpdateUser,
+)
 
 app = FastAPI()
 app.add_middleware(
@@ -22,93 +38,6 @@ users_collection = database.get_collection("users")
 projects_collection = database.get_collection("projects")
 templates_collection = database.get_collection("templates")
 modules_collection = database.get_collection("modules")
-
-
-TelegramID = str
-ProjectID = str
-TemplateID = str
-ModuleID = str
-
-
-class NewUser(BaseModel):
-    telegramID: TelegramID
-    phone_number: str
-    birthday: str
-    first_name: str
-    last_name: str
-
-
-class UpdateUser(BaseModel):
-    phone_number: Optional[str] = None
-    birthday: Optional[str] = None
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-
-
-class User(NewUser):
-    telegramID: TelegramID
-    projects: list[ProjectID]
-
-
-class NewProject(BaseModel):
-    title: str
-    slogan: str
-    description: str
-    tags: list[str]
-
-
-class Project(NewProject):
-    ID: ProjectID
-    templates: list[TemplateID]
-    owner: TelegramID
-
-
-class UpdateProject(BaseModel):
-    title: Optional[str] = None
-    slogan: Optional[str] = None
-    description: Optional[str] = None
-    tags: Optional[list[str]] = None
-
-
-class NewTemplate(BaseModel):
-    name: str
-    background_color: str
-    text_color: str
-    text_align: str
-
-
-class Template(NewTemplate):
-    ID: TemplateID
-    modules: list[ModuleID]
-    project: ProjectID
-
-
-class UpdateTemplate(BaseModel):
-    name: Optional[str] = None
-    background_color: Optional[str] = None
-    text_color: Optional[str] = None
-    text_align: Optional[str] = None
-
-
-class NewModule(BaseModel):
-    background_color: str
-    header_text: str
-    subheader_text: str
-    text_align: str
-    text_color: str
-
-
-class Module(NewModule):
-    ID: ModuleID
-    template: TemplateID
-
-
-class UpdateModule(BaseModel):
-    background_color: Optional[str] = None
-    header_text: Optional[str] = None
-    subheader_text: Optional[str] = None
-    text_align: Optional[str] = None
-    text_color: Optional[str] = None
 
 
 @app.get(
@@ -128,10 +57,10 @@ async def get_user(telegramID: TelegramID) -> User:
     tags=["User"],
     description="Creates new user by telegramID. If user exists return 400 error",
 )
-async def post_user(user: NewUser) -> None:
-    if users_collection.find_one({"telegramID": user.telegramID}) is not None:
+async def post_user(telegramID: TelegramID, user: NewUser) -> None:
+    if users_collection.find_one({"telegramID": telegramID}) is not None:
         raise HTTPException(status_code=400, detail="User exist")
-    user = User(**user.model_dump(), projects=[])
+    user = User(**user.model_dump(), projects=[], telegramID=telegramID)
     users_collection.insert_one(user.model_dump())
 
 
