@@ -38,6 +38,13 @@ class NewUser(BaseModel):
     last_name: str
 
 
+class UpdateUser(BaseModel):
+    phone_number: Optional[str] = None
+    birthday: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+
+
 class User(NewUser):
     telegramID: TelegramID
     projects: list[ProjectID]
@@ -125,6 +132,19 @@ async def post_user(user: NewUser) -> None:
     if users_collection.find_one({"telegramID": user.telegramID}) is not None:
         raise HTTPException(status_code=400, detail="User exist")
     user = User(**user.model_dump(), projects=[])
+    users_collection.insert_one(user.model_dump())
+
+
+@app.patch(
+    "/user/{telegramID}",
+    tags=["User"],
+    description="Updates user's properties with only provided fields. If field is not provided its value not updates. If user not exist raises 400 error",
+)
+async def patch_user(telegramID: TelegramID, updates: UpdateUser) -> None:
+    user = users_collection.find_one_and_delete({"telegramID": telegramID})
+    if user is None:
+        raise HTTPException(status_code=400, detail="User not exist")
+    user = User(**{**user, **updates.model_dump(exclude_none=True)})
     users_collection.insert_one(user.model_dump())
 
 
