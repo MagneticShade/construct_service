@@ -2,6 +2,7 @@ import os
 import uuid
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
+from pymongo.results import UpdateResult
 from app.database import users_collection, projects_collection
 from app.models import (
     TelegramID,
@@ -46,11 +47,11 @@ async def post_user(telegramID: TelegramID, user: NewUser) -> None:
     description="Updates user's properties with only provided fields. If field is not provided its value not updates. If user not exist raises 400 error",
 )
 async def patch_user(telegramID: TelegramID, updates: UpdateUser) -> None:
-    user = users_collection.find_one_and_delete({"telegramID": telegramID})
-    if user is None:
+    result: UpdateResult = users_collection.update_one(
+        {"telegramID": telegramID}, {"$set": updates.model_dump(exclude_none=True)}
+    )
+    if result.matched_count < 1:
         raise HTTPException(status_code=400, detail="User not exist")
-    user = User(**{**user, **updates.model_dump(exclude_none=True)})
-    users_collection.insert_one(user.model_dump())
 
 
 @router.post(
@@ -90,14 +91,14 @@ async def get_user_image(telegramID: TelegramID) -> FileResponse:
     description="Creates new project for user by telegramID. If user not exist raise 400 error.",
 )
 async def post_user_project(telegramID: TelegramID, project: NewProject) -> ProjectID:
-    user = User(**users_collection.find_one_and_delete({"telegramID": telegramID}))
-    if user is None:
-        raise HTTPException(status_code=400, detail="User not exist")
     projectID = str(uuid.uuid4())
+    reuslt: UpdateResult = users_collection.update_one(
+        {"telegramID": telegramID}, {"$push": {"projects": projectID}}
+    )
+    if reuslt.matched_count < 1:
+        raise HTTPException(status_code=400, detail="User not exist")
     project = Project(
         **project.model_dump(), ID=projectID, templates=[], owner=telegramID
     )
-    user.projects.append(projectID)
-    users_collection.insert_one(user.model_dump())
     projects_collection.insert_one(project.model_dump())
     return projectID

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from pymongo.results import UpdateResult
 from app.models import ModuleID, Module, UpdateModule, Template
 from app.database import modules_collection, templates_collection
 
@@ -24,11 +25,11 @@ async def get_module(moduleID: ModuleID) -> Module:
     description="Updates module properties with only provided fields. If field is not provided its value not updates. If module not exist raises 400 error",
 )
 async def patch_module(moduleID: ModuleID, updates: UpdateModule) -> None:
-    module = modules_collection.find_one_and_delete({"ID": moduleID})
-    if module is None:
+    result: UpdateResult = modules_collection.update_one(
+        {"ID": moduleID}, {"$set": updates.model_dump(exclude_none=True)}
+    )
+    if result.matched_count < 1:
         raise HTTPException(status_code=400, detail="Module not exist")
-    module = module(**{**module, **updates.model_dump(exclude_none=True)})
-    modules_collection.insert_one(module.model_dump())
 
 
 @router.delete(

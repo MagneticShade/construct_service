@@ -2,6 +2,7 @@ import os
 import uuid
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
+from pymongo.results import UpdateResult
 from app.models import (
     TemplateID,
     ModuleID,
@@ -35,12 +36,23 @@ async def get_template(templateID: TemplateID) -> Template:
     description="Updates template properties with only provided fields. If field is not provided its value not updates. If template not exist raises 400 error",
 )
 async def patch_template(templateID: TemplateID, updates: UpdateTemplate) -> None:
-    template = templates_collection.find_one_and_delete({"ID": templateID})
-    if template is None:
+    procedure_background_updates = {}
+    if updates.procedure_background:
+        for key, value in updates.procedure_background.model_dump(
+            exclude_none=True
+        ).items():
+            procedure_background_updates[f"procedure_background.{key}"] = value
+    result: UpdateResult = templates_collection.update_one(
+        {"ID": templateID},
+        {
+            "$set": updates.model_dump(
+                exclude_none=True, exclude={"procedure_background"}
+            ),
+            "$set": procedure_background_updates,
+        },
+    )
+    if result.matched_count < 1:
         raise HTTPException(status_code=400, detail="Template not exist")
-    template = Template(**template).model_dump()
-    template = deep_update(template, updates.model_dump(exclude_none=True))
-    templates_collection.insert_one(template)
 
 
 @router.delete(
@@ -68,14 +80,13 @@ async def delete_template(templateID: TemplateID) -> None:
     description="Creates new module in template. If template not exist raises 400 error",
 )
 async def post_template_module(templateID: TemplateID, module: NewModule) -> ModuleID:
-    template = templates_collection.find_one_and_delete({"ID": templateID})
-    if template is None:
-        raise HTTPException(status_code=400, detail="Template not exist")
-    template = Template(**template.model_dump())
     moduleID = str(uuid.uuid4())
+    result: UpdateResult = templates_collection.update_one(
+        {"ID": templateID}, {"$push": {"modules": moduleID}}
+    )
+    if result.matched_count < 1:
+        raise HTTPException(status_code=400, detail="Template not exist")
     module = Module(**module.model_dump(), ID=moduleID, template=templateID)
-    template.modules.append(moduleID)
-    templates_collection.insert_one(template.model_dump())
     modules_collection.insert_one(module.model_dump())
     return moduleID
 

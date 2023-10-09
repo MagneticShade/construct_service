@@ -2,6 +2,7 @@ import os
 import uuid
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
+from pymongo.results import UpdateResult
 from app.database import (
     projects_collection,
     users_collection,
@@ -39,11 +40,11 @@ async def get_project(projectID: ProjectID) -> Project:
     description="Updates project properties with only provided fields. If field is not provided its value not updates. If project not exist raises 400 error",
 )
 async def patch_project(projectID: ProjectID, updates: UpdateProject) -> None:
-    project = projects_collection.find_one_and_delete({"ID": projectID})
-    if project is None:
+    result: UpdateResult = projects_collection.update_one(
+        {"ID": projectID}, {"$set": updates.model_dump(exclude_none=True)}
+    )
+    if result.matched_count < 1:
         raise HTTPException(status_code=400, detail="Project not exist")
-    project = Project(**{**project, **updates.model_dump(exclude_none=True)})
-    projects_collection.insert_one(project.model_dump())
 
 
 @router.delete(
@@ -107,15 +108,14 @@ async def get_project_logo(projectID: ProjectID) -> FileResponse:
 async def post_project_template(
     projectID: ProjectID, template: NewTemplate
 ) -> TemplateID:
-    project = projects_collection.find_one_and_delete({"ID": projectID})
-    if project is None:
-        raise HTTPException(status_code=400, detail="Project not exist")
-    project = Project(**project)
     templateID = str(uuid.uuid4())
+    result: UpdateResult = projects_collection.update_one(
+        {"ID": projectID}, {"$push": {"templates": templateID}}
+    )
+    if result.matched_count < 1:
+        raise HTTPException(status_code=400, detail="Project not exist")
     template = Template(
         **template.model_dump(), ID=templateID, modules=[], project=projectID
     )
-    project.templates.append(templateID)
-    projects_collection.insert_one(project.model_dump())
     templates_collection.insert_one(template.model_dump())
     return templateID
