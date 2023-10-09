@@ -30,7 +30,7 @@ interface IpostModule {
     text_color: string;
 }
 export const axiosInstance = axios.create({
-    baseURL: "https://194.26.138.180:8080",
+    baseURL: "https://practice-test.ru:8080",
 });
 //bullshit
 
