@@ -45,10 +45,13 @@ async def patch_template(templateID: TemplateID, updates: UpdateTemplate) -> Non
     result: UpdateResult = templates_collection.update_one(
         {"ID": templateID},
         {
-            "$set": updates.model_dump(
-                exclude_none=True, exclude={"procedure_background"}
-            ),
-            "$set": procedure_background_updates,
+            "$set": {
+                **updates.model_dump(
+                    exclude_none=True,
+                    exclude={"procedure_background"},
+                ),
+                **procedure_background_updates,
+            },
         },
     )
     if result.matched_count < 1:
