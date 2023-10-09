@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Filter } from "../../shared/Filter";
 import FormBlock from "../Edit/FormBlock";
 import Equalizer from "@/src/shared/Equalizer";
@@ -7,7 +7,7 @@ import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { useAppDispatch } from "@/src/hooks/useAppDispatch";
 import { addOpacity, setColor } from "@/src/store/slice/ColorSlice";
 import Procedur from "./Procedur";
-import { axiosInstance } from "@/src/axios";
+import { patchTemplateById, postTemplateImg } from "@/src/axios";
 import { useParams } from "react-router-dom";
 import { SubmitButton } from "@/src/shared/Buttons/SubmitButton";
 
@@ -17,7 +17,7 @@ const PageBackgroundEdit = () => {
     const opacity = useAppSelector((state) => state.color.opacity);
     const [checked, setChecked] = useState<boolean>(false);
     const [value, setValue] = useState<number>(100);
-
+    const { id } = useParams();
     const dispatch = useAppDispatch();
     //Сохраняет новое значение опасити в формате hex в состояние(для слайдера в палетке)
     const handleSliderChange = (_: Event, newValue: number | number[]) => {
@@ -49,35 +49,59 @@ const PageBackgroundEdit = () => {
         blur: 20,
         vectorX: 0,
         vectorY: 5,
+        color: "#fff",
+        background: "#000",
     });
-    console.log(color);
+    const procedur = useAppSelector((state) => state.protcedur);
 
-    const [template, setTemplate] = useState([]);
-    useEffect(() => {
-        axiosInstance
-            .get("/api/templates")
-            .then((data) => setTemplate(data.data));
-    }, []);
-
-    console.log(template[0]);
-    const { id } = useParams();
-    console.log(id);
-    const addColor = () => {
-        if (template[0]) {
-            axiosInstance.put(`/api/templates/update${id}`, {
-                background: color != null ? color : "#333",
+    const updateTemplateProced = () => {
+        if (id) {
+            patchTemplateById(id, {
+                background_type: "PROCEDURE",
+                procedure_background: {
+                    background_color: procedur.background,
+                    color: procedur.color,
+                    count: procedur.count,
+                    blur: procedur.blur,
+                    speed: procedur.speed,
+                },
             });
         }
     };
-    useEffect(() => {
-        addColor();
-    }, [color]);
     const updateTemplate = () => {
-        debugger;
-        axiosInstance.patch(`api/templates/partial-update/${id}`, {
-            background: color,
-        });
+        if (id) {
+            patchTemplateById(id, {
+                background_color: color,
+                background_type: "COLOR",
+            });
+        }
     };
+    const [img, setImg] = useState<any>(null);
+    const formData = new FormData();
+    formData.append("file", img);
+    const updateTemplateImg = () => {
+        if (id && formData) {
+            postTemplateImg(id, formData);
+        }
+    };
+    // console.log(template[0]);
+    // const { id } = useParams();
+    // const addColor = () => {
+    //     if (template[0]) {
+    //         axiosInstance.put(`/api/templates/update${id}`, {
+    //             background: color != null ? color : "#333",
+    //         });
+    //     }
+    // };
+    // useEffect(() => {
+    //     addColor();
+    // }, [color]);
+    // const updateTemplate = () => {
+    //     debugger;
+    //     axiosInstance.patch(`api/templates/partial-update/${id}`, {
+    //         background: color,
+    //     });
+    // };
     return (
         <div className=" overflow-auto h-full">
             <div className="container pt-10">
@@ -107,7 +131,6 @@ const PageBackgroundEdit = () => {
             )}
             {index === 2 && (
                 <>
-                    {console.log(color)}
                     <div
                         style={{
                             background: index === 2 ? color + opacity : "",
@@ -127,11 +150,52 @@ const PageBackgroundEdit = () => {
                     />
                 </>
             )}
-            <SubmitButton
-                buttonActive={false}
-                title="Отправить"
-                handleClick={updateTemplate}
-            />
+            {index === 2 ? (
+                <SubmitButton
+                    buttonActive={false}
+                    title="Отправить"
+                    handleClick={updateTemplate}
+                />
+            ) : (
+                <SubmitButton
+                    buttonActive={false}
+                    title="Отправить"
+                    handleClick={updateTemplateProced}
+                />
+            )}
+            {index === 1 && (
+                <>
+                    <label className="flex items-center px-4 py-2 bg-black text-white rounded">
+                        <svg
+                            className="w-6 h-6 mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                            ></path>
+                        </svg>
+                        Выберите файл
+                        <input
+                            type="file"
+                            className="hidden"
+                            onChange={(e) =>
+                                e.target.files && setImg(e.target.files[0])
+                            }
+                        />
+                    </label>
+                    <SubmitButton
+                        buttonActive={false}
+                        title="Отправить"
+                        handleClick={updateTemplateImg}
+                    />
+                </>
+            )}
         </div>
     );
 };

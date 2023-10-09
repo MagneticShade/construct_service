@@ -1,47 +1,68 @@
-import { axiosInstance } from "@/src/axios";
+import {  patchTemplateById } from "@/src/axios";
 import Alignment from "../Alignment";
 import { CheckedButton } from "@/src/shared/Buttons/CheckedButton";
 import _ from "lodash";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SubmitButton } from "@/src/shared/Buttons/SubmitButton";
-import { useQuery } from "react-query";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import Success from "@/src/components/Success";
 import Loader from "@/src/shared/Loader";
+import { useAppDispatch } from "@/src/hooks/useAppDispatch";
+import { getProjectWithTemplatesByIdThunk } from "@/src/store/slice/EditSlice";
 
 const FormParametrs = () => {
-    const [align, setAlign] = useState("right");
+    const [align, setAlign] = useState("left");
     const [value, setValue] = useState("");
-    const [textColor, setTextColor] = useState("blue");
+    const [textColor, setTextColor] = useState("#0000FF");
     const [visible, setVisible] = useState<boolean>(false);
     const { id } = useParams();
+    const dispatch = useAppDispatch();
     const activeIndex = useAppSelector((state) => state.formIndex.index);
-    const updateTemplate = () => {
-        axiosInstance
-            .put(`/api/templates/update${id}`, {
+    const { templates, isLoading} = useAppSelector(
+        (state) => state.edit
+    );
+    const updateTemplate = async () => {
+        if (id) {
+            await patchTemplateById(id, {
                 name: value,
-                textAlign: align,
-                color: textColor,
-            })
-            .then(() => setVisible(true));
+                text_align: align,
+                text_color: textColor,
+            });
+            setVisible(true);
+        }
     };
     if (visible) {
         setTimeout(() => {
             setVisible(false);
         }, 2500);
     }
-    const { isLoading } = useQuery("repoData", () => {
-        axiosInstance.get("api/templates").then((res) => {
-            console.log(res);
+    async function get() {
+        const getLocal = localStorage.getItem("projectId");
+        if (getLocal) {
+            await dispatch(
+                getProjectWithTemplatesByIdThunk({
+                    projectId: JSON.parse(getLocal),
+                })
+            );
+            
+        }
+    }
+    function setFields() {
+        if(templates.length){
+        setAlign(templates[activeIndex].text_align);
+        setValue(templates[activeIndex].name);
 
-            setAlign(res.data[activeIndex].textAlign);
-            setValue(res.data[activeIndex].name);
-            setTextColor(res.data[activeIndex].color);
-        });
-    });
-    console.log(isLoading);
+        setTextColor(templates[activeIndex].text_color);
+    }
+    }
+    useEffect(() => {
+        get();
+    }, []);
 
+    useEffect(() => {
+        setFields()
+    }, [templates]);
     return (
         <>
             {visible && (
@@ -79,12 +100,12 @@ const FormParametrs = () => {
                     </div>
                     <div className="flex items-center justify-between pt-8">
                         <span className="font-medium text-[#B6B6B6] spacing leading-[143.4%] text-center text-[18px]">
-                            Цвет фона
+                            Цвет текста
                         </span>
 
                         <label
                             htmlFor=""
-                            className="w-[200px] h-[30px] bg-black rounded-[10px]"
+                            className="w-[200px] h-[30px] rounded-[10px] bg-black"
                             style={{
                                 background: textColor,
                             }}

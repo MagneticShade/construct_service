@@ -1,5 +1,7 @@
+import { useAppDispatch } from "@/src/hooks/useAppDispatch";
 import useCanvas from "@/src/hooks/useCanvas";
 import useRandomColor from "@/src/hooks/useRandomColor";
+import { setBackground } from "@/src/store/slice/ProcedurSlice";
 import { FC, ReactNode, useState } from "react";
 
 interface IProcedurProps {
@@ -22,6 +24,8 @@ const Procedur: FC<IProcedurProps> = ({ children, valueRange, blur, count, size 
         setCanvasBackground(useRandomColor());
         setCircleColor(useRandomColor());
     };
+    const dispatch = useAppDispatch()
+    dispatch(setBackground(canvasBackground));
     return (
         <div className="relative w-full h-[250px] flex justify-center items-center">
             {/* Сам канвас */}

@@ -29,22 +29,21 @@ const Modal: FC<IModalProps> = ({ children }) => {
         if (Math.abs(xDiff) > Math.abs(yDiff)) {
             if (xDiff > 0) {
                 closeModal();
-                console.log("right");
             } else {
-                console.log("left");
+
             }
         } else {
             if (yDiff > 0 && y < swipeThreshold) {
                 if (yDiff > swipeThreshold) {
                     // Пользователь свайпнул вверх в верхней части экрана
                     closeModal();
-                    console.log("Swiped up and closed");
+
                 }
             } else {
-                console.log("top");
+
             }
         }
-        console.log(yDiff);
+
 
         x = null;
         y = null;

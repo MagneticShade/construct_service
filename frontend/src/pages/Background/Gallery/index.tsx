@@ -37,11 +37,11 @@ const PageGallery = () => {
             </div>
 
             <div className="sticky bottom-[80px] flex flex-wrap justify-center gap-[9px]">
-                <Category handleMass={()=> {}} title="Текст" />
-                <Category handleMass={()=> {}} title="Фон" />
-                <Category handleMass={()=> {}} title="Соц. сети" />
-                <Category handleMass={()=> {}} title="Управление" />
-                <Category handleMass={()=> {}} title="Оформление" />
+                <Category handleMass={()=> {}} title="Текст"  mass={[]}/>
+                <Category handleMass={()=> {}} title="Фон"  mass={[]}/>
+                <Category handleMass={()=> {}} title="Соц. сети"  mass={[]}/>
+                <Category handleMass={()=> {}} title="Управление"  mass={[]}/>
+                <Category handleMass={()=> {}} title="Оформление" mass={[]} />
             </div>
 
             <Link to={"1"}>

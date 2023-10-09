@@ -1,6 +1,8 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, } from "react";
 import { ITwoBlockProps } from "./TwoBlockInterface";
-import { axiosInstance } from "@/src/axios";
+import { useAppDispatch } from "@/src/hooks/useAppDispatch";
+import { getTemplatesWithModulesByIdThunk } from "@/src/store/slice/EditSlice";
+import { useAppSelector } from "@/src/hooks/useAppSelector";
 
 enum TextAlign {
     Left = "left",
@@ -10,41 +12,17 @@ enum TextAlign {
 
 const TwoBlock: FC<ITwoBlockProps> = ({
     background,
-    module,
+    id,
     name,
     textAlign,
-    color
+    color,
 }) => {
-    console.log(color);
-    
-    const [modules, setModules] = useState<any>([]);
-    console.log(modules);
-    
-    function extractId(jsonString: string) {
-        const match = jsonString.match(/"(\$oid)":\s*"([^"]+)"/);
-        if (match) {
-            return match[2]; // Возвращаем значение ID (вторая группа регулярного выражения)
-        } else {
-            return null; // Возвращаем null, если ID не найден
-        }
-    }
+    const dispatch = useAppDispatch();
+    const modules = useAppSelector((state) => state.edit.modules);
     useEffect(() => {
-        const fetchData = async () => {
-          const moduleData = await Promise.all(
-            module.map(async (e: any) => {
-              const response = await axiosInstance.get(`/api/modules${extractId(e)}`);
-              return response.data;
-            })
-          );
-          
-          setModules(moduleData);
-        };
-      
-        fetchData();
-      }, []);
-      
-    console.log(modules);
-    
+        dispatch(getTemplatesWithModulesByIdThunk({ templateId: id }));
+    }, []);
+
     return (
         <>
             <div
@@ -55,27 +33,30 @@ const TwoBlock: FC<ITwoBlockProps> = ({
                 }}
                 className="pt-[160px] pb-[320px]  border-b border-b-black"
             >
-                <h2 className="font-[500] text-[58px] text-black mb-[58px]">
+                <h2
+                    className="font-[500] text-[58px] text-black mb-[58px]"
+                    style={{ color: color }}
+                >
                     {name}
                 </h2>
                 <div className="flex w-full justify-center gap-[58px] flex-wrap">
-                    {module.length &&
+                    {modules.length &&
                         modules.map((item: any, i: number) => {
                             return (
                                 <div
                                     key={i}
                                     style={{
-                                        background: item.background,
-                                        color: item.color,
-                                        textAlign: item.textAlign as TextAlign,
+                                        background: item.background_color,
+                                        color: item.text_color,
+                                        textAlign: item.text_align as TextAlign,
                                     }}
                                     className="w-[589px] h-[620px] p-20 duration-200 hover:shadow-my hover:-translate-y-2"
                                 >
                                     <h2 className="text-[58px] leading-[1] font-[700] w-full">
-                                        {item.header}
+                                        {item.header_text}
                                     </h2>
                                     <p className="opacity-80 font-[500] pt-5">
-                                        {item.subheader}
+                                        {item.subheader_text}
                                     </p>
                                 </div>
                             );

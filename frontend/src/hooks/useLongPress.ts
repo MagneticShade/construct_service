@@ -20,34 +20,33 @@ function useLongPress(func: any) {
     }
 
     function handleOnClick() {
-        console.log("handleOnClick");
         if (isLongPress.current) {
-            console.log("Is long press - not continuing.");
+
             return;
         }
         setAction("click");
     }
 
     function handleOnMouseDown(e: any) {
-        console.log("handleOnMouseDown");
+
         startPressTimer(e);
     }
 
     function handleOnMouseUp() {
-        console.log("handleOnMouseUp");
+
         if (timerRef.current) {
             clearTimeout(timerRef.current);
         }
     }
 
     function handleOnTouchStart(e: TouchEvent<HTMLElement>) {
-        console.log("handleOnTouchStart");
+
         startPressTimer(e);
     }
 
     function handleOnTouchEnd() {
         if (action === "longpress") return;
-        console.log("handleOnTouchEnd");
+
         if (timerRef.current) {
             clearTimeout(timerRef.current);
         }

@@ -1,40 +1,47 @@
 import { FC, useEffect, useState } from "react";
 import Alignment from "./Alignment";
-import { axiosInstance } from "@/src/axios";
+import { getModuleById, patchModuleById } from "@/src/axios";
 import { SubmitButton } from "@/src/shared/Buttons/SubmitButton";
-import { useQuery } from "react-query";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import Success from "@/src/components/Success";
 import Loader from "@/src/shared/Loader";
+import { useAppDispatch } from "@/src/hooks/useAppDispatch";
+import { getTemplatesWithModulesByIdThunk } from "@/src/store/slice/EditSlice";
+import { useParams } from "react-router-dom";
 
 const FormHeadersParametrs: FC = () => {
     const [value, setValue] = useState({ nameModule: "", descrModule: "" });
-    const [align, setAlign] = useState<string>("right");
+    const [align, setAlign] = useState<string>("left");
     const [textColor, setTextColor] = useState<string>("white");
     const [backgroundColor, setBackgroundColor] = useState<string>("black");
     const [activeModule, setActiveModule] = useState<number>(0);
     const [visible, setVisible] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const activeIndex = useAppSelector((state) => state.formIndex.index);
-    const { data = [] } = useQuery("repoData", () =>
-        axiosInstance.get("/api/templates").then((res) => res.data)
-    );
-    const moduleId = () => {
-        if (data[activeIndex]) {
-            return JSON.parse(data[activeIndex].modules[activeModule])._id.$oid;
+    const dispatch = useAppDispatch();
+    const { isLoading, modules } = useAppSelector((state) => state.edit);
+    const { id } = useParams();
+    async function get() {
+        const getLocal = localStorage.getItem("projectId");
+        if (getLocal) {
+            await dispatch(
+                getTemplatesWithModulesByIdThunk({
+                    templateId: id as string,
+                })
+            );
         }
-    };
-    const updateModule = () => {
-        axiosInstance
-            .put(`api/modules/update${moduleId()}`, {
-                background: backgroundColor,
-                header: value.nameModule,
-                subheader: value.descrModule,
-                textAlign: align,
-                order: "string",
-                color: textColor,
-            })
-            .then(() => setVisible(true));
+    }
+    useEffect(() => {
+        get();
+    }, []);
+
+    const updateModule = async () => {
+        await patchModuleById(modules[activeModule].ID, {
+            background_color: backgroundColor,
+            header_text: value.nameModule,
+            subheader_text: value.descrModule,
+            text_align: align,
+            text_color: textColor,
+        });
+        setVisible(true);
     };
     if (visible) {
         setTimeout(() => {
@@ -42,22 +49,21 @@ const FormHeadersParametrs: FC = () => {
         }, 2500);
     }
     const getModule = async () => {
-        if (data.length) {
-            await axiosInstance.get(`api/modules${moduleId()}`).then((res) => {
-                setBackgroundColor(res.data.background);
-                setAlign(res.data.textAlign);
-                setTextColor(res.data.color);
-                setValue({
-                    nameModule: res.data.header,
-                    descrModule: res.data.subheader,
-                });
-                setIsLoading(false);
+        if (modules.length) {
+            const data = await getModuleById(modules[activeModule].ID);
+            setBackgroundColor(data.background_color);
+            setAlign(data.text_align);
+            setTextColor(data.text_color);
+            setValue({
+                nameModule: data.header_text,
+                descrModule: data.subheader_text,
             });
         }
     };
     useEffect(() => {
-        getModule();
-    }, [data, activeModule]);
+        if(modules)  getModule();
+       
+    }, [modules, activeModule]);
 
     return (
         <>
@@ -76,26 +82,28 @@ const FormHeadersParametrs: FC = () => {
                             className={`w-full py-[60px] bg-bg bg-cover mt-1 left-0 absolute`}
                         >
                             <div className="flex gap-2 justify-center">
-                                {data.length &&
-                                    data[0].modules.map((_: any, i: number) => {
-                                        return (
-                                            <div
-                                                key={i}
-                                                onClick={() =>
-                                                    setActiveModule(i)
-                                                }
-                                                style={{
-                                                    width: `${100}px`,
-                                                    height: `${100}px`,
-                                                }}
-                                                className={`shadow-md bg-gradient-to-b shadow-[rgba(0,0,0,0.25)] from-[#9E9E9E] to-white ${
-                                                    activeModule == i
-                                                        ? "opacity-100"
-                                                        : "opacity-50"
-                                                }`}
-                                            ></div>
-                                        );
-                                    })}
+                                {modules.length &&
+                                    modules.map(
+                                        (_: any, i: number) => {
+                                            return (
+                                                <div
+                                                    key={i}
+                                                    onClick={() =>
+                                                        setActiveModule(i)
+                                                    }
+                                                    style={{
+                                                        width: `${100}px`,
+                                                        height: `${100}px`,
+                                                    }}
+                                                    className={`shadow-md bg-gradient-to-b shadow-[rgba(0,0,0,0.25)] from-[#9E9E9E] to-white ${
+                                                        activeModule == i
+                                                            ? "opacity-100"
+                                                            : "opacity-50"
+                                                    }`}
+                                                ></div>
+                                            );
+                                        }
+                                    )}
                             </div>
                         </div>
                     </div>

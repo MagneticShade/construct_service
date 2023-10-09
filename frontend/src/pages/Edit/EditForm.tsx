@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { Filter } from "../../shared/Filter";
@@ -7,11 +7,20 @@ import { Filter } from "../../shared/Filter";
 import { setActive } from "../../store/slice/ButtonSlice";
 
 import useDraggableBlock from "@/src/hooks/useDragble";
-import { axiosInstance, getTemplates } from "@/src/axios";
-import { setTemp } from "@/src/store/slice/EditSlice";
+import {
+    postModuleById,
+    postTemplateById,
+} from "@/src/axios";
+import {
+    getProjectWithTemplatesByIdThunk,
+} from "@/src/store/slice/EditSlice";
 import TwoBlockPreview from "@/src/shared/FormsPrev/TwoBlockPreview";
 
-const EditForm = () => {
+interface IeditForm {
+    projectId: string;
+}
+
+const EditForm: FC<IeditForm> = ({ projectId }) => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const isActive = useAppSelector((state) => state.isActive.valueModal);
     const dispatch = useAppDispatch();
@@ -62,48 +71,40 @@ const EditForm = () => {
         dropZoneId: "dropZone",
         onDragEnd: handleAdd,
     });
-
+    async function get() {
+        console.log(projectId);
+        
+        await dispatch(
+            getProjectWithTemplatesByIdThunk({ projectId: projectId })
+        );
+    }
     // const edit = useAppSelector((state) => state.edit);
-    let targetTemp = "";
     async function handleAdd() {
         position.x = 0;
         position.y = 0;
 
-        async function get() {
-            const res = await getTemplates();
-            dispatch(setTemp(await res));
-            return res;
-        }
-        await axiosInstance
-            .post(`/api/templates`, {
-                name: "troshkinBlock",
-                localId: "",
-                modules: [""],
-                order: "",
-                background: "#333",
-                textAlign: "",
-            })
-            .then(async ({ data }) => {
-                const res = await get();
-                targetTemp = await res.filter(
-                    (e: any) => e.local_id === data
-                )[0].id;
-            });
-        await axiosInstance.post(`/api/modules/add?templateId=${targetTemp}`, {
-            background: "#fff",
-            header: "",
-            subheader: "",
-            textAlign: "",
-            order: "",
-            color: "#abf",
+        
+        const targetTemp = await postTemplateById(projectId, {
+            name: "troshkinBlock",
+            background_color: "#333",
+            text_align: "",
+            text_color: "",
+            scheme: "",
+            background_type: "COLOR",
         });
-        await axiosInstance.post(`/api/modules/add?templateId=${targetTemp}`, {
-            background: "#fff",
-            header: "",
-            subheader: "",
-            textAlign: "",
-            order: "",
-            color: "#abf",
+        await postModuleById(targetTemp, {
+            background_color: "#fff",
+            header_text: "",
+            subheader_text: "",
+            text_align: "",
+            text_color: "#abf",
+        });
+        await postModuleById(targetTemp, {
+            background_color: "#fff",
+            header_text: "",
+            subheader_text: "",
+            text_align: "",
+            text_color: "#abf",
         });
         await get();
 
@@ -111,14 +112,15 @@ const EditForm = () => {
     }
 
     async function addTemplate() {
-        await axiosInstance.post(`/api/templates/`, {
+        await postTemplateById(projectId, {
             name: "string",
-            localId: "string",
-            modules: ["string"],
-            order: "string",
-            background: "string",
-            textAlign: "string",
+            background_color: "string",
+            text_color: "string",
+            text_align: "string",
+            scheme: "string",
+            background_type: "COLOR",
         });
+        await get();
     }
     return (
         <>

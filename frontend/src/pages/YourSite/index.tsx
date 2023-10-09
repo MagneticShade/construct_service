@@ -1,53 +1,38 @@
-import { axiosInstance, getTemplates } from "@/src/axios";
-
 import TwoBlock from "@/src/forms/Twoblock/TwoBlock";
-
-
-import { Template } from "@/src/store/slice/YourSiteSlice";
-import { useEffect, useState } from "react";
-import Header from "./Header";
+import { useAppDispatch } from "@/src/hooks/useAppDispatch";
+import { useAppSelector } from "@/src/hooks/useAppSelector";
+import { getProjectWithTemplatesByIdThunk } from "@/src/store/slice/EditSlice";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const YourSite = () => {
-   
-    axiosInstance.get(`/api/users`).then(() => {
-        // console.log(data);
-    });
+    const dispatch = useAppDispatch();
+    const templates = useAppSelector((state) => state.edit.templates);
+    console.log(templates);
 
-    const [getTemplate, setGetTemplate] = useState<Template[]>([]);
-    console.log(getTemplate);
-    
-    async function get() {
-        
-        const data = await getTemplates();
-        setGetTemplate(await data);
-    }
-
+    const { id } = useParams();
     useEffect(() => {
-        get();
+        dispatch(getProjectWithTemplatesByIdThunk({ projectId: id as string }));
     }, []);
-
     return (
         <>
             <div className="h-screen overflow-y-scroll">
-                {getTemplate.length && getTemplate.map((item, i) => {
-                    console.log(item);
-                    // debugger
-                    return (
-                        <>
-                        <Header />
-                            <TwoBlock
-                                background={item.background}
-                                id={item.id}
-                                localId={item.local_id}
-                                module={item.modules}
-                                name={item.name}
-                                order={item.order}
-                                textAlign={item.textAlign}
-                                key={i}
-                                // color={item.color}
-                            />
+                {templates.length &&
+                    templates.map((item, i) => {
+                        console.log(item);
+                        // debugger
+                        return (
+                            <>
+                                <TwoBlock
+                                    background={item.background_color}
+                                    id={item.ID}
+                                    name={item.name}
+                                    textAlign={item.text_align}
+                                    key={i}
+                                    color={item.text_color}
+                                />
 
-                            {/* {e.modules.length === 5 && (
+                                {/* {e.modules.length === 5 && (
                                 <TroshkinBlock
                                     background={template.background}
                                     backgroundBlock={
@@ -60,9 +45,9 @@ const YourSite = () => {
                                     key={i}
                                 />
                             )} */}
-                        </>
-                    );
-                })}
+                            </>
+                        );
+                    })}
             </div>
         </>
     );

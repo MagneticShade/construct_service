@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { ICategoryProps } from "./CategoryInterface";
 
-const Category: FC<ICategoryProps> = ({ title, handleMass }) => {
+const Category: FC<ICategoryProps> = ({ title, handleMass,mass }) => {
     const [isActiveCategory, setisActiveCategory] = useState(false);
 
     return (
@@ -11,9 +11,18 @@ const Category: FC<ICategoryProps> = ({ title, handleMass }) => {
                     ? "bg-gradient-to-r from-[#545454] to-black text-white"
                     : "bg-[#D9D9D9]"
             } bg- inline-block `}
-            onClick={() => {
-                handleMass(title);
-                setisActiveCategory(!isActiveCategory);
+            onClick={() =>{ 
+                handleMass(title)
+                
+                if (mass.includes(title)) {
+                    setisActiveCategory(false)
+                  } else {
+                    // Если элемента нет в массиве и количество элементов < 3, добавляем его
+                    if (mass.length < 3) {
+                        setisActiveCategory(true)
+                    }
+                  }
+                
             }}
         >
             <div className="flex gap-[10px] items-center">

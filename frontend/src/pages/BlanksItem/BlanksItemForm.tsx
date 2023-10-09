@@ -1,7 +1,7 @@
 
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { InputChecked } from "../../shared/Inputs/InputChecked";
-import { setCel, setDescription, setSlogan, setTitle } from "@/src/store/slice/BlanksItemSlice";
+import {  setDescription, setSlogan, setTitle } from "@/src/store/slice/BlanksItemSlice";
 
 const BlanksItemForm = () => {
     const blanksItem = useAppSelector((state)=> state.blanksItem)
@@ -32,14 +32,14 @@ const BlanksItemForm = () => {
                 reduxVal = {blanksItem.description}
                 reduxOnChange = {setDescription}
             />
-            <InputChecked
+            {/* <InputChecked
                 name=""
                 type="text"
                 checked={true}
                 placeholder="Цель, преимущества"
                 reduxVal = {blanksItem.cel}
                 reduxOnChange = {setCel}
-            />
+            /> */}
         </form>
     );
 };

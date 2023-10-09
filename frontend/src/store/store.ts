@@ -6,6 +6,8 @@ import yourSite from './slice/YourSiteSlice'
 import blanksItem  from './slice/BlanksItemSlice'
 import edit  from './slice/EditSlice'
 import formIndex from './slice/FormIndexSlice'
+import user from './slice/UserSlice'
+import protcedur from './slice/ProcedurSlice'
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +17,9 @@ export const store = configureStore({
     yourSite,
     blanksItem,
     edit,
-    formIndex
+    formIndex,
+    user,
+    protcedur
   },
 })
 

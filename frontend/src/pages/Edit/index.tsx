@@ -9,36 +9,47 @@ import { useAppDispatch } from "@/src/hooks/useAppDispatch";
 import { setActive } from "@/src/store/slice/ButtonSlice";
 import { Categories } from "./Categories";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
-import { axiosInstance, getTemplates } from "@/src/axios";
-import { setActiveIndexEdit, setTemp } from "@/src/store/slice/EditSlice";
+import {  deleteTemplateById } from "@/src/axios";
+import { getProjectWithTemplatesByIdThunk, setActiveIndexEdit } from "@/src/store/slice/EditSlice";
 import TwoBlockPreview from "@/src/shared/FormsPrev/TwoBlockPreview";
 import { setIndex } from "@/src/store/slice/FormIndexSlice";
 const PageEdit = () => {
     const [buttonActive, setButtonActive] = useState(false);
     const templates = useAppSelector((state) => state.edit.templates);
+    const user = useAppSelector((state) => state.user);
     const backspaceLongPress = useLongPress(() => {
         setButtonActive(!buttonActive);
     });
     const activeIndex = useAppSelector((state) => state.formIndex.index);
 
     const dispatch = useAppDispatch();
-
-    async function get() {
-        const response = await getTemplates();
-        dispatch(setTemp(await response));
+    const projectId = localStorage.getItem('projectId');
+    async function initTemplates() {
+       
+        if(!user.userProjects.length && projectId) {
+            const parsedProjectId = JSON.parse(projectId);
+            dispatch(getProjectWithTemplatesByIdThunk({projectId:parsedProjectId}));
+        }
+        else{
+            localStorage.setItem('projectId', JSON.stringify(user.userProjects[user.activeIndex].ID));
+            dispatch(getProjectWithTemplatesByIdThunk({projectId:user.userProjects[user.activeIndex].ID}));
+        }
+        
     }
     useEffect(() => {
-        get();
+        initTemplates();
     }, []);
 
     async function delTemp() {
-        if (typeof templates !== "string") {
-            await axiosInstance.delete(
-                `/api/templates/delete${templates[activeIndex].id}`
-            );
+        if(projectId) {
+            const parsedProjectId = JSON.parse(projectId);
+      
+            if (typeof templates !== "string") {
+                await deleteTemplateById(templates[activeIndex].ID)
+                await dispatch(getProjectWithTemplatesByIdThunk({projectId:parsedProjectId}));
+            }
+            
         }
-
-        await get();
     }
 
     return (
@@ -50,7 +61,7 @@ const PageEdit = () => {
             />
             <div className="container" id="dropZone">
                 {templates[activeIndex] && templates && (
-                    <Categories tempalteId={templates[activeIndex].id} />
+                    <Categories tempalteId={templates[activeIndex].ID} />
                 )}
 
                 <div className="forms pt-[273px]">
@@ -75,7 +86,7 @@ const PageEdit = () => {
                             );
                         }}
                     >
-                        {templates !== "" &&
+                        {templates &&
                             templates.map((_: any, i: number) => {
                                 return (
                                     <SwiperSlide
@@ -114,8 +125,11 @@ const PageEdit = () => {
                     </Swiper>
                 </div>
             </div>
-            <EditForm />
-
+            {projectId && (
+                 <EditForm projectId={JSON.parse(projectId)}/>
+            )}
+           
+            
             {buttonActive ? (
                 <DeleteButton
                     title="Удалить"

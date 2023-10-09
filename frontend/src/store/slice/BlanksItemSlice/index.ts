@@ -1,13 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface openState {
-    title: string,
-  slogan: string,
-  description: string,
-  tags: string[],
-  owner: string,
-  template: string,
-  cel:string,
+    title: string;
+    slogan: string;
+    description: string;
+    tags: string[];
+    cel: string;
 }
 
 const initialState: openState = {
@@ -15,9 +13,7 @@ const initialState: openState = {
     slogan: "",
     description: "",
     tags: [],
-    owner: "",
-    template: "",
-    cel:"",
+    cel: "",
 };
 
 export const blanksItemSlice = createSlice({
@@ -33,15 +29,17 @@ export const blanksItemSlice = createSlice({
         setDescription(state, action) {
             state.description = action.payload;
         },
-        setTags(state, action:PayloadAction<string[]>) {
+        setTags(state, action: PayloadAction<string[]>) {
             state.tags = action.payload;
-            
         },
-        setCel(state, action:PayloadAction<string>) {
-            state.cel = action.payload;
-        },
+        // setCel(state, action:PayloadAction<string>) {
+        //     state.cel = action.payload;
+        // },
     },
 });
 
-export const {setTitle, setSlogan, setDescription, setTags, setCel} = blanksItemSlice.actions;
+export const { setTitle, setSlogan, setDescription, setTags,
+    //  setCel 
+    } =
+    blanksItemSlice.actions;
 export default blanksItemSlice.reducer;

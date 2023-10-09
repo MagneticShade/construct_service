@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { IProjectProps } from "./SelectedBlockInterface";
@@ -6,18 +6,20 @@ import { Link } from "react-router-dom";
 import gsap from "gsap";
 import useDraggableBlock from "@/src/hooks/useDragble";
 import { DeleteButton } from "@/src/shared/Buttons/DeleteButton";
-
-
+ 
 interface ISelectedBlockProps extends IProjectProps {
     setModalStatus: (status: boolean) => void;
     handleDeleteProject: () => void;
+    setActiveSlide: (status: boolean) => void;
 }
 
 const SelectedBlock: FC<ISelectedBlockProps> = ({
     style,
     setModalStatus,
     handleDeleteProject,
+    setActiveSlide,
 }) => {
+    const [isEdit, setIsEdit] = useState(false)
     const spawn = useRef<any>();
     useEffect(() => {
         gsap.to(spawn.current, {
@@ -33,7 +35,7 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
 
     const handleDelete = () => {
         // tg.offEvent("viewportChanged", projectMove)
-        handleDeleteProject;
+        handleDeleteProject();
         setModalStatus(false);
     };
     const { position, isDragging, handleStart } = useDraggableBlock({
@@ -50,7 +52,10 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
     return (
         <div
             ref={spawn}
-            onClick={() => setModalStatus(false)}
+            onClick={() => {
+                setModalStatus(false);
+                setActiveSlide(false);
+            }}
             className=" opacity-0 fixed top-0 left-0 h-screen w-full z-10 bg-[#53535359] backdrop-blur-sm transition"
         >
             <Swiper
@@ -78,31 +83,60 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
                         className="w-full object-cover animate-shake select-none z-10"
                         onContextMenu={handleContextMenu}
                     ></div>
-                    <div className="w-[300px] select-none py-[10px] bg-[#EEEEEE] opacity-70 absolute  left-1/2 -translate-x-1/2 rounded-[16px] mt-4 z-0">
-                        <Link
-                            to={"edit/"}
-                            className=" block px-[18px] w-full border-b border-b-[#A6A0A0] text-[16px] whitespace-nowrap ] mb-[5px]"
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-[300px] select-none py-[10px] bg-[#EEEEEE] opacity-70 absolute  left-1/2 -translate-x-1/2 rounded-[16px] mt-4 z-0 overflow-hidden"
+                    >
+                        <div className="">
+                            <button
+                                onClick={() => setIsEdit(true)}
+                                className=" block px-[18px] text-start w-full border-b border-b-[#A6A0A0] text-[16px] whitespace-nowrap mb-[5px]"
+                            >
+                                Редактировать
+                            </button>
+                            <Link
+                                to={"/"}
+                                className="block px-[18px] w-full border-b border-b-[#A6A0A0] text-[16px] whitespace-nowrap mt-[5px] mb-[5px]"
+                            >
+                                Изменить название проекта
+                            </Link>
+                            <Link
+                                to={"/"}
+                                className="block px-[18px] w-full border-b border-b-[#A6A0A0] text-[16px] whitespace-nowrap mt-[5px] mb-[5px]"
+                            >
+                                Настройка домена
+                            </Link>
+                            <button
+                                className=" px-[18px] text-[#FF0000] text-[16px] font-[500]"
+                                onClick={handleDelete}
+                            >
+                                Удалить
+                            </button>
+                        </div>
+                        <div
+                            className={`absolute w-full h-full bg-[#EEEEEE] top-0  py-[10px] duration-200 ${
+                                isEdit ? "left-0" : "left-full"
+                            }`}
                         >
-                            Редактировать
-                        </Link>
-                        <Link
-                            to={"/"}
-                            className="block px-[18px] w-full border-b border-b-[#A6A0A0] text-[16px] whitespace-nowrap mt-[5px] mb-[5px]"
-                        >
-                            Изменить название проекта
-                        </Link>
-                        <Link
-                            to={"/"}
-                            className="block px-[18px] w-full border-b border-b-[#A6A0A0] text-[16px] whitespace-nowrap mt-[5px] mb-[5px]"
-                        >
-                            Настройка домена
-                        </Link>
-                        <button
-                            className=" px-[18px] text-[#FF0000] text-[16px] font-[500]"
-                            onClick={handleDeleteProject}
-                        >
-                            Удалить
-                        </button>
+                            <Link
+                                to={"edit/"}
+                                className=" block px-[18px] w-full border-b border-b-[#A6A0A0] text-[16px] whitespace-nowrap ] mb-[5px]"
+                            >
+                                Шаблоны
+                            </Link>
+                            <Link
+                                to={"logo/"}
+                                className=" block px-[18px] w-full border-b border-b-[#A6A0A0] text-[16px] whitespace-nowrap ] mb-[5px]"
+                            >
+                                Логотип
+                            </Link>
+                            <button
+                                className=" px-[18px] text-[#FF0000] text-[16px] font-[500]"
+                                onClick={() => setIsEdit(false)}
+                            >
+                                назад
+                            </button>
+                        </div>
                     </div>
                 </SwiperSlide>
             </Swiper>

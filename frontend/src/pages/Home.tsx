@@ -28,6 +28,7 @@ const Home = () => {
                                     className={`flex w-[200px] items-center justify-center ${
                                         activeIndex === i ? "scale-[1.2]" : ""
                                     }`}
+                                    key={i}
                                 >
                                     <img
                                         src="/constructorpractice/mask.png"

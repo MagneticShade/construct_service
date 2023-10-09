@@ -1,4 +1,11 @@
 import { useEffect, useRef } from "react";
+import { useAppDispatch } from "./useAppDispatch";
+import {
+    setBlur,
+    setColor,
+    setCount,
+    setSpeed,
+} from "../store/slice/ProcedurSlice";
 
 interface Ball {
     x: number;
@@ -7,15 +14,24 @@ interface Ball {
     radius: number;
 }
 
-const useCanvas = (speedRnd: number, circleColor: string, blur: number, count: number, size: number) => {
+const useCanvas = (
+    speedRnd: number,
+    circleColor: string,
+    blur: number,
+    count: number,
+    size: number
+) => {
+    console.log(circleColor);
+
     // Здесь канвас, который мы берем вне хука
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const dispatch = useAppDispatch();
 
     // Инициализация шариков
     const balls: Ball[] = [];
 
     // Функция для генерации случайного радиуса в заданном диапазоне
-    const getRandomRadius = () => Math.random() * 40 + size;
+    const getRandomRadius = () => Math.random() * 40 + 30;
 
     // Создание 10 шариков и пуш в balls
     for (let i = 0; i < count; i++) {
@@ -75,6 +91,10 @@ const useCanvas = (speedRnd: number, circleColor: string, blur: number, count: n
         };
 
         draw();
+        dispatch(setColor(circleColor));
+        dispatch(setCount(count));
+        dispatch(setBlur(blur));
+        dispatch(setSpeed(speedRnd));
     }, [speedRnd, circleColor, blur, count, size]); // Изменения скорости и цвета могут вызывать перерисовку
 
     return canvasRef;

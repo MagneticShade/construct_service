@@ -11,21 +11,29 @@ const BlanksItem: FC<IBlanksItemProps> = ({
     return (
         <>
             <div
-                style={{
-                    transitionDelay: `${
-                        Math.floor(index ? index : 0 % 3) * 100
-                    }ms`,
-                }}
-                className={`w-full h-[200px] bg-black [&:not(:first-child)]:mt-1 [&:last-child]:mb-20 transition-all after:h-fit after:w-fit after:bg-black duration-200 after:relative after:z-10 top-0 ${
-                    isBlockSelected || isBlurBlanks ? "" : "blur-[4.5px]"
-                }`}
+                className={`w-full h-[200px] bg-white [&:not(:first-child)]:mt-2 [&:last-child]:mb-20 transition-all relative`}
                 onClick={handleClick}
             >
-                <img
-                    src={imgUrl}
-                    alt=""
-                    className="w-full h-full object-cover"
-                />
+                <div
+                    style={{
+                        backgroundImage: `url(${imgUrl})`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: 'cover'
+                    }}
+                    className={`w-full h-full`}
+                ></div>
+                <div
+                    style={{
+                        transitionDelay: `${
+                            Math.floor(index ? index : 0 % 3) * 100
+                        }ms`,
+                    }}
+                    className={`w-full h-full absolute top-0 left-0 filter  ${
+                        isBlockSelected || isBlurBlanks
+                            ? ""
+                            : "backdrop-blur-[4px]"
+                    }`}
+                ></div>
             </div>
         </>
     );
