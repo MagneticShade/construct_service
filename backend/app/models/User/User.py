@@ -1,4 +1,5 @@
-from . import ProjectID, TelegramID, NewUser
+from .. import ProjectID, TelegramID
+from . import NewUser
 
 
 class User(NewUser):

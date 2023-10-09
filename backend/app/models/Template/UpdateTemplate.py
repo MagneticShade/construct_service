@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
-from app.models import TemplateBackgroundType, UpdateProcedureBackground
+from .. import UpdateProcedureBackground
+from . import TemplateBackgroundType
 
 
 class UpdateTemplate(BaseModel):

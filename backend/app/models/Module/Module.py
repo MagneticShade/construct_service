@@ -1,4 +1,5 @@
-from . import ModuleID, TemplateID, NewModule
+from .. import ModuleID, TemplateID
+from . import NewModule
 
 
 class Module(NewModule):

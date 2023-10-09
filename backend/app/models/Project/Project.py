@@ -1,4 +1,5 @@
-from . import ProjectID, TelegramID, TemplateID, NewProject
+from .. import ProjectID, TelegramID, TemplateID
+from . import NewProject
 
 
 class Project(NewProject):

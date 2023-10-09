@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from app.models import TemplateBackgroundType, ProcedureBackground
+from .. import ProcedureBackground
+from . import TemplateBackgroundType
 
 
 class NewTemplate(BaseModel):
