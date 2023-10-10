@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 interface IuserFetch {
     phone_number: string;
@@ -36,9 +36,17 @@ export const axiosInstance = axios.create({
 
 //user
 export async function getUserById(userId: string) {
-    const { data: user, status } = await axiosInstance.get(`/user/${userId}`);
-    return { user, status };
+    try {
+        const { data: user } = await axiosInstance.get(
+            `/user/${userId}`
+        );
+        return { user };
+    } catch (err: any) {
+        const status = (err as AxiosError).response?.status;
+        return { status };
+    }
 }
+
 
 export async function patchUserById(userId: string, fields: IuserFetch) {
     const { data } = await axiosInstance.patch(`/user/${userId}`, fields);

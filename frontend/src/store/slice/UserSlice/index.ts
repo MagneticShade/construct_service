@@ -23,11 +23,11 @@ const initialState: user = {
   isLoading:false,
   activeIndex:0,
   user:{
-    telegramID: "string",
-    phone_number: "string",
-    birthday: "string",
-    first_name: "string",
-    last_name: "string",
+    telegramID: "",
+    phone_number: "",
+    birthday: "",
+    first_name: "",
+    last_name: "",
     projects: []
   },
   userProjects:[
