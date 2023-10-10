@@ -1,7 +1,9 @@
 import os
+import pprint
 import uuid
+import requests
 from fastapi import APIRouter, File, HTTPException, UploadFile
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from pymongo.results import UpdateResult
 from app.database import users_collection, projects_collection
 from app.models import (
@@ -39,6 +41,35 @@ async def post_user(telegramID: TelegramID, user: NewUser) -> None:
         raise HTTPException(status_code=400, detail="User exist")
     user = User(**user.model_dump(), projects=[], telegramID=telegramID)
     users_collection.insert_one(user.model_dump())
+    TOKEN = os.getenv("TOKEN")
+    try:
+        user_id = int(telegramID)
+    except ValueError:
+        return HTTPException(status_code=400, detail="User's id MUST be integer")
+    response = requests.get(
+        f"https://api.telegram.org/bot{TOKEN}/getUserProfilePhotos",
+        data={"user_id": user_id},
+    )
+    if response.status_code != 200:
+        return HTTPException(
+            status_code=400, detail=f"Telegram: {response.json()['description']}"
+        )
+    file_id = response.json()["result"]["photos"][0][0]["file_id"]
+    response = requests.get(
+        f"https://api.telegram.org/bot{TOKEN}/getFile",
+        data={"file_id": file_id},
+    )
+    if response.status_code != 200:
+        return HTTPException(
+            status_code=400, detail=f"Telegram: {response.json()['description']}"
+        )
+    file_path = response.json()["result"]["file_path"]
+    file_url = f"https://api.telegram.org/file/bot{TOKEN}/{file_path}"
+    response = requests.get(file_url)
+    if response.status_code != 200:
+        return HTTPException(status_code=400, detail="Can't get image from telegram")
+    with open(f"app/images/{telegramID}", "wb") as f:
+        f.write(response.content)
 
 
 @router.patch(
@@ -74,15 +105,15 @@ async def post_user_image(telegramID: TelegramID, file: UploadFile = File()) -> 
 @router.get(
     "/{telegramID}/image",
     tags=["User"],
-    description="Return user's image. If user not exist raises 400 error. If logo not exist raises 404 error",
+    description="Return user's image. If user not exist raises 400 error. If logo not exist returns users telegram image",
 )
 async def get_user_image(telegramID: TelegramID) -> FileResponse:
     if users_collection.find_one({"telegramID": telegramID}) is None:
         raise HTTPException(status_code=400, detail="User not exist")
     path = f"app/images/{telegramID}"
-    if not os.path.exists(path):
-        raise HTTPException(status_code=404, detail="User's image not exist")
-    return FileResponse(path, media_type="image/svg+xml")
+    if os.path.exists(path):
+        return FileResponse(path, media_type="image/jpeg")
+    return HTTPException(status_code=500, detail="User's image not found")
 
 
 @router.post(

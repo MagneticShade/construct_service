@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 from app.routers import user_router, project_router, template_router, module_router
 
+load_dotenv()
 
 app = FastAPI()
 app.add_middleware(
