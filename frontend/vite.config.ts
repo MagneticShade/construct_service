@@ -10,6 +10,9 @@ export default defineConfig({
         host: true,
         port: 5173,
     },
+    server:{
+        host:true,
+    },
     // server: { https: true },
     resolve: {
         alias: [{ find: "@", replacement: path.resolve(__dirname, ".") }],
