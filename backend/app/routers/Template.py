@@ -13,7 +13,6 @@ from app.models import (
     Module,
 )
 from app.database import templates_collection, projects_collection, modules_collection
-from pydantic.utils import deep_update
 
 router = APIRouter(prefix="/template")
 
