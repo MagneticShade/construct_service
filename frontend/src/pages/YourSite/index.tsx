@@ -8,14 +8,16 @@ import { useParams } from "react-router-dom";
 const YourSite = () => {
     const dispatch = useAppDispatch();
     const templates = useAppSelector((state) => state.edit.templates);
-    console.log(templates);
-
     const { id } = useParams();
+
     useEffect(() => {
         dispatch(getProjectWithTemplatesByIdThunk({ projectId: id as string }));
     }, []);
+
+    
     return (
         <>
+
             <div className="h-screen overflow-y-scroll">
                 {templates.length &&
                     templates.map((item, i) => {
@@ -24,12 +26,25 @@ const YourSite = () => {
                         return (
                             <>
                                 <TwoBlock
-                                    background={item.background_color}
+                                    speed={item.procedure_background.speed}
+                                    circleColor={
+                                        item.procedure_background.color
+                                    }
+                                    blur={item.procedure_background.blur}
+                                    count={item.procedure_background.count}
+                                    size={40}
+                                    backgroundIs={item.background_type}
+                                    backgroundColor={item.background_color}
+                                    backgroundProcedur={
+                                        item.procedure_background
+                                            .background_color
+                                    }
                                     id={item.ID}
                                     name={item.name}
                                     textAlign={item.text_align}
                                     key={i}
                                     color={item.text_color}
+                                    backgroundImage={`https://practice-test.ru:8080/template/${item.ID}/image`}
                                 />
 
                                 {/* {e.modules.length === 5 && (

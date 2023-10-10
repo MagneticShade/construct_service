@@ -21,8 +21,6 @@ const useCanvas = (
     count: number,
     size: number
 ) => {
-    console.log(circleColor);
-
     // Здесь канвас, который мы берем вне хука
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const dispatch = useAppDispatch();
@@ -81,7 +79,7 @@ const useCanvas = (
 
                 ctx.beginPath();
                 ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-                ctx.fillStyle = circleColor; // Используем текущий цвет
+                ctx.fillStyle = "rgb(64,116,137)"; // Используем текущий цвет
 
                 ctx.filter = `blur(${blur}px)`; // Создание размытия
                 ctx.fill();

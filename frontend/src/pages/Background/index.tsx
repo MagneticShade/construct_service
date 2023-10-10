@@ -82,26 +82,11 @@ const PageBackgroundEdit = () => {
     const updateTemplateImg = () => {
         if (id && formData) {
             postTemplateImg(id, formData);
+            patchTemplateById(id, {
+                background_type: "IMAGE",
+            });
         }
     };
-    // console.log(template[0]);
-    // const { id } = useParams();
-    // const addColor = () => {
-    //     if (template[0]) {
-    //         axiosInstance.put(`/api/templates/update${id}`, {
-    //             background: color != null ? color : "#333",
-    //         });
-    //     }
-    // };
-    // useEffect(() => {
-    //     addColor();
-    // }, [color]);
-    // const updateTemplate = () => {
-    //     debugger;
-    //     axiosInstance.patch(`api/templates/partial-update/${id}`, {
-    //         background: color,
-    //     });
-    // };
     return (
         <div className=" overflow-auto h-full">
             <div className="container pt-10">

@@ -46,20 +46,4 @@ const Procedur: FC<IProcedurProps> = ({ children, valueRange, blur, count, size 
 };
 
 export default Procedur;
-// // index.tsx
-// import React, { FC, ReactNode } from "react";
-// import useCanvas from "@/src/hooks/useCanvas";
-// import Bokeh from "./Bokeh"; // Путь к Bokeh.ts
 
-// interface IProcedurProps {
-//   valueRange: number;
-//   children: ReactNode;
-// }
-
-// const Procedur: FC<IProcedurProps> = ({ children, valueRange }) => {
-//   const canvasRef = useCanvas(valueRange, circleColor);
-
-//   // Ваш остальной код компонента Procedur
-// };
-
-// export default Procedur;

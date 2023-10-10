@@ -51,7 +51,6 @@ export async function postUserById(userId: string, fields: IuserFetch) {
 }
 //project
 export async function getProjectById(projectId: string) {
-
     const { data } = await axiosInstance.get(`/project/${projectId}`);
     return data;
 }
@@ -86,20 +85,27 @@ export async function postTemplateById(
     );
     return data;
 }
-export async function deleteTemplateById(templateId:string){
-    const {data} = await axiosInstance.delete(`/template/${templateId}/`);
+export async function deleteTemplateById(templateId: string) {
+    const { data } = await axiosInstance.delete(`/template/${templateId}/`);
     return data;
 }
-export async function patchTemplateById(templateId:string, fields:any){
-    const {data} = await axiosInstance.patch(`/template/${templateId}`, fields);
+export async function patchTemplateById(templateId: string, fields: any) {
+    const { data } = await axiosInstance.patch(
+        `/template/${templateId}`,
+        fields
+    );
     return data;
 }
 export async function postTemplateImg(templateId: string, formData: any) {
-    debugger
     const { data } = await axiosInstance.post(
         `/template/${templateId}/image`,
         formData
     );
+    return data;
+}
+
+export async function getTemplateImg(templateId: string) {
+    const { data } = await axiosInstance.get(`/template/${templateId}/image`);
     return data;
 }
 //module
@@ -111,12 +117,12 @@ export async function postModuleById(templateId: string, fields: IpostModule) {
     );
     return data;
 }
-export async function patchModuleById(moduleId:string, fields:IpostModule){
-    const {data} = await axiosInstance.patch(`/module/${moduleId}`,fields);
+export async function patchModuleById(moduleId: string, fields: IpostModule) {
+    const { data } = await axiosInstance.patch(`/module/${moduleId}`, fields);
     return data;
 }
-export async function getModuleById(moduleId:string){
-    const {data} = await axiosInstance.get(`/module/${moduleId}`);
+export async function getModuleById(moduleId: string) {
+    const { data } = await axiosInstance.get(`/module/${moduleId}`);
     return data;
 }
 export const userId = "string";
