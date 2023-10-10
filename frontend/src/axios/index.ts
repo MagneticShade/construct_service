@@ -36,8 +36,15 @@ export const axiosInstance = axios.create({
 
 //user
 export async function getUserById(userId: string) {
-    const { data: user, status } = await axiosInstance.get(`/user/${userId}`);
-    return { user, status };
+    try {
+        const { data: user } = await axiosInstance.get(
+            `/user/${userId}`
+        );
+        return {user};
+    } catch (err) {
+        const status = err.response.status;
+        return {status}
+    }
 }
 
 export async function patchUserById(userId: string, fields: IuserFetch) {
@@ -51,7 +58,6 @@ export async function postUserById(userId: string, fields: IuserFetch) {
 }
 //project
 export async function getProjectById(projectId: string) {
-
     const { data } = await axiosInstance.get(`/project/${projectId}`);
     return data;
 }
@@ -86,16 +92,19 @@ export async function postTemplateById(
     );
     return data;
 }
-export async function deleteTemplateById(templateId:string){
-    const {data} = await axiosInstance.delete(`/template/${templateId}/`);
+export async function deleteTemplateById(templateId: string) {
+    const { data } = await axiosInstance.delete(`/template/${templateId}/`);
     return data;
 }
-export async function patchTemplateById(templateId:string, fields:any){
-    const {data} = await axiosInstance.patch(`/template/${templateId}`, fields);
+export async function patchTemplateById(templateId: string, fields: any) {
+    const { data } = await axiosInstance.patch(
+        `/template/${templateId}`,
+        fields
+    );
     return data;
 }
 export async function postTemplateImg(templateId: string, formData: any) {
-    debugger
+    debugger;
     const { data } = await axiosInstance.post(
         `/template/${templateId}/image`,
         formData
@@ -111,12 +120,12 @@ export async function postModuleById(templateId: string, fields: IpostModule) {
     );
     return data;
 }
-export async function patchModuleById(moduleId:string, fields:IpostModule){
-    const {data} = await axiosInstance.patch(`/module/${moduleId}`,fields);
+export async function patchModuleById(moduleId: string, fields: IpostModule) {
+    const { data } = await axiosInstance.patch(`/module/${moduleId}`, fields);
     return data;
 }
-export async function getModuleById(moduleId:string){
-    const {data} = await axiosInstance.get(`/module/${moduleId}`);
+export async function getModuleById(moduleId: string) {
+    const { data } = await axiosInstance.get(`/module/${moduleId}`);
     return data;
 }
 export const userId = "string";
