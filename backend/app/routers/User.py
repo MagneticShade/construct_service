@@ -45,29 +45,25 @@ async def post_user(telegramID: TelegramID, user: NewUser) -> None:
     try:
         user_id = int(telegramID)
     except ValueError:
-        return HTTPException(status_code=400, detail="User's id MUST be integer")
+        return print("TelegramImage: User's id MUST be integer")
     response = requests.get(
         f"https://api.telegram.org/bot{TOKEN}/getUserProfilePhotos",
         data={"user_id": user_id},
     )
     if response.status_code != 200:
-        return HTTPException(
-            status_code=400, detail=f"Telegram: {response.json()['description']}"
-        )
+        return print(f"TelegramImage: {response.json()['description']}")
     file_id = response.json()["result"]["photos"][0][0]["file_id"]
     response = requests.get(
         f"https://api.telegram.org/bot{TOKEN}/getFile",
         data={"file_id": file_id},
     )
     if response.status_code != 200:
-        return HTTPException(
-            status_code=400, detail=f"Telegram: {response.json()['description']}"
-        )
+        return print(f"TelegramImage: {response.json()['description']}")
     file_path = response.json()["result"]["file_path"]
     file_url = f"https://api.telegram.org/file/bot{TOKEN}/{file_path}"
     response = requests.get(file_url)
     if response.status_code != 200:
-        return HTTPException(status_code=400, detail="Can't get image from telegram")
+        return print("TelegramImage: Can't get image from Telegram")
     with open(f"app/images/{telegramID}", "wb") as f:
         f.write(response.content)
 
@@ -113,7 +109,7 @@ async def get_user_image(telegramID: TelegramID) -> FileResponse:
     path = f"app/images/{telegramID}"
     if os.path.exists(path):
         return FileResponse(path, media_type="image/jpeg")
-    return HTTPException(status_code=500, detail="User's image not found")
+    return FileResponse("app/placeholders/user_image", media_type="image/jpeg")
 
 
 @router.post(

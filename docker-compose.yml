@@ -13,7 +13,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - backend_logos:/code/app/images
+      - backend_files:/code/app/images
     depends_on:
       - mongo_backend
   
@@ -24,4 +24,4 @@ services:
 
 volumes:
   mongo_backend_volume:
-  backend_logos:
+  backend_files:
