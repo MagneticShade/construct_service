@@ -31,7 +31,7 @@ const Home = () => {
                                     key={i}
                                 >
                                     <img
-                                        src="/constructorpractice/mask.png"
+                                        src="/mask.png"
                                         alt="mask"
                                         className={`h-[50%] duration-200 ${
                                             activeIndex === i
@@ -45,7 +45,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="container">
-                    <Menu userImg="/constructorpractice/user.jpg" />
+                    <Menu userImg="/user.jpg" />
                 </div>
             </div>
         </>

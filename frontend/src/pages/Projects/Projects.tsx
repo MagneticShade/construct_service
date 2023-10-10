@@ -80,7 +80,7 @@ const Projects: FC<IProjectProps> = ({
                         <SwiperSlide key={i++} {...longPress}>
                             <Link
                                 className=" block w-full h-full"
-                                to={`/constructorpractice/yoursite/${item.ID}`}
+                                to={`/yoursite/${item.ID}`}
                             >
                                 <div
                                     style={{
@@ -110,7 +110,7 @@ const Projects: FC<IProjectProps> = ({
                         className={`w-full h-[276px] transition-all duration-200 text-center flex items-center justify-center`}
                     >
                         <Link
-                            to={"/constructorpractice/blanks/1"}
+                            to={"/blanks/1"}
                             className="w-20 h-20 border border-black rounded-full flex items-center justify-center text-[48px] font-medium"
                         >
                             +

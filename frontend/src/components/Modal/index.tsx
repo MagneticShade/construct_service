@@ -63,7 +63,7 @@ const Modal: FC<IModalProps> = ({ children }) => {
             ease: "power3.out", // Вид анимации
         });
         setTimeout(() => {
-            navigate("/constructorpractice/");
+            navigate("/");
         }, 1000);
     };
     // Функция для проверки количества слэшей в строке

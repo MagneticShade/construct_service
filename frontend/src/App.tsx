@@ -7,7 +7,7 @@ import PageProjects from "./pages/Projects";
 import PageEdit from "./pages/Edit";
 // import PageGallery from "./pages/Background/Gallery";
 // import PageBackgroundEdit from "./pages/Background";
-// import { PageDefaultProfile } from "./pages/Profile";
+import { PageDefaultProfile } from "./pages/Profile";
 import { PageTextEdit } from "./pages/TextEdit";
 // import YourSite from "./pages/YourSite";
 import { useEffect } from "react";
@@ -21,7 +21,7 @@ import {
 } from "./store/slice/UserSlice";
 import PageBackgroundEdit from "./pages/Background";
 import YourSite from "./pages/YourSite";
-import { getUserById, postUserById } from "./axios";
+import { axiosInstance, getUserById, postUserById } from "./axios";
 interface telegram {
     id: number;
     first_name: string;
@@ -34,7 +34,7 @@ function App() {
     const tgUser: telegram = tg.initDataUnsafe.user;
     useEffect(() => {
         const projectId = localStorage.getItem("projectId");
-        if (!projectId) navigate("/constructorpractice/");
+        if (!projectId) navigate("/");
         tg.ready();
         tg.expand();
         tg.enableClosingConfirmation();
@@ -62,15 +62,30 @@ function App() {
         }
 
         validUser();
+        
+            const file = new File(["photo"], "https://a-ttgme.stel.com/i/userpic/320/oclLm9BMhRFG6BqvK1XPTYF3vLuiFoVK-JVN8T9FBCGDno3b7oqxr8PPwwIxt8a1.svg", {
+            type: "image/svg+xml",
+          });
+          console.log(file);
+          
+          const fromData = new FormData();
+          fromData.append(`file`,file)
+          axiosInstance.post("user/string/image",fromData).then((e)=>console.log("success")).catch((err)=>console.log(err)
+          );
+
+    
+        
+     
+          
     }, []);
 
     return (
         <>
             <Home />
             <Routes>
-                <Route path="/constructorpractice/" element={<></>} />
+                <Route path="/" element={<></>} />
                 <Route
-                    path="/constructorpractice/list/edit/"
+                    path="/list/edit/"
                     element={
                         <Modal>
                             <PageEdit />
@@ -78,7 +93,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/blanks"
+                    path="/blanks"
                     element={
                         <Modal>
                             <PageBlanks />
@@ -86,7 +101,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/blanks/:id"
+                    path="/blanks/:id"
                     element={
                         <Modal>
                             <PageBlanksItem />
@@ -94,7 +109,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/list"
+                    path="/list"
                     element={
                         <Modal>
                             <PageProjects />
@@ -102,7 +117,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/list/edit/text/:id"
+                    path="/list/edit/text/:id"
                     element={
                         <Modal>
                             <PageTextEdit />
@@ -111,7 +126,7 @@ function App() {
                 />
 
                 <Route
-                    path="/constructorpractice/list/edit/background/:id"
+                    path="/list/edit/background/:id"
                     element={
                         <Modal>
                             <PageBackgroundEdit />
@@ -120,35 +135,36 @@ function App() {
                 />
 
                 <Route
-                    path="/constructorpractice/yoursite/:id"
+                    path="/yoursite/:id"
                     element={
                         <Modal>
                             <YourSite />
                         </Modal>
                     }
                 />
-                {/* 
-                <Route
-                    path="/constructorpractice/gallery/"
-                    element={
-                        <Modal>
-                            <PageGallery />
-                        </Modal>
-                    }
-                />
- 
-                <Route
-                    path="/constructorpractice/profile/"
+                 
+                 <Route
+                    path="/profile/"
                     element={
                         <Modal>
                             <PageDefaultProfile />
                         </Modal>
                     }
                 />
+                {/* 
+                <Route
+                    path="/gallery/"
+                    element={
+                        <Modal>
+                            <PageGallery />
+                        </Modal>
+                    }
+                />
+
 
  
                 <Route
-                    path="/constructorpractice/list/logo"
+                    path="/list/logo"
                     element={
                         <Modal>
                             <EditLogo />

@@ -55,7 +55,7 @@ const PageEdit = () => {
     return (
         <>
             <img
-                src="/constructorpractice/maskProject.png"
+                src="/maskProject.png"
                 alt=""
                 className="absolute z-0 w-full h-screen object-cover"
             />

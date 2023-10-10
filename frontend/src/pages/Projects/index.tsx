@@ -61,7 +61,7 @@ const PageProjects = () => {
                             >
                                 
                                 <Link
-                                    to={"/constructorpractice/blanks"}
+                                    to={"/blanks"}
                                     className="w-20 h-20 border border-black rounded-full flex items-center justify-center text-[48px] font-medium"
                                 >
                                     +

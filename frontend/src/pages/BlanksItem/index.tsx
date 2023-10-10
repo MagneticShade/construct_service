@@ -100,7 +100,7 @@ const PageBlanksItem = () => {
             </div>
 
             <LinkButton
-                link={"/constructorpractice/list"}
+                link={"/list"}
                 title="Создать"
                 buttonActive={false}
                 handleClick={handleSubmit}
