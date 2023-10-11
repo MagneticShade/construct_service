@@ -1,7 +1,6 @@
 import { axiosInstance } from "@/src/axios";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import {
-    getProjectWithTemplatesByIdThunk,
     getTemplatesWithModulesByIdThunk,
 } from "@/src/store/slice/EditSlice";
 import { useEffect, useState } from "react";

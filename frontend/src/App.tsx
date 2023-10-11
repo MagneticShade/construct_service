@@ -7,7 +7,6 @@ import PageProjects from "./pages/Projects";
 import PageEdit from "./pages/Edit";
 // import PageGallery from "./pages/Background/Gallery";
 // import PageBackgroundEdit from "./pages/Background";
-import { PageDefaultProfile } from "./pages/Profile";
 import { PageTextEdit } from "./pages/TextEdit";
 // import YourSite from "./pages/YourSite";
 import { useEffect } from "react";
@@ -21,7 +20,7 @@ import {
 } from "./store/slice/UserSlice";
 import PageBackgroundEdit from "./pages/Background";
 import YourSite from "./pages/YourSite";
-import { axiosInstance, getUserById, postUserById } from "./axios";
+import { getUserById, postUserById } from "./axios";
 interface telegram {
     id: number;
     first_name: string;
@@ -60,22 +59,7 @@ function App() {
                 }
             }
         }
-
-        validUser();
-        
-            const file = new File(["photo"], "https://a-ttgme.stel.com/i/userpic/320/oclLm9BMhRFG6BqvK1XPTYF3vLuiFoVK-JVN8T9FBCGDno3b7oqxr8PPwwIxt8a1.svg", {
-            type: "image/svg+xml",
-          });
-          console.log(file);
-          
-          const fromData = new FormData();
-          fromData.append(`file`,file)
-          axiosInstance.post("user/string/image",fromData).then((e)=>console.log("success")).catch((err)=>console.log(err)
-          );
-
-    
-        
-     
+       validUser()
           
     }, []);
 
