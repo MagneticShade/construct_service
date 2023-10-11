@@ -142,14 +142,13 @@ function App() {
                         </Modal>
                     }
                 />
-<<<<<<< HEAD
                 <Route
                     path="/list/logo/"
                     element={
                         <Modal>
                             <EditLogo />
                         </Modal>
-                    }
+                    }   
                 />
                 {/* 
                 <Route
@@ -162,10 +161,6 @@ function App() {
                 />
  
                 <Route
-=======
-                 
-                 <Route
->>>>>>> 749d10f690d95069979bf9424691ecbc76166a15
                     path="/profile/"
                     element={
                         <Modal>
@@ -185,18 +180,7 @@ function App() {
 
 
  
-<<<<<<< HEAD
                 */}
-=======
-                <Route
-                    path="/list/logo"
-                    element={
-                        <Modal>
-                            <EditLogo />
-                        </Modal>
-                    }
-                /> */}
->>>>>>> 749d10f690d95069979bf9424691ecbc76166a15
             </Routes>
         </>
     );
