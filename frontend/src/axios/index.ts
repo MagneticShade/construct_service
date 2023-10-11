@@ -1,10 +1,10 @@
 import axios, { AxiosError } from "axios";
 
 interface IuserFetch {
-    phone_number: string;
-    birthday: string;
-    first_name: string;
-    last_name: string;
+    phone_number?: string;
+    birthday?: string;
+    first_name?: string;
+    last_name?: string;
 }
 interface IpostUserProject {
     title: string;
@@ -52,7 +52,10 @@ export async function patchUserById(userId: string, fields: IuserFetch) {
     const { data } = await axiosInstance.patch(`/user/${userId}`, fields);
     return data;
 }
-
+export async function postUserImage(userId:string,image:FormData){
+    const {data} = await axiosInstance.post(`/user/${userId}/image`, image);
+    return data
+}
 export async function postUserById(userId: string, fields: IuserFetch) {
     const { data } = await axiosInstance.post(`/user/${userId}`, fields);
     return data;

@@ -16,7 +16,7 @@ const InputDefault: FC<IInputDefaultProps> = ({
 
     const change = (e: any) => {
         setValue(e.target.value);
-        handleChange;
+        handleChange(e.target.value);
     };
     useEffect(() => {
         change;

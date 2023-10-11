@@ -21,6 +21,7 @@ import {
 import PageBackgroundEdit from "./pages/Background";
 import YourSite from "./pages/YourSite";
 import { getUserById, postUserById } from "./axios";
+import { PageDefaultProfile } from "./pages/Profile";
 interface telegram {
     id: number;
     first_name: string;
@@ -33,7 +34,7 @@ function App() {
     const tgUser: telegram = tg.initDataUnsafe.user;
     useEffect(() => {
         const projectId = localStorage.getItem("projectId");
-        if (!projectId) navigate("/");
+        // if (!projectId) navigate("/");
         tg.ready();
         tg.expand();
         tg.enableClosingConfirmation();
@@ -134,6 +135,14 @@ function App() {
                         </Modal>
                     }   
                 />
+                <Route
+                    path="/profile/"
+                    element={
+                        <Modal>
+                            <PageDefaultProfile />
+                        </Modal>
+                    }
+                />
                 {/* 
                 <Route
                     path="/gallery/"
@@ -144,14 +153,7 @@ function App() {
                     }
                 />
  
-                <Route
-                    path="/profile/"
-                    element={
-                        <Modal>
-                            <PageDefaultProfile />
-                        </Modal>
-                    }
-                />
+
                 {/* 
                 <Route
                     path="/gallery/"
