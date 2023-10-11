@@ -7,7 +7,7 @@ import PageProjects from "./pages/Projects";
 import PageEdit from "./pages/Edit";
 // import PageGallery from "./pages/Background/Gallery";
 // import PageBackgroundEdit from "./pages/Background";
-import { PageDefaultProfile } from "./pages/Profile";
+// import { PageDefaultProfile } from "./pages/Profile";
 import { PageTextEdit } from "./pages/TextEdit";
 // import YourSite from "./pages/YourSite";
 import { useEffect } from "react";
@@ -62,18 +62,7 @@ function App() {
         }
 
         validUser();
-        
-            const file = new File(["photo"], "https://a-ttgme.stel.com/i/userpic/320/oclLm9BMhRFG6BqvK1XPTYF3vLuiFoVK-JVN8T9FBCGDno3b7oqxr8PPwwIxt8a1.svg", {
-            type: "image/svg+xml",
-          });
-          console.log(file);
-          
-          const fromData = new FormData();
-          fromData.append(`file`,file)
-          axiosInstance.post("user/string/image",fromData).then((e)=>console.log("success")).catch((err)=>console.log(err)
-          );
 
-    
         
      
           
@@ -142,7 +131,6 @@ function App() {
                         </Modal>
                     }
                 />
-<<<<<<< HEAD
                 <Route
                     path="/list/logo/"
                     element={
@@ -151,8 +139,8 @@ function App() {
                         </Modal>
                     }
                 />
-                {/* 
-                <Route
+             
+                {/* <Route
                     path="/gallery/"
                     element={
                         <Modal>
@@ -161,19 +149,16 @@ function App() {
                     }
                 />
  
-                <Route
-=======
-                 
+
                  <Route
->>>>>>> 749d10f690d95069979bf9424691ecbc76166a15
                     path="/profile/"
                     element={
                         <Modal>
                             <PageDefaultProfile />
                         </Modal>
-                    }
-                />
-                {/* 
+                    } />
+
+               
                 <Route
                     path="/gallery/"
                     element={
@@ -181,22 +166,9 @@ function App() {
                             <PageGallery />
                         </Modal>
                     }
-                />
-
-
- 
-<<<<<<< HEAD
-                */}
-=======
-                <Route
-                    path="/list/logo"
-                    element={
-                        <Modal>
-                            <EditLogo />
-                        </Modal>
-                    }
                 /> */}
->>>>>>> 749d10f690d95069979bf9424691ecbc76166a15
+
+
             </Routes>
         </>
     );

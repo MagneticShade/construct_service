@@ -15,9 +15,7 @@ const EditLogo = () => {
         setLogo(await e.target.files[0]);
     };
     if (id && logo) {
-        // debugger;
-        const paresId = JSON.parse(id);      
-        postProjectLogo(paresId, formData);
+        postProjectLogo(id, formData);
     }
     return (
         <div className="container pt-10">

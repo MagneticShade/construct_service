@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useAppDispatch } from "./useAppDispatch";
 import {
-    setBlur,
     setColor,
     setCount,
     setSpeed,
@@ -17,7 +16,6 @@ interface Ball {
 const useCanvas = (
     speedRnd: number,
     circleColor: string,
-    blur: number,
     count: number,
     size: number
 ) => {
@@ -80,8 +78,6 @@ const useCanvas = (
                 ctx.beginPath();
                 ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
                 ctx.fillStyle = "rgb(64,116,137)"; // Используем текущий цвет
-
-                ctx.filter = `blur(${blur}px)`; // Создание размытия
                 ctx.fill();
             }
 
@@ -91,9 +87,8 @@ const useCanvas = (
         draw();
         dispatch(setColor(circleColor));
         dispatch(setCount(count));
-        dispatch(setBlur(blur));
         dispatch(setSpeed(speedRnd));
-    }, [speedRnd, circleColor, blur, count, size]); // Изменения скорости и цвета могут вызывать перерисовку
+    }, [speedRnd, circleColor,  count, size]); // Изменения скорости и цвета могут вызывать перерисовку
 
     return canvasRef;
 };

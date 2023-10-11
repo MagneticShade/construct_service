@@ -8,22 +8,24 @@ import Header from "./Header";
 
 const YourSite = () => {
     const dispatch = useAppDispatch();
-    const templates = useAppSelector((state) => state.edit.templates);
+
     const { id } = useParams();
 
     useEffect(() => {
         dispatch(getProjectWithTemplatesByIdThunk({ projectId: id as string }));
     }, []);
 
+    const templates = useAppSelector((state) => state.edit.templates);
+
     
     return (
         <>
             <Header />
-            <div className="h-screen overflow-y-scroll">
+            <div className="h-screen overflow-y-scroll scroll-smooth">
                 {templates.length &&
                     templates.map((item, i) => {
                         console.log(item);
-                        // debugger
+                        debugger
                         return (
                             <>
                                 <TwoBlock

@@ -26,16 +26,18 @@ const TwoBlock: FC<ITwoBlockProps> = ({
     size,
     backgroundImage,
 }) => {
-
+    console.log(blur);
+    
     const dispatch = useAppDispatch();
     const modules = useAppSelector((state) => state.edit.modules);
     useEffect(() => {
         dispatch(getTemplatesWithModulesByIdThunk({ templateId: id }));
     }, []);
-    const canvasRef = useCanvas(speed, circleColor, blur, count, size);
+    const canvasRef = useCanvas(speed, circleColor, count, size);
     return (
         <>
             <div
+            id={name}
                 className="w-full h-full relative bg-no-repeat bg-cover"
                 style={{
                     background: backgroundIs === "COLOR" ? backgroundColor : "",
@@ -46,11 +48,20 @@ const TwoBlock: FC<ITwoBlockProps> = ({
                 }}
             >
                 {backgroundIs === "PROCEDURE" && (
-                    <canvas
-                        ref={canvasRef}
-                        className="w-full absolute -z-10 h-full"
-                        style={{ background: backgroundProcedur }}
-                    ></canvas>
+                    <>
+                    <div className="w-full h-full absolute -z-10"
+                    style={{
+                        backdropFilter: `blur(${blur}px)`
+                    }}> </div>
+                        <canvas
+                            ref={canvasRef}
+                            className="w-full absolute -z-20 h-full"
+                            style={{ background: backgroundProcedur }}
+                        ></canvas>
+                    </>
+                    
+                   
+                   
                 )}
                 <div
                     style={{

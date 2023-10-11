@@ -1,10 +1,15 @@
 import { FC } from "react";
 import { IEqualizerProps } from "./EqualizerInterface";
+import { useAppDispatch } from "@/src/hooks/useAppDispatch";
+import { setBlur, setCount, setSpeed } from "@/src/store/slice/ProcedurSlice";
+import { useAppSelector } from "@/src/hooks/useAppSelector";
 
 const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
+    const dispatch = useAppDispatch()
+    const {blur: procedurBlur} = useAppSelector(state => state.protcedur)
     return (
         <div className="w-full pt-[54px] pb-[37px] bg-[#292230]">
-            <div className="container flex h-[140px] justify-between">
+            <div className="container flex flex-col w-full h-[140px] justify-between">
                 <input
                     type="range"
                     value={state.speed}
@@ -13,10 +18,10 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     min={1}
                     style={{
                         // appearance: "slider-vertical",
-                        width: "20px",
+                        // width: "20px",
                     }}
                     onChange={(e) =>
-                        handleChange({ ...state, speed: +e.target.value })
+                        dispatch(setSpeed(+e.target.value ))
                     }
                 />
                 <input
@@ -27,10 +32,10 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     min={3}
                     style={{
                         // appearance: "slider-vertical",
-                        width: "20px",
+                        // width: "20px",
                     }}
                     onChange={(e) =>
-                        handleChange({ ...state, count: +e.target.value })
+                        dispatch(setCount(+e.target.value))
                     }
                 />
                 <input
@@ -41,7 +46,7 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     min={1}
                     style={{
                         // appearance: "slider-vertical",
-                        width: "20px",
+                        // width: "20px",
                     }}
                     onChange={(e) =>
                         handleChange({ ...state, size: +e.target.value })
@@ -49,16 +54,16 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                 />
                 <input
                     type="range"
-                    value={state.blur}
+                    value={procedurBlur}
                     step={0.2}
                     max={50}
                     min={10}
                     style={{
                         // appearance: "slider-vertical",
-                        width: "20px",
+                        // width: "20px",
                     }}
                     onChange={(e) =>
-                        handleChange({ ...state, blur: +e.target.value })
+                        dispatch(setBlur(+e.target.value ))
                     }
                 />
                 <input
@@ -69,7 +74,7 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     min={1}
                     style={{
                         // appearance: "slider-vertical",
-                        width: "20px",
+                        // width: "20px",
                     }}
                     onChange={(e) =>
                         handleChange({ ...state, vectorX: +e.target.value })
@@ -83,7 +88,7 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     min={1}
                     style={{
                         // appearance: "slider-vertical",
-                        width: "20px",
+                        // width: "20px",
                     }}
                     onChange={(e) =>
                         handleChange({ ...state, vectorY: +e.target.value })

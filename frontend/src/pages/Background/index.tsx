@@ -56,6 +56,7 @@ const PageBackgroundEdit = () => {
 
     const updateTemplateProced = () => {
         if (id) {
+            debugger
             patchTemplateById(id, {
                 background_type: "PROCEDURE",
                 procedure_background: {

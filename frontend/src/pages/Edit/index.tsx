@@ -24,16 +24,14 @@ const PageEdit = () => {
 
     const dispatch = useAppDispatch();
     const projectId = localStorage.getItem('projectId');
-    console.log(user.userProjects[user.activeIndex].ID);
     
     async function initTemplates() {
        
         if(!user.userProjects.length && projectId) {
-            const parsedProjectId = JSON.parse(projectId);
-            dispatch(getProjectWithTemplatesByIdThunk({projectId:parsedProjectId}));
+            dispatch(getProjectWithTemplatesByIdThunk({projectId:projectId}));
         }
         else{
-            localStorage.setItem('projectId', JSON.stringify(user.userProjects[user.activeIndex].ID));
+            localStorage.setItem('projectId', user.userProjects[user.activeIndex].ID);
             dispatch(getProjectWithTemplatesByIdThunk({projectId:user.userProjects[user.activeIndex].ID}));
         }
         
@@ -43,12 +41,10 @@ const PageEdit = () => {
     }, []);
 
     async function delTemp() {
-        if(projectId) {
-            const parsedProjectId = JSON.parse(projectId);
-      
+        if(projectId) {    
             if (typeof templates !== "string") {
                 await deleteTemplateById(templates[activeIndex].ID)
-                await dispatch(getProjectWithTemplatesByIdThunk({projectId:parsedProjectId}));
+                await dispatch(getProjectWithTemplatesByIdThunk({projectId:projectId}));
             }
             
         }
