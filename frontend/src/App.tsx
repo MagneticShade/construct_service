@@ -12,7 +12,7 @@ import { PageTextEdit } from "./pages/TextEdit";
 // import YourSite from "./pages/YourSite";
 import { useEffect } from "react";
 import { tg } from "./tg";
-// import EditLogo from "./pages/EditLogo";
+import EditLogo from "./pages/EditLogo";
 import { useAppDispatch } from "./hooks/useAppDispatch";
 import {
     getUserWithProjectsByIdThunk,
@@ -34,7 +34,7 @@ function App() {
     const tgUser: telegram = tg.initDataUnsafe.user;
     useEffect(() => {
         const projectId = localStorage.getItem("projectId");
-        if (!projectId) navigate("/constructorpractice/");
+        if (!projectId) navigate("/");
         tg.ready();
         tg.expand();
         tg.enableClosingConfirmation();
@@ -68,9 +68,9 @@ function App() {
         <>
             <Home />
             <Routes>
-                <Route path="/constructorpractice/" element={<></>} />
+                <Route path="/" element={<></>} />
                 <Route
-                    path="/constructorpractice/list/edit/"
+                    path="/list/edit/"
                     element={
                         <Modal>
                             <PageEdit />
@@ -78,7 +78,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/blanks"
+                    path="/blanks"
                     element={
                         <Modal>
                             <PageBlanks />
@@ -86,7 +86,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/blanks/:id"
+                    path="/blanks/:id"
                     element={
                         <Modal>
                             <PageBlanksItem />
@@ -94,7 +94,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/list"
+                    path="/list"
                     element={
                         <Modal>
                             <PageProjects />
@@ -102,7 +102,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/list/edit/text/:id"
+                    path="/list/edit/text/:id"
                     element={
                         <Modal>
                             <PageTextEdit />
@@ -111,7 +111,7 @@ function App() {
                 />
 
                 <Route
-                    path="/constructorpractice/list/edit/background/:id"
+                    path="/list/edit/background/:id"
                     element={
                         <Modal>
                             <PageBackgroundEdit />
@@ -120,16 +120,24 @@ function App() {
                 />
 
                 <Route
-                    path="/constructorpractice/yoursite/:id"
+                    path="/yoursite/:id"
                     element={
                         <Modal>
                             <YourSite />
                         </Modal>
                     }
                 />
+                <Route
+                    path="/list/logo/"
+                    element={
+                        <Modal>
+                            <EditLogo />
+                        </Modal>
+                    }
+                />
                 {/* 
                 <Route
-                    path="/constructorpractice/gallery/"
+                    path="/gallery/"
                     element={
                         <Modal>
                             <PageGallery />
@@ -138,7 +146,7 @@ function App() {
                 />
  
                 <Route
-                    path="/constructorpractice/profile/"
+                    path="/profile/"
                     element={
                         <Modal>
                             <PageDefaultProfile />
@@ -147,14 +155,7 @@ function App() {
                 />
 
  
-                <Route
-                    path="/constructorpractice/list/logo"
-                    element={
-                        <Modal>
-                            <EditLogo />
-                        </Modal>
-                    }
-                /> */}
+                */}
             </Routes>
         </>
     );

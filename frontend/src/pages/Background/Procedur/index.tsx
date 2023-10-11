@@ -16,7 +16,7 @@ const Procedur: FC<IProcedurProps> = ({ children, valueRange, blur, count, size 
     const [canvasBackground, setCanvasBackground] = useState(useRandomColor());
     const [circleColor, setCircleColor] = useState(useRandomColor());
 
-    // хук делающий канвас (НУЖНО ПОМЕНЯТЬ ЛОГИКУ ВНИТРИ НЕГО)
+    // хук делающий канвас 
     const canvasRef = useCanvas(valueRange, circleColor, blur, count, size);
 
     // функция по нажатию на ревреш, что бы передать другие рандомные цвета

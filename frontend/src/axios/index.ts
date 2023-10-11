@@ -112,6 +112,15 @@ export async function postTemplateImg(templateId: string, formData: any) {
     return data;
 }
 
+export async function postProjectLogo(templateId: string, formData: any) {
+    const { data } = await axiosInstance.post(
+        `/project/${templateId}/logo`,
+        formData
+    );
+    return data;
+}   
+
+
 export async function getTemplateImg(templateId: string) {
     const { data } = await axiosInstance.get(`/template/${templateId}/image`);
     return data;

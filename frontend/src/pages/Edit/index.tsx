@@ -24,6 +24,8 @@ const PageEdit = () => {
 
     const dispatch = useAppDispatch();
     const projectId = localStorage.getItem('projectId');
+    console.log(user.userProjects[user.activeIndex].ID);
+    
     async function initTemplates() {
        
         if(!user.userProjects.length && projectId) {
@@ -55,7 +57,7 @@ const PageEdit = () => {
     return (
         <>
             <img
-                src="/constructorpractice/maskProject.png"
+                src="/maskProject.png"
                 alt=""
                 className="absolute z-0 w-full h-screen object-cover"
             />
@@ -126,7 +128,7 @@ const PageEdit = () => {
                 </div>
             </div>
             {projectId && (
-                 <EditForm projectId={JSON.parse(projectId)}/>
+                 <EditForm projectId={projectId}/>
             )}
            
             

@@ -4,6 +4,7 @@ import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { getProjectWithTemplatesByIdThunk } from "@/src/store/slice/EditSlice";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import Header from "./Header";
 
 const YourSite = () => {
     const dispatch = useAppDispatch();
@@ -17,7 +18,7 @@ const YourSite = () => {
     
     return (
         <>
-
+            <Header />
             <div className="h-screen overflow-y-scroll">
                 {templates.length &&
                     templates.map((item, i) => {
