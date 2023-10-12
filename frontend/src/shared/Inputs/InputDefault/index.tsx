@@ -10,10 +10,9 @@ const InputDefault: FC<IInputDefaultProps> = ({
     disabled,
     valueInp,
     handelFocus,
-    handelBlur
+    handelBlur,
 }) => {
     const change = (e: any) => {
-
         handleChange(e.target.value);
     };
     return (
@@ -25,7 +24,7 @@ const InputDefault: FC<IInputDefaultProps> = ({
                 maxLength={maxLength}
                 className={`text-[16px] text-[#999] not-italic font-medium capitalize tracking-[-1.2px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5`}
                 placeholder={placeholder}
-                value={'' || valueInp}
+                value={"" || valueInp}
                 onChange={change}
                 onFocus={handelFocus}
                 onBlur={handelBlur}

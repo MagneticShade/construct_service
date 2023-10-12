@@ -7,13 +7,8 @@ import { Filter } from "../../shared/Filter";
 import { setActive } from "../../store/slice/ButtonSlice";
 
 import useDraggableBlock from "@/src/hooks/useDragble";
-import {
-    postModuleById,
-    postTemplateById,
-} from "@/src/axios";
-import {
-    getProjectWithTemplatesByIdThunk,
-} from "@/src/store/slice/EditSlice";
+import { postModuleById, postTemplateById } from "@/src/axios";
+import { getProjectWithTemplatesByIdThunk } from "@/src/store/slice/EditSlice";
 import TwoBlockPreview from "@/src/shared/FormsPrev/TwoBlockPreview";
 
 interface IeditForm {
@@ -73,7 +68,7 @@ const EditForm: FC<IeditForm> = ({ projectId }) => {
     });
     async function get() {
         console.log(projectId);
-        
+
         await dispatch(
             getProjectWithTemplatesByIdThunk({ projectId: projectId })
         );
@@ -82,9 +77,8 @@ const EditForm: FC<IeditForm> = ({ projectId }) => {
     async function handleAdd() {
         position.x = 0;
         position.y = 0;
-   
-        
-             const targetTemp = await postTemplateById(projectId, {
+
+        const targetTemp = await postTemplateById(projectId, {
             name: "troshkinBlock",
             background_color: "#333",
             text_align: "",
@@ -92,9 +86,7 @@ const EditForm: FC<IeditForm> = ({ projectId }) => {
             scheme: "",
             background_type: "COLOR",
         });
-        
-       
-        debugger
+
         await postModuleById(targetTemp, {
             background_color: "#fff",
             header_text: "",
