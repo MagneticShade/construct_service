@@ -20,7 +20,6 @@ const useCanvas = (
     size: number
 ) => {
     // Здесь канвас, который мы берем вне хука
-    // debugger
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const dispatch = useAppDispatch();
 

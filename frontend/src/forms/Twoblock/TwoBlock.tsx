@@ -38,7 +38,7 @@ const TwoBlock: FC<ITwoBlockProps> = ({
         <>
             <div
             id={name}
-                className="w-full h-full relative bg-no-repeat bg-cover"
+                className="w-full relative bg-no-repeat bg-cover"
                 style={{
                     background: backgroundIs === "COLOR" ? backgroundColor : "",
                     backgroundImage:
@@ -68,7 +68,7 @@ const TwoBlock: FC<ITwoBlockProps> = ({
                         textAlign: textAlign as TextAlign,
                         color: color,
                     }}
-                    className="pt-[160px]"
+                    className="pt-[160px]  pb-[160px]"
                 >
                     <h2
                         className="font-[500] text-[58px] text-black mb-[58px]"

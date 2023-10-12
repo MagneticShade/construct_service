@@ -97,7 +97,6 @@ export async function deleteTemplateById(templateId: string) {
     return data;
 }
 export async function patchTemplateById(templateId: string, fields: any) {
-    debugger
     const { data } = await axiosInstance.patch(
         `/template/${templateId}`,
         fields

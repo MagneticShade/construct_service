@@ -10,7 +10,7 @@ import { setActive } from "@/src/store/slice/ButtonSlice";
 import { Categories } from "./Categories";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import {  deleteTemplateById } from "@/src/axios";
-import { getProjectWithTemplatesByIdThunk, setActiveIndexEdit } from "@/src/store/slice/EditSlice";
+import { getProjectWithTemplatesByIdThunk, getTemplatesWithModulesByIdThunk, setActiveIndexEdit } from "@/src/store/slice/EditSlice";
 import TwoBlockPreview from "@/src/shared/FormsPrev/TwoBlockPreview";
 import { setIndex } from "@/src/store/slice/FormIndexSlice";
 const PageEdit = () => {
@@ -34,6 +34,7 @@ const PageEdit = () => {
             localStorage.setItem('projectId', user.userProjects[user.activeIndex].ID);
             dispatch(getProjectWithTemplatesByIdThunk({projectId:user.userProjects[user.activeIndex].ID}));
         }
+        getTemplatesWithModulesByIdThunk({})
         
     }
     useEffect(() => {
@@ -86,6 +87,8 @@ const PageEdit = () => {
                     >
                         {templates &&
                             templates.map((_: any, i: number) => {
+                                console.log(_);
+                                
                                 return (
                                     <SwiperSlide
                                         {...backspaceLongPress}
@@ -93,11 +96,15 @@ const PageEdit = () => {
                                         className="w-auto flex justify-center"
                                     >
                                         <div
-                                            className={`py-[30px] px-[26px] bg-white rounded-[15px] flex gap-[10px] justify-center items-center transition-all duration-200 ${
+                                            className={`py-[30px] px-[26px] rounded-[15px] flex gap-[10px] justify-center items-center transition-all duration-200 ${
                                                 activeIndex === i
                                                     ? "scale-[1.2]"
                                                     : ""
                                             }`}
+                                            style={{
+                                                background: _.background_color
+
+                                            }}
                                         >
                                             <TwoBlockPreview h={70} w={70} />
                                             <span
@@ -106,6 +113,7 @@ const PageEdit = () => {
                                                         ? "translate-y-0"
                                                         : "-translate-y-10"
                                                 }`}
+
                                             >
                                                 {_.name === ""
                                                     ? "Название формы"

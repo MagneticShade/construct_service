@@ -15,7 +15,6 @@ const Procedur: FC<IProcedurProps> = ({ children }) => {
         (state) => state.protcedur
     );
     // хук делающий канвас
-    // debugger
     const canvasRef = useCanvas(speed, color, count, size);
 
     // функция по нажатию на ревреш, что бы передать другие рандомные цвета

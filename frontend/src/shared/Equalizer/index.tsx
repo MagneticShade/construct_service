@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { IEqualizerProps } from "./EqualizerInterface";
 import { useAppDispatch } from "@/src/hooks/useAppDispatch";
 import { setBlur, setCount, setSize, setSpeed } from "@/src/store/slice/ProcedurSlice";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
@@ -15,9 +14,9 @@ const Equalizer: FC = () => {
                 <input
                     type="range"
                     value={speed}
-                    step={0.05}
-                    max={1.5}
-                    min={0.05}
+                    step={1}
+                    max={2}
+                    min={1}
                     onChange={(e) => dispatch(setSpeed(+e.target.value))}
                 />
                 <input
@@ -31,7 +30,7 @@ const Equalizer: FC = () => {
                 <input
                     type="range"
                     value={size}
-                    step={0.2}
+                    step={1}
                     max={30}
                     min={1}
                     onChange={(e) =>
@@ -41,7 +40,7 @@ const Equalizer: FC = () => {
                 <input
                     type="range"
                     value={blur}
-                    step={0.2}
+                    step={1}
                     max={50}
                     min={10}
                     onChange={(e) => dispatch(setBlur(+e.target.value))}
