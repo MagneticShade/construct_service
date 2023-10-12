@@ -7,6 +7,7 @@ import PageProjects from "./pages/Projects";
 import PageEdit from "./pages/Edit";
 // import PageGallery from "./pages/Background/Gallery";
 // import PageBackgroundEdit from "./pages/Background";
+
 import { PageTextEdit } from "./pages/TextEdit";
 // import YourSite from "./pages/YourSite";
 import { useEffect } from "react";
@@ -134,16 +135,27 @@ function App() {
                             <EditLogo />
                         </Modal>
                     }   
-                />
-                <Route
-                    path="/profile/"
+                />                 <Route
+                path="/profile/"
+                element={
+                    <Modal>
+                        <PageDefaultProfile />
+                    </Modal>
+                } />
+             
+                {/* <Route
+                    path="/gallery/"
                     element={
                         <Modal>
-                            <PageDefaultProfile />
+                            <PageGallery />
                         </Modal>
                     }
                 />
-                {/* 
+ 
+
+
+
+               
                 <Route
                     path="/gallery/"
                     element={

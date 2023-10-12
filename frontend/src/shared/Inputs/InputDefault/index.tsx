@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { IInputDefaultProps } from "./InputDefaultInterface";
 
 const InputDefault: FC<IInputDefaultProps> = ({
@@ -12,16 +12,10 @@ const InputDefault: FC<IInputDefaultProps> = ({
     handelFocus,
     handelBlur
 }) => {
-    const [value, setValue] = useState("");
-
     const change = (e: any) => {
-        setValue(e.target.value);
+
         handleChange(e.target.value);
     };
-    useEffect(() => {
-        change;
-    }, [value]);
-
     return (
         <div className="relative">
             <input
@@ -31,7 +25,7 @@ const InputDefault: FC<IInputDefaultProps> = ({
                 maxLength={maxLength}
                 className={`text-[16px] text-[#999] not-italic font-medium capitalize tracking-[-1.2px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5`}
                 placeholder={placeholder}
-                value={value || valueInp}
+                value={'' || valueInp}
                 onChange={change}
                 onFocus={handelFocus}
                 onBlur={handelBlur}

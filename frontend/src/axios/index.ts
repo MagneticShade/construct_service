@@ -32,7 +32,6 @@ interface IpostModule {
 export const axiosInstance = axios.create({
     baseURL: "https://practice-test.ru:8080",
 });
-//bullshit
 
 //user
 export async function getUserById(userId: string) {

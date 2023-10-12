@@ -41,29 +41,24 @@ const PageBackgroundEdit = () => {
         dispatch(setColor(value));
     };
 
-    // Забираем значение валю из инпута
-    const [valueRange, setValueRange] = useState({
-        speed: 1,
-        count: 5,
-        size: 20,
-        blur: 20,
-        vectorX: 0,
-        vectorY: 5,
-        color: "#fff",
-        background: "#000",
-    });
-    const procedur = useAppSelector((state) => state.protcedur);
+    const {
+        background,
+        blur,
+        color: procedurColor,
+        count,
+        speed,
+    } = useAppSelector((state) => state.protcedur);
 
     const updateTemplateProced = () => {
         if (id) {
             patchTemplateById(id, {
                 background_type: "PROCEDURE",
                 procedure_background: {
-                    background_color: procedur.background,
-                    color: procedur.color,
-                    count: procedur.count,
-                    blur: procedur.blur,
-                    speed: procedur.speed,
+                    background_color: background,
+                    color: procedurColor,
+                    count: count,
+                    blur: blur,
+                    speed: speed,
                 },
             });
         }
@@ -76,6 +71,7 @@ const PageBackgroundEdit = () => {
             });
         }
     };
+
     const [img, setImg] = useState<any>(null);
     const formData = new FormData();
     formData.append("file", img);
@@ -100,18 +96,10 @@ const PageBackgroundEdit = () => {
             {index === 0 && (
                 // компонент эквалайзера
                 <>
-                    <Procedur
-                        valueRange={valueRange.speed}
-                        blur={valueRange.blur}
-                        count={valueRange.count}
-                        size={valueRange.size}
-                    >
+                    <Procedur>
                         <FormBlock h={100} w={100} />
                     </Procedur>
-                    <Equalizer
-                        handleChange={setValueRange}
-                        state={valueRange}
-                    />
+                    <Equalizer />
                 </>
             )}
             {index === 2 && (
@@ -135,13 +123,13 @@ const PageBackgroundEdit = () => {
                     />
                 </>
             )}
-            {index === 2 ? (
+            {index === 2 && (
                 <SubmitButton
                     buttonActive={false}
                     title="Отправить"
                     handleClick={updateTemplate}
                 />
-            ) : (
+            )} {index == 0 && (
                 <SubmitButton
                     buttonActive={false}
                     title="Отправить"

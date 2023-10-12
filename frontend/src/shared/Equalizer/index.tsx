@@ -1,76 +1,56 @@
 import { FC } from "react";
-import { IEqualizerProps } from "./EqualizerInterface";
+import { useAppDispatch } from "@/src/hooks/useAppDispatch";
+import { setBlur, setCount, setSize, setSpeed } from "@/src/store/slice/ProcedurSlice";
+import { useAppSelector } from "@/src/hooks/useAppSelector";
 
-const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
+const Equalizer: FC = () => {
+    const dispatch = useAppDispatch();
+    const { blur, count, size, speed } = useAppSelector(
+        (state) => state.protcedur
+    );
     return (
         <div className="w-full pt-[54px] pb-[37px] bg-[#292230]">
-            <div className="container flex h-[140px] justify-between">
+            <div className="container flex flex-col w-full h-[140px] justify-between">
                 <input
                     type="range"
-                    value={state.speed}
-                    step={0.2}
-                    max={5}
+                    value={speed}
+                    step={1}
+                    max={2}
                     min={1}
-                    style={{
-                        // appearance: "slider-vertical",
-                        width: "20px",
-                    }}
-                    onChange={(e) =>
-                        handleChange({ ...state, speed: +e.target.value })
-                    }
+                    onChange={(e) => dispatch(setSpeed(+e.target.value))}
                 />
                 <input
                     type="range"
-                    value={state.count}
+                    value={count}
                     step={1}
                     max={10}
                     min={3}
-                    style={{
-                        // appearance: "slider-vertical",
-                        width: "20px",
-                    }}
-                    onChange={(e) =>
-                        handleChange({ ...state, count: +e.target.value })
-                    }
+                    onChange={(e) => dispatch(setCount(+e.target.value))}
                 />
                 <input
                     type="range"
-                    value={state.size}
-                    step={0.2}
+                    value={size}
+                    step={1}
                     max={30}
                     min={1}
-                    style={{
-                        // appearance: "slider-vertical",
-                        width: "20px",
-                    }}
                     onChange={(e) =>
-                        handleChange({ ...state, size: +e.target.value })
+                        dispatch(setSize(+e.target.value))
                     }
                 />
                 <input
                     type="range"
-                    value={state.blur}
-                    step={0.2}
+                    value={blur}
+                    step={1}
                     max={50}
                     min={10}
-                    style={{
-                        // appearance: "slider-vertical",
-                        width: "20px",
-                    }}
-                    onChange={(e) =>
-                        handleChange({ ...state, blur: +e.target.value })
-                    }
+                    onChange={(e) => dispatch(setBlur(+e.target.value))}
                 />
-                <input
+                {/* <input
                     type="range"
                     value={state.vectorX}
                     step={0.2}
                     max={5}
                     min={1}
-                    style={{
-                        // appearance: "slider-vertical",
-                        width: "20px",
-                    }}
                     onChange={(e) =>
                         handleChange({ ...state, vectorX: +e.target.value })
                     }
@@ -81,14 +61,10 @@ const Equalizer: FC<IEqualizerProps> = ({ handleChange, state }) => {
                     step={0.2}
                     max={5}
                     min={1}
-                    style={{
-                        // appearance: "slider-vertical",
-                        width: "20px",
-                    }}
                     onChange={(e) =>
                         handleChange({ ...state, vectorY: +e.target.value })
                     }
-                />
+                /> */}
             </div>
         </div>
     );

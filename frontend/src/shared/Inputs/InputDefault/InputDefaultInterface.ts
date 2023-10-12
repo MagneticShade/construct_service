@@ -3,7 +3,7 @@ export interface IInputDefaultProps {
     type: string;
     maxLength?: number;
     placeholder?: string;
-    handleChange?: (event: any) => void;
+    handleChange: (event: any) => void;
     disabled?: boolean;
     valueInp?: string;
     handelFocus?: (event: any) => void;
