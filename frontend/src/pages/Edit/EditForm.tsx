@@ -82,9 +82,9 @@ const EditForm: FC<IeditForm> = ({ projectId }) => {
     async function handleAdd() {
         position.x = 0;
         position.y = 0;
-
+   
         
-        const targetTemp = await postTemplateById(projectId, {
+             const targetTemp = await postTemplateById(projectId, {
             name: "troshkinBlock",
             background_color: "#333",
             text_align: "",
@@ -92,6 +92,9 @@ const EditForm: FC<IeditForm> = ({ projectId }) => {
             scheme: "",
             background_type: "COLOR",
         });
+        
+       
+        debugger
         await postModuleById(targetTemp, {
             background_color: "#fff",
             header_text: "",

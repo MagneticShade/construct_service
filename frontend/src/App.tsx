@@ -34,7 +34,7 @@ function App() {
     const tgUser: telegram = tg.initDataUnsafe.user;
     useEffect(() => {
         const projectId = localStorage.getItem("projectId");
-        // if (!projectId) navigate("/");
+        if (!projectId) navigate("/");
         tg.ready();
         tg.expand();
         tg.enableClosingConfirmation();
