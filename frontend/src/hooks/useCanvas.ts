@@ -20,6 +20,7 @@ const useCanvas = (
     size: number
 ) => {
     // Здесь канвас, который мы берем вне хука
+    // debugger
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const dispatch = useAppDispatch();
 
@@ -27,7 +28,7 @@ const useCanvas = (
     const balls: Ball[] = [];
 
     // Функция для генерации случайного радиуса в заданном диапазоне
-    const getRandomRadius = () => Math.random() * 40 + 30;
+    const getRandomRadius = () => Math.random() * 40 + size;
 
     // Создание 10 шариков и пуш в balls
     for (let i = 0; i < count; i++) {

@@ -32,7 +32,6 @@ interface IpostModule {
 export const axiosInstance = axios.create({
     baseURL: "https://practice-test.ru:8080",
 });
-//bullshit
 
 //user
 export async function getUserById(userId: string) {
@@ -98,6 +97,7 @@ export async function deleteTemplateById(templateId: string) {
     return data;
 }
 export async function patchTemplateById(templateId: string, fields: any) {
+    debugger
     const { data } = await axiosInstance.patch(
         `/template/${templateId}`,
         fields
