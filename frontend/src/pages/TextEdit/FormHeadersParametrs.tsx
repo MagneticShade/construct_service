@@ -77,7 +77,7 @@ const FormHeadersParametrs: FC = () => {
     formData.append("file", img);
     useEffect(() => {
         updateTemplateImg();
-    }, [img]);
+    }, [formData]);
     const updateTemplateImg = () => {
         if (modules[activeModule] && img) {
             patchModuleById(modules[activeModule].ID, {

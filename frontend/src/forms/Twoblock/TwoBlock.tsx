@@ -76,6 +76,8 @@ const TwoBlock: FC<ITwoBlockProps> = ({
                     <div className="flex w-full justify-center gap-[58px] flex-wrap">
                         {modules.length &&
                             modules.map((item: any, i: number) => {
+                                console.log(item.background_type);
+                                
                                 return (
                                     <div
                                         key={i}
@@ -84,7 +86,7 @@ const TwoBlock: FC<ITwoBlockProps> = ({
                                             color: item.text_color,
                                             textAlign:
                                                 item.text_align as TextAlign,
-                                            backgroundImage: item.background_type === 'IMAGE' ? `url(https://practice-test.ru:8080/module/${item.ID}/image)` : '',
+                                            backgroundImage: item.background_type === 'IMAGE' ? `url("https://practice-test.ru:8080/module/${item.ID}/image")` : '',
                                         }}
                                         className="w-[589px] h-[620px] p-20 duration-200 hover:shadow-my hover:-translate-y-2"
                                     >
