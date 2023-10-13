@@ -42,7 +42,7 @@ const FormParametrs = () => {
         if (getLocal) {
             await dispatch(
                 getProjectWithTemplatesByIdThunk({
-                    projectId: JSON.parse(getLocal),
+                    projectId: getLocal,
                 })
             );
             

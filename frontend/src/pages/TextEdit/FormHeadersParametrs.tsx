@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import Alignment from "./Alignment";
-import { getModuleById, patchModuleById } from "@/src/axios";
+import { getModuleById, patchModuleById, postModuleImg } from "@/src/axios";
 import { SubmitButton } from "@/src/shared/Buttons/SubmitButton";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import Success from "@/src/components/Success";
@@ -69,9 +69,25 @@ const FormHeadersParametrs: FC = () => {
         }
     };
     useEffect(() => {
-        if(modules)  getModule();
-       
+        if (modules) getModule();
     }, [modules, activeModule]);
+
+    const [img, setImg] = useState<any>(null);
+    const formData = new FormData();
+    formData.append("file", img);
+    useEffect(() => {
+        updateTemplateImg();
+    }, [img]);
+    const updateTemplateImg = () => {
+        if (modules[activeModule] && img) {
+            patchModuleById(modules[activeModule].ID, {
+                background_type: "IMAGE",
+            });
+            console.log(modules[activeModule].ID);
+            
+            postModuleImg(modules[activeModule].ID, formData);
+        }
+    };
 
     return (
         <>
@@ -91,27 +107,25 @@ const FormHeadersParametrs: FC = () => {
                         >
                             <div className="flex gap-2 justify-center">
                                 {modules.length &&
-                                    modules.map(
-                                        (_: any, i: number) => {
-                                            return (
-                                                <div
-                                                    key={i}
-                                                    onClick={() =>
-                                                        setActiveModule(i)
-                                                    }
-                                                    style={{
-                                                        width: `${100}px`,
-                                                        height: `${100}px`,
-                                                    }}
-                                                    className={`shadow-md bg-gradient-to-b shadow-[rgba(0,0,0,0.25)] from-[#9E9E9E] to-white ${
-                                                        activeModule == i
-                                                            ? "opacity-100"
-                                                            : "opacity-50"
-                                                    }`}
-                                                ></div>
-                                            );
-                                        }
-                                    )}
+                                    modules.map((_: any, i: number) => {
+                                        return (
+                                            <div
+                                                key={i}
+                                                onClick={() =>
+                                                    setActiveModule(i)
+                                                }
+                                                style={{
+                                                    width: `${100}px`,
+                                                    height: `${100}px`,
+                                                }}
+                                                className={`shadow-md bg-gradient-to-b shadow-[rgba(0,0,0,0.25)] from-[#9E9E9E] to-white ${
+                                                    activeModule == i
+                                                        ? "opacity-100"
+                                                        : "opacity-50"
+                                                }`}
+                                            ></div>
+                                        );
+                                    })}
                             </div>
                         </div>
                     </div>
@@ -196,6 +210,34 @@ const FormHeadersParametrs: FC = () => {
                                             setBackgroundColor(e.target.value)
                                         }
                                         className="w-full h-full opacity-0"
+                                    />
+                                </label>
+                            </div>
+                            <div className="">
+                                <span>Выберите фотки</span>
+                                <label className="flex items-center px-4 py-2 bg-black text-white rounded">
+                                    <svg
+                                        className="w-6 h-6 mr-2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                        ></path>
+                                    </svg>
+                                    Выберите файл
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        onChange={(e) =>
+                                            e.target.files &&
+                                            setImg(e.target.files[0])
+                                        }
                                     />
                                 </label>
                             </div>

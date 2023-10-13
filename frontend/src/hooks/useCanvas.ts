@@ -59,7 +59,7 @@ const useCanvas = (
                 const ball = balls[i];
 
                 // Обновляем позицию круга только по вертикали, учитывая скорость
-                ball.y += ball.vy * speedRnd;
+                ball.y += ball.vy * 0.1;
 
                 // Отталкиваемся от границ холста по вертикали
                 if (

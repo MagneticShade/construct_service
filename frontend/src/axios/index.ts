@@ -5,8 +5,8 @@ interface IuserFetch {
     birthday?: string;
     first_name?: string;
     last_name?: string;
-    bio:string;
-    status:string;
+    bio: string;
+    status: string;
 }
 interface IpostUserProject {
     title: string;
@@ -32,6 +32,17 @@ interface IpostTemplate {
     background_type: string;
     procedure_background: IProcedure;
 }
+
+interface IpatchModule {
+    background_color?: string;
+    header_text?: string;
+    subheader_text?: string;
+    text_align?: string;
+    text_color?: string;
+    background_type?: string;
+    procedure_background?: IProcedure;
+}
+
 
 interface IpostModule {
     background_color: string;
@@ -137,6 +148,13 @@ export async function getTemplateImg(templateId: string) {
     return data;
 }
 //module
+export async function postModuleImg(moduleId: string, formData: any) {
+    const { data } = await axiosInstance.post(
+        `/module/${moduleId}/image`,
+        formData
+    );
+    return data;
+}
 
 export async function postModuleById(templateId: string, fields: IpostModule) {
     const { data } = await axiosInstance.post(
@@ -145,7 +163,7 @@ export async function postModuleById(templateId: string, fields: IpostModule) {
     );
     return data;
 }
-export async function patchModuleById(moduleId: string, fields: IpostModule) {
+export async function patchModuleById(moduleId: string, fields: IpatchModule) {
     const { data } = await axiosInstance.patch(`/module/${moduleId}`, fields);
     return data;
 }

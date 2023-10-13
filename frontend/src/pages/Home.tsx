@@ -27,7 +27,7 @@ const Home = () => {
                         >
                             {[...Array(5)].map((_, i) => (
                                 <SwiperSlide
-                                    className={`flex max-w-[200px] items-center justify-center ${
+                                    className={`flex  items-center justify-center ${
                                         activeIndex === i ? "scale-[1.2]" : ""
                                     }`}
                                     key={i}

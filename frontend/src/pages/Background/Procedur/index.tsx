@@ -4,6 +4,7 @@ import useCanvas from "@/src/hooks/useCanvas";
 import useRandomColor from "@/src/hooks/useRandomColor";
 import { setBackground, setColor } from "@/src/store/slice/ProcedurSlice";
 import { FC, ReactNode } from "react";
+import './style.css'
 
 interface IProcedurProps {
     children: ReactNode;
@@ -11,7 +12,7 @@ interface IProcedurProps {
 const Procedur: FC<IProcedurProps> = ({ children }) => {
     // Создаем рандомнй цвет для бэкграунда и самих кругов
     const dispatch = useAppDispatch();
-    const { blur, speed, background, color, count, size } = useAppSelector(
+    const { speed, background, color, count, size } = useAppSelector(
         (state) => state.protcedur
     );
     // хук делающий канвас
@@ -27,9 +28,7 @@ const Procedur: FC<IProcedurProps> = ({ children }) => {
         <div className="relative w-full h-[250px] flex justify-center items-center">
             {/* Сам канвас */}
 
-            <div
-                className={`absolute w-full h-full backdrop-blur-[${blur}px]`}
-            ></div>
+            <div className={`absolute w-full h-full filteredBackground`}></div>
             <canvas
                 ref={canvasRef}
                 className="w-full absolute -z-10 h-full"

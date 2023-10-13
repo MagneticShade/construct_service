@@ -21,7 +21,7 @@ const Header = () => {
         getLogo();
     }, []);
     return (
-        <div className="fixed left-0 right-0 w-[12%] bg-slate-200 bg-opacity-50 h-screen z-50 flex flex-col items-center justify-center -translate-x-[99.9%] hover:-translate-x-0 duration-200">
+        <div className="fixed left-0 right-0 w-[12%] bg-slate-200 bg-opacity-50 h-screen z-50 flex flex-col items-center justify-center -translate-x-[95.9%] hover:-translate-x-0 duration-200">
             <div
                 className="w-10 h-10"
                 dangerouslySetInnerHTML={{
