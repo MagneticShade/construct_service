@@ -11,31 +11,19 @@ const Menu: FC<IMenuProps> = ({ userImg }) => {
         <div className="fixed bottom-0 w-fit right-0 left-0 mx-auto  ">
             <ul className="grid grid-cols-5 gap-[34px] mb-[10%] items-center ">
                 <li>
-                    <MenuItem
-                        img={questions}
-                        link="/questions"
-                    />
+                    <MenuItem img={questions} link="/questions" />
                 </li>
                 <li>
-                    <MenuItem
-                        img={gallery}
-                        link="/gallery"
-                    />
+                    <MenuItem img={gallery} link="/gallery" />
                 </li>
                 <li>
-                    <MenuItem
-                        img={rectangle}
-                        link="/blanks"
-                    />
+                    <MenuItem img={rectangle} link="/blanks" />
                 </li>
                 <li>
                     <MenuItem img={list} link="/list" />
                 </li>
                 <li className="">
-                    <MenuItem
-                        img={userImg}
-                        link="/profile"
-                    />
+                    <MenuItem img={userImg} link="/profile" />
                 </li>
             </ul>
         </div>
