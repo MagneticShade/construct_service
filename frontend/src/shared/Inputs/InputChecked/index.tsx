@@ -9,7 +9,6 @@ const InputChecked: FC<IInputDefaultProps> = ({
     checked = false,
     maxLength,
     placeholder,
-    handleChange,
     disabled,
     reduxVal,
     reduxOnChange,
@@ -23,8 +22,8 @@ const InputChecked: FC<IInputDefaultProps> = ({
         } else {
             setStatus(false);
         }
-        dispatch(reduxOnChange(e.target.value));
-        handleChange;
+       dispatch( reduxOnChange(e.target.value));
+       
     };
 
     return (
