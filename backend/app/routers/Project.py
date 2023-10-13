@@ -1,5 +1,6 @@
 import os
 import uuid
+from xml.dom import minidom
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from pymongo.results import UpdateResult
@@ -72,7 +73,7 @@ async def delete_project(projectID: ProjectID) -> None:
 @router.post(
     "/{projectID}/logo",
     tags=["Project"],
-    description="Replace old logo with new if exist. If image is not svg raises 400 error. If project not exist raises 400 error",
+    description="Replace old logo with new if exist. If image is not svg raises 400 error. If svg width or height size > 100 raises 400 error. If project not exist raises 400 error",
 )
 async def post_project_logo(projectID: ProjectID, file: UploadFile = File()) -> None:
     if file.content_type != "image/svg+xml":
@@ -82,6 +83,15 @@ async def post_project_logo(projectID: ProjectID, file: UploadFile = File()) -> 
         raise HTTPException(status_code=400, detail="Project not exist")
     file.filename = f"{projectID}"
     contents = await file.read()
+    attributes = (
+        minidom.parseString(contents.decode()).getElementsByTagName("svg")[0].attributes
+    )
+    width, height = int(attributes["width"].value), int(attributes["height"].value)
+    if width > 0 or height > 0:
+        raise HTTPException(
+            status_code=400,
+            detail=f"svg width and height must be < 100 ({width}x{height} was given)",
+        )
     with open(f"app/images/{file.filename}", "wb") as f:
         f.write(contents)
 
