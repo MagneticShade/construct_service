@@ -5,7 +5,7 @@ import { IProjectProps } from "./SelectedBlockInterface";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import useDraggableBlock from "@/src/hooks/useDragble";
-import { DeleteButton } from "@/src/shared/Buttons/DeleteButton";
+
 interface ISelectedBlockProps extends IProjectProps {
     setModalStatus: (status: boolean) => void;
     handleDeleteProject: () => void;
@@ -40,7 +40,6 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
     const { position, isDragging, handleStart } = useDraggableBlock({
         initialPosition: { x: 0, y: 0 },
         dropZoneId: "dropZone",
-        onDragEnd: handleDelete,
     }); // хук который позволяет делать свайп
     // tg.onEvent("viewportChanged", projectMove)
 
@@ -58,7 +57,7 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
             className=" opacity-0 fixed top-0 left-0 h-screen w-full z-10 bg-[#53535359] backdrop-blur-sm transition"
         >
             <Swiper
-                className="mySwiper z-20 container overflow-visible transition-all h-full w-[300px] "
+                className="mySwiper z-20 container overflow-visible transition-all h-full  "
                 slidesPerView={1.5}
                 centeredSlides={true}
                 breakpoints={{
@@ -79,7 +78,7 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
                         }}
                         onMouseDown={handleStart}
                         onTouchStart={handleStart}
-                        className="w-full object-cover animate-shake select-none z-10"
+                        className=" object-cover animate-shake select-none z-10  h-[50vh] "
                         onContextMenu={handleContextMenu}
                     ></div>
                     <div
@@ -139,17 +138,6 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
                     </div>
                 </SwiperSlide>
             </Swiper>
-            <div>Drag me</div>
-            <div
-                id="dropZone"
-                className={`w-full absolute left-0 bottom-0 h-24 transition-all duration-200 z-0`}
-            >
-                <DeleteButton
-                    title="Удалить"
-                    buttonActive={false}
-                    handleClick={() => handleDeleteProject()}
-                />
-            </div>
         </div>
     );
 };

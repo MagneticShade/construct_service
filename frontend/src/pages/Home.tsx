@@ -12,7 +12,7 @@ const Home = () => {
                 <div className="h-screen">
                     <div className="flex items-center h-screen">
                         <Swiper
-                            className="mySwiper container overflow-visible z-0"
+                            className="mySwiper container overflow-visible z-0 w-full h-[100vh]"
                             slidesPerView={"auto"}
                             spaceBetween={20}
                             centeredSlides={true}
@@ -27,7 +27,7 @@ const Home = () => {
                         >
                             {[...Array(5)].map((_, i) => (
                                 <SwiperSlide
-                                    className={`flex w-[200px] items-center justify-center ${
+                                    className={`flex  items-center justify-center ${
                                         activeIndex === i ? "scale-[1.2]" : ""
                                     }`}
                                     key={i}

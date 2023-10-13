@@ -27,7 +27,11 @@ const Projects: FC<IProjectProps> = ({
     const openModalWindow = (e: any) => {
         const rect = e.target.getBoundingClientRect();
         setModalStatus(!modalStatus);
-        setSelectedImageWidth({ margin: rect.top, height: rect.height });
+        setSelectedImageWidth({
+            margin: rect.top,
+            height: rect.height,
+            width: rect.width,
+        });
         setTimeout(() => {
             setActiveSlide(true);
         }, 100);
@@ -42,8 +46,8 @@ const Projects: FC<IProjectProps> = ({
                         marginTop: selectedImageWidth
                             ? selectedImageWidth.margin
                             : "" ?? "auto",
+                        width: selectedImageWidth.width,
                         backgroundImage: `url(${maskProject})`,
-                        height: selectedImageWidth.height,
                     }}
                     setModalStatus={setModalStatus}
                     handleDeleteProject={handleDeleteProject}
@@ -52,8 +56,8 @@ const Projects: FC<IProjectProps> = ({
             )}
             <Swiper
                 spaceBetween={15}
-                className="mySwiper container w-[300px] overflow-visible "
-                slidesPerView={1.5}
+                className="mySwiper container overflow-visible h-[50vh] pt-10"
+                slidesPerView={1.8}
                 centeredSlides={true}
                 onSlideChange={(e) => {
                     setActiveIndex(e.realIndex);
@@ -67,7 +71,7 @@ const Projects: FC<IProjectProps> = ({
                     else if (e.activeIndex == e.slides.length - 1)
                         e.slideTo(e.slides.length - 2);
                 }}
-                onInit={()=>setActiveIndex(0)}
+                onInit={() => setActiveIndex(0)}
                 initialSlide={0}
                 breakpoints={{
                     550: {
@@ -77,11 +81,8 @@ const Projects: FC<IProjectProps> = ({
             >
                 {projects.map((item: any, i: number) => {
                     return (
-                        <SwiperSlide key={i++} {...longPress}>
-                            <Link
-                                className=" block w-full h-full"
-                                to={`/yoursite/${item.ID}`}
-                            >
+                        <SwiperSlide key={i++} {...longPress} className="">
+                            <Link to={`/yoursite/${item.ID}`}>
                                 <div
                                     style={{
                                         backgroundImage: `url(${maskProject})`,
@@ -90,7 +91,7 @@ const Projects: FC<IProjectProps> = ({
                                                 ? "0"
                                                 : "100",
                                     }}
-                                    className={`w-full h-[276px] transition-all duration-200 text-center ${
+                                    className={`w-full h-full transition-all duration-200 text-center ${
                                         activeIndex === i ? "!scale-[1.1]" : ""
                                     }`}
                                 >

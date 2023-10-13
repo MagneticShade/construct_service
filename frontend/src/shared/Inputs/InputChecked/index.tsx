@@ -11,19 +11,19 @@ const InputChecked: FC<IInputDefaultProps> = ({
     placeholder,
     disabled,
     reduxVal,
-    reduxOnChange
+    reduxOnChange,
 }) => {
     const [status, setStatus] = useState(false);
     const dispatch = useAppDispatch();
 
     const change = (e: any) => {
-            if (e.target.value.length >= 1) {
-                setStatus(true);
-            } else {
-                setStatus(false);
-          }
-        
-       dispatch(reduxOnChange(e.target.value));
+        if (e.target.value.length >= 1) {
+            setStatus(true);
+        } else {
+            setStatus(false);
+        }
+
+        dispatch(reduxOnChange(e.target.value));
     };
 
     return (

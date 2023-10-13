@@ -15,7 +15,9 @@ export interface openState {
     birthday: string,
     first_name: string,
     last_name: string,
-    projects: string[]
+    projects: string[],
+    bio:string,
+    status:string,
 
 }
 
@@ -28,6 +30,8 @@ const initialState: user = {
     birthday: "",
     first_name: "",
     last_name: "",
+    bio:'',
+    status:"",
     projects: []
   },
   userProjects:[

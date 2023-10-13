@@ -80,24 +80,47 @@ const EditForm: FC<IeditForm> = ({ projectId }) => {
         const targetTemp = await postTemplateById(projectId, {
             name: "troshkinBlock",
             background_color: "#333",
-            text_align: "",
-            text_color: "",
+            text_color: "red",
+            text_align: "center",
             scheme: "",
             background_type: "COLOR",
+            procedure_background: {
+                background_color: "#ffffff",
+                blur: 5,
+                color: "#000000",
+                count: 3,
+                speed: 2,
+            },
         });
         await postModuleById(targetTemp, {
-            background_color: "#fff",
-            header_text: "",
-            subheader_text: "",
-            text_align: "",
-            text_color: "#abf",
+            background_color: "white",
+            header_text: "string",
+            subheader_text: "string",
+            text_align: "string",
+            text_color: "string",
+            background_type: "COLOR",
+            procedure_background: {
+                background_color: "#ffffff",
+                blur: 5,
+                color: "#000000",
+                count: 3,
+                speed: 2,
+            },
         });
         await postModuleById(targetTemp, {
-            background_color: "#fff",
-            header_text: "",
-            subheader_text: "",
-            text_align: "",
-            text_color: "#abf",
+            background_color: "white",
+            header_text: "string",
+            subheader_text: "string",
+            text_align: "string",
+            text_color: "string",
+            background_type: "COLOR",
+            procedure_background: {
+                background_color: "#ffffff",
+                blur: 5,
+                color: "#000000",
+                count: 3,
+                speed: 2,
+            },
         });
         await get();
 
@@ -106,12 +129,19 @@ const EditForm: FC<IeditForm> = ({ projectId }) => {
 
     async function addTemplate() {
         await postTemplateById(projectId, {
-            name: "string",
-            background_color: "string",
-            text_color: "string",
-            text_align: "string",
-            scheme: "string",
+            name: "troshkinBlock",
+            background_color: "#333",
+            text_color: "red",
+            text_align: "center",
+            scheme: "",
             background_type: "COLOR",
+            procedure_background: {
+                background_color: "#ffffff",
+                blur: 5,
+                color: "#000000",
+                count: 3,
+                speed: 2,
+            },
         });
         await get();
     }
@@ -119,7 +149,7 @@ const EditForm: FC<IeditForm> = ({ projectId }) => {
         <>
             <div
                 className={`absolute top-[30vh] w-full bg-white h-[70vh] z-50 transition-all duration-500 ${
-                    isActive ? "" : "translate-y-full"
+                    isActive ? "" : "translate-y-full opacity-0"
                 }`}
                 onTouchStart={(e) => handleTouchStart(e)}
                 onTouchMove={(e) => handleTouchMove(e)}
@@ -133,12 +163,12 @@ const EditForm: FC<IeditForm> = ({ projectId }) => {
                         <Swiper
                             spaceBetween={13}
                             className="mySwiper overflow-visible  relative"
-                            slidesPerView={2}
+                            slidesPerView={1.5}
                             loop={true}
                             centeredSlides={true}
                             breakpoints={{
                                 550: {
-                                    slidesPerView: 1.2,
+                                    slidesPerView: 2,
                                 },
                             }}
                             onSlideChange={(e) => setActiveIndex(e.realIndex)}
@@ -198,7 +228,7 @@ const EditForm: FC<IeditForm> = ({ projectId }) => {
                         <span className=" block pt-[40px] text-[16px] font-[600] opacity-60 text-center">
                             Эта форма лучше всего подойдет для
                         </span>
-                        <TwoBlockPreview h={100} w={100} />
+                        <TwoBlockPreview h={"100px"} w={"100px"} />
                     </div>
 
                     <button

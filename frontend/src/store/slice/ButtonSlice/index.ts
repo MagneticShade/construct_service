@@ -7,7 +7,7 @@ export interface openState {
 
 const initialState: openState = {
     valueModal: false,
-    valueButton: false
+    valueButton: true
 
 };
 

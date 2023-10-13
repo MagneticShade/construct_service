@@ -27,17 +27,20 @@ const TwoBlock: FC<ITwoBlockProps> = ({
     backgroundImage,
 }) => {
     console.log(blur);
-    
+
     const dispatch = useAppDispatch();
     const modules = useAppSelector((state) => state.edit.modules);
+    
     useEffect(() => {
         dispatch(getTemplatesWithModulesByIdThunk({ templateId: id }));
     }, []);
+    
+
     const canvasRef = useCanvas(speed, circleColor, count, size);
     return (
         <>
             <div
-            id={name}
+                id={name}
                 className="w-full relative bg-no-repeat bg-cover"
                 style={{
                     background: backgroundIs === "COLOR" ? backgroundColor : "",
@@ -49,19 +52,13 @@ const TwoBlock: FC<ITwoBlockProps> = ({
             >
                 {backgroundIs === "PROCEDURE" && (
                     <>
-                    <div className="w-full h-full absolute -z-10"
-                    style={{
-                        backdropFilter: `blur(${blur}px)`
-                    }}> </div>
+                        <div className="w-full h-full absolute -z-10 filteredBackground"></div>
                         <canvas
                             ref={canvasRef}
                             className="w-full absolute -z-20 h-full"
                             style={{ background: backgroundProcedur }}
                         ></canvas>
                     </>
-                    
-                   
-                   
                 )}
                 <div
                     style={{
@@ -87,6 +84,7 @@ const TwoBlock: FC<ITwoBlockProps> = ({
                                             color: item.text_color,
                                             textAlign:
                                                 item.text_align as TextAlign,
+                                            backgroundImage: item.background_type === 'IMAGE' ? `url(https://practice-test.ru:8080/module/${item.ID}/image)` : '',
                                         }}
                                         className="w-[589px] h-[620px] p-20 duration-200 hover:shadow-my hover:-translate-y-2"
                                     >

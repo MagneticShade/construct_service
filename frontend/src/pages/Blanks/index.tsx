@@ -59,9 +59,10 @@ const PageBlanks = () => {
                 })}
             </div>
             <LinkButton
-                link={"1"}
+                link={"1/"}
                 title={"далее"}
                 buttonActive={buttonActive}
+                handleClick={() => dispatch(setActiveButton(true))}
             />
         </>
     );

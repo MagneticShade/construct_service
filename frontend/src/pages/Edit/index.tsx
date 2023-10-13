@@ -9,8 +9,11 @@ import { useAppDispatch } from "@/src/hooks/useAppDispatch";
 import { setActive } from "@/src/store/slice/ButtonSlice";
 import { Categories } from "./Categories";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
-import {  deleteTemplateById } from "@/src/axios";
-import { getProjectWithTemplatesByIdThunk, setActiveIndexEdit } from "@/src/store/slice/EditSlice";
+import { deleteTemplateById } from "@/src/axios";
+import {
+    getProjectWithTemplatesByIdThunk,
+    setActiveIndexEdit,
+} from "@/src/store/slice/EditSlice";
 import TwoBlockPreview from "@/src/shared/FormsPrev/TwoBlockPreview";
 import { setIndex } from "@/src/store/slice/FormIndexSlice";
 const PageEdit = () => {
@@ -23,29 +26,37 @@ const PageEdit = () => {
     const activeIndex = useAppSelector((state) => state.formIndex.index);
 
     const dispatch = useAppDispatch();
-    const projectId = localStorage.getItem('projectId');
-    
+    const projectId = localStorage.getItem("projectId");
+
     async function initTemplates() {
-       
-        if(!user.userProjects.length && projectId) {
-            dispatch(getProjectWithTemplatesByIdThunk({projectId:projectId}));
+        if (!user.userProjects.length && projectId) {
+            dispatch(
+                getProjectWithTemplatesByIdThunk({ projectId: projectId })
+            );
+        } else {
+            localStorage.setItem(
+                "projectId",
+                user.userProjects[user.activeIndex].ID
+            );
+            dispatch(
+                getProjectWithTemplatesByIdThunk({
+                    projectId: user.userProjects[user.activeIndex].ID,
+                })
+            );
         }
-        else{
-            localStorage.setItem('projectId', user.userProjects[user.activeIndex].ID);
-            dispatch(getProjectWithTemplatesByIdThunk({projectId:user.userProjects[user.activeIndex].ID}));
-        }       
     }
     useEffect(() => {
         initTemplates();
     }, []);
 
     async function delTemp() {
-        if(projectId) {    
+        if (projectId) {
             if (typeof templates !== "string") {
-                await deleteTemplateById(templates[activeIndex].ID)
-                await dispatch(getProjectWithTemplatesByIdThunk({projectId:projectId}));
+                await deleteTemplateById(templates[activeIndex].ID);
+                await dispatch(
+                    getProjectWithTemplatesByIdThunk({ projectId: projectId })
+                );
             }
-            
         }
     }
 
@@ -86,10 +97,9 @@ const PageEdit = () => {
                         {templates &&
                             templates.map((_: any, i: number) => {
                                 console.log(_);
-                                
+
                                 return (
                                     <SwiperSlide
-                                        
                                         key={i}
                                         className="w-auto flex justify-center "
                                     >
@@ -100,21 +110,38 @@ const PageEdit = () => {
                                                     : ""
                                             }`}
                                             style={{
-                                                background: _.background_color
-
+                                                background:
+                                                    _.background_type ===
+                                                    "COLOR"
+                                                        ? _.background_color
+                                                        : "",
+                                                backgroundImage:
+                                                    _.background_type ===
+                                                    "IMAGE"
+                                                        ? `url(https://practice-test.ru:8080/template/${_.ID}/image)`
+                                                        : "",
                                             }}
-                                        >   
-                                        <div {...backspaceLongPress} className={`${buttonActive ? "animate-shake" : ""}`}>
-                                            <TwoBlockPreview h={70} w={70} />
+                                        >
+                                            <div
+                                                {...backspaceLongPress}
+                                                className={`${
+                                                    buttonActive
+                                                        ? "animate-shake"
+                                                        : ""
+                                                }`}
+                                            >
+                                                <TwoBlockPreview
+                                                    h={"10vh"}
+                                                    w={"20vw"}
+                                                />
+                                            </div>
 
-                                        </div>
                                             <span
                                                 className={`absolute -bottom-8 text-white transition-all duration-200 ${
                                                     activeIndex === i
-                                                        ? "translate-y-0"
-                                                        : "-translate-y-10"
+                                                        ? "translate-y-0 opacity-100"
+                                                        : "-translate-y-10 opacity-0"
                                                 }`}
-
                                             >
                                                 {_.name === ""
                                                     ? "Название формы"
@@ -132,11 +159,8 @@ const PageEdit = () => {
                     </Swiper>
                 </div>
             </div>
-            {projectId && (
-                 <EditForm projectId={projectId}/>
-            )}
-           
-            
+            {projectId && <EditForm projectId={projectId} />}
+
             {buttonActive ? (
                 <DeleteButton
                     title="Удалить"
