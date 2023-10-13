@@ -22,7 +22,7 @@ const Menu: FC<IMenuProps> = ({ userImg }) => {
                 <li>
                     <MenuItem img={list} link="/list" />
                 </li>
-                <li className="">
+                <li className="rounded-full overflow-hidden">
                     <MenuItem img={userImg} link="/profile" />
                 </li>
             </ul>
