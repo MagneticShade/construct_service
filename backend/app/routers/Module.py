@@ -25,8 +25,23 @@ async def get_module(moduleID: ModuleID) -> Module:
     description="Updates module properties with only provided fields. If field is not provided its value not updates. If module not exist raises 400 error",
 )
 async def patch_module(moduleID: ModuleID, updates: UpdateModule) -> None:
+    procedure_background_updates = {}
+    if updates.procedure_background:
+        for key, value in updates.procedure_background.model_dump(
+            exclude_none=True
+        ).items():
+            procedure_background_updates[f"procedure_background.{key}"] = value
     result: UpdateResult = modules_collection.update_one(
-        {"ID": moduleID}, {"$set": updates.model_dump(exclude_none=True)}
+        {"ID": moduleID},
+        {
+            "$set": {
+                **updates.model_dump(
+                    exclude_none=True,
+                    exclude={"procedure_background"},
+                ),
+                **procedure_background_updates,
+            },
+        },
     )
     if result.matched_count < 1:
         raise HTTPException(status_code=400, detail="Module not exist")

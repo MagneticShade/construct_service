@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from .. import ProcedureBackground
-from . import TemplateBackgroundType
+from . import BackgroundType
 
 
 class NewTemplate(BaseModel):
@@ -9,5 +9,5 @@ class NewTemplate(BaseModel):
     text_color: str
     text_align: str
     scheme: str
-    background_type: TemplateBackgroundType
+    background_type: BackgroundType
     procedure_background: ProcedureBackground = ProcedureBackground.default()
