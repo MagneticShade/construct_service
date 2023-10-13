@@ -109,7 +109,7 @@ async def get_user_image(telegramID: TelegramID) -> FileResponse:
     path = f"app/images/{telegramID}"
     if os.path.exists(path):
         return FileResponse(path, media_type="image/png")
-    return FileResponse("app/placeholders/user_image.png", media_type="image/png")
+    return FileResponse("app/placeholders/user.png", media_type="image/png")
 
 
 @router.post(
