@@ -3,6 +3,10 @@ import { Menu } from "../components/Menu";
 import { useState } from "react";
 import { useAppSelector } from "../hooks/useAppSelector";
 
+import maskProject from "/maskProject.png";
+import ponart from '@/src/assets/photo_2023-10-13_21-35-06.jpg'
+import utki from '@/src/assets/photo_2023-10-13_21-35-25.jpg'
+
 const Home = () => {
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const {telegramID} = useAppSelector(state=> state.user.user)
@@ -30,12 +34,13 @@ const Home = () => {
                                     className={`flex  items-center justify-center ${
                                         activeIndex === i ? "scale-[1.2]" : ""
                                     }`}
+    
                                     key={i}
                                 >
                                     <img
-                                        src="/mask.png"
+                                        src={i % 3 === 0 ? maskProject : i % 3 === 1 ? ponart : utki}
                                         alt="mask"
-                                        className={`h-[50%] duration-200 ${
+                                        className={`h-[50%] duration-200 w-[200px] object-cover ${
                                             activeIndex === i
                                                 ? "scale-[1.2]"
                                                 : ""

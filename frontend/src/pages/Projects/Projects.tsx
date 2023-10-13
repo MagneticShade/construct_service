@@ -1,6 +1,8 @@
 import { FC, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import maskProject from "/maskProject.png";
+import ponart from '@/src/assets/photo_2023-10-13_21-35-06.jpg'
+import utki from '@/src/assets/photo_2023-10-13_21-35-25.jpg'
 import "swiper/css";
 import useLongPress from "@/src/hooks/useLongPress.ts";
 import { SelectedBlock } from "./SelectedBlock";
@@ -85,13 +87,13 @@ const Projects: FC<IProjectProps> = ({
                             <Link to={`/yoursite/${item.ID}`}>
                                 <div
                                     style={{
-                                        backgroundImage: `url(${maskProject})`,
+                                        backgroundImage: i % 3 === 0 ? `url(${maskProject})` : i % 3 === 1 ? `url(${ponart})` : `url(${utki})`,
                                         opacity:
                                             activeIndex === i && activeSlide
                                                 ? "0"
                                                 : "100",
                                     }}
-                                    className={`w-full h-full transition-all duration-200 text-center ${
+                                    className={`w-full h-full transition-all duration-200 text-center background-position-centre bg-center ${
                                         activeIndex === i ? "!scale-[1.1]" : ""
                                     }`}
                                 >

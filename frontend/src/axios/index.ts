@@ -128,11 +128,18 @@ export async function patchTemplateById(templateId: string, fields: any) {
     return data;
 }
 export async function postTemplateImg(templateId: string, formData: any) {
-    const { data } = await axiosInstance.post(
+    try{
+        alert(JSON.stringify(formData))
+       const { data } = await axiosInstance.post(
         `/template/${templateId}/image`,
         formData
     );
-    return data;
+    return data; 
+    } catch(err){
+        // const dictionary = JSON.stringify(err.request);
+        alert(JSON.stringify(err))
+    }
+    
 }
 
 export async function postProjectLogo(templateId: string, formData: any) {
@@ -164,7 +171,10 @@ export async function postModuleById(templateId: string, fields: IpostModule) {
     return data;
 }
 export async function patchModuleById(moduleId: string, fields: IpatchModule) {
-    const { data } = await axiosInstance.patch(`/module/${moduleId}`, fields);
+    const { data } = await axiosInstance.patch(`/module/${moduleId}`, fields, {
+        maxBodyLength: 100000000,
+        maxContentLength: 100000000
+    });
     return data;
 }
 export async function getModuleById(moduleId: string) {

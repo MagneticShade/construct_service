@@ -19,8 +19,8 @@ const FormHeadersParametrs: FC = () => {
     const dispatch = useAppDispatch();
     const { isLoading, modules } = useAppSelector((state) => state.edit);
     const { id } = useParams();
+    const getLocal = localStorage.getItem("projectId");
     async function get() {
-        const getLocal = localStorage.getItem("projectId");
         if (getLocal) {
             await dispatch(
                 getTemplatesWithModulesByIdThunk({
@@ -75,17 +75,22 @@ const FormHeadersParametrs: FC = () => {
     const [img, setImg] = useState<any>(null);
     const formData = new FormData();
     formData.append("file", img);
-    useEffect(() => {
-        updateTemplateImg();
-    }, [formData]);
-    const updateTemplateImg = () => {
-        if (modules[activeModule] && img) {
-            patchModuleById(modules[activeModule].ID, {
+
+    const updateTemplateImg = async () => {
+       
+
+        if (modules[activeModule] && formData ) {
+            try{
+                await patchModuleById(modules[activeModule].ID, {
                 background_type: "IMAGE",
             });
             console.log(modules[activeModule].ID);
             
-            postModuleImg(modules[activeModule].ID, formData);
+            await postModuleImg(modules[activeModule].ID, formData); 
+            }catch(err){
+                alert(err);
+            }
+           
         }
     };
 
@@ -234,20 +239,27 @@ const FormHeadersParametrs: FC = () => {
                                     <input
                                         type="file"
                                         className="hidden"
-                                        onChange={(e) =>
+                                        onChange={(e) => {
+                                            alert(e.target.files)
                                             e.target.files &&
-                                            setImg(e.target.files[0])
+                                            setImg(e.target.files[0])}
                                         }
                                     />
                                 </label>
                             </div>
                         </div>
 
+                        {img !== null ? 
                         <SubmitButton
                             buttonActive={false}
-                            title="Отправить на сайт"
+                            title="Отправить изображение"
+                            handleClick={() => updateTemplateImg()}
+                        /> : 
+                        <SubmitButton
+                            buttonActive={false}
+                            title="Отправить на сайт "
                             handleClick={() => updateModule()}
-                        />
+                        />}
                     </>
                 </div>
             )}

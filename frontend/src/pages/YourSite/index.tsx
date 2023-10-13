@@ -16,9 +16,13 @@ const YourSite = () => {
     }, []);
 
     const templates = useAppSelector((state) => state.edit.templates);
-
+    // const path = useLocation()
+    // const copy = () => {
+    //     navigator.clipboard.writeText(`practice-test.ru${path.pathname}`)
+    // }
     return (
         <>
+        {/* <button onClick={copy}>Скопировать ссылку</button> */}
             <Header />
             <div className="h-screen overflow-y-scroll scroll-smooth">
                 {templates.length &&

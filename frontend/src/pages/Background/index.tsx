@@ -73,15 +73,20 @@ const PageBackgroundEdit = () => {
         }
     };
     const [img, setImg] = useState<any>(null);
-    const formData = new FormData();
-    formData.append("file", img);
+    
     const updateTemplateImg = () => {
-        if (id && formData) {
-            postTemplateImg(id, formData);
-            patchTemplateById(id, {
+        const formData = new FormData();
+        formData.append("file", img);
+        alert(JSON.stringify(img))
+        if (id && img) {
+                postTemplateImg(id, formData);
+                patchTemplateById(id, {
                 background_type: "IMAGE",
             });
+           
+            
         }
+    
     };
     return (
         <div className=" overflow-auto h-full">

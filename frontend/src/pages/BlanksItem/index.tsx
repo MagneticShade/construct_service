@@ -79,17 +79,17 @@ const PageBlanksItem = () => {
                         <div className="pt-[19px] flex flex-wrap gap-[6px] justify-center">
                             <Category
                                 mass={mass}
-                                title="Утки"
+                                title="Бизнес"
                                 handleMass={handleMass}
                             />
                             <Category
                                 mass={mass}
-                                title="Селезни"
+                                title="Производство"
                                 handleMass={handleMass}
                             />
                             <Category
                                 mass={mass}
-                                title="Прокрастинация"
+                                title="Доставка"
                                 handleMass={handleMass}
                             />
                             <Category
@@ -99,12 +99,7 @@ const PageBlanksItem = () => {
                             />
                             <Category
                                 mass={mass}
-                                title="Кафетерии"
-                                handleMass={handleMass}
-                            />
-                            <Category
-                                mass={mass}
-                                title="Кофе"
+                                title="IT"
                                 handleMass={handleMass}
                             />
                         </div>

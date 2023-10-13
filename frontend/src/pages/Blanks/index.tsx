@@ -1,6 +1,8 @@
 import { useState } from "react";
 import maskProject from "/maskProject.png";
 import BlanksItem from "@/src/shared/BlanksItem";
+import ponart from '@/src/assets/photo_2023-10-13_21-35-06.jpg'
+import utki from '@/src/assets/photo_2023-10-13_21-35-25.jpg'
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { setActiveButton } from "@/src/store/slice/ButtonSlice";
@@ -49,7 +51,7 @@ const PageBlanks = () => {
                     return (
                         <BlanksItem
                             key={i}
-                            imgUrl={maskProject}
+                            imgUrl={i % 3 === 0 ? maskProject : i % 3 === 1 ? ponart : utki}
                             handleClick={() => isBlur(i)}
                             isBlockSelected={isBlockSelected}
                             isBlurBlanks={isBlurBlanks}
