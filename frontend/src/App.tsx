@@ -87,7 +87,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/blanks/:id"
+                    path="/blanks/:id/"
                     element={
                         <Modal>
                             <PageBlanksItem />

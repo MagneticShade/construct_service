@@ -37,9 +37,9 @@ const Filter: FC<IFilterProps> = ({ filterName, setIndex }) => {
                             activeName === name &&
                             "font-semibold text-black pb-[11px]"
                         }
-                        cursor-pointer text-[#8E8B8B] text-[15px]`}
+                        cursor-pointer text-[#8E8B8B] text-[15px] max-xsm:text-[12px] relative`}
                         onClick={() => {
-                            onHandleClick(name, id)
+                            onHandleClick(name, id);
                         }}
                         key={id}
                     >

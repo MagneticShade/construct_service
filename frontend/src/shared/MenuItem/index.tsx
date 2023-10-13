@@ -6,7 +6,7 @@ const MenuItem: FC<IMenuItemProps> = ({ img, link }) => {
     return (
         <Link to={link}>
             <button className="w-10 h-10">
-                <img src={img} alt="questions" />
+                <img src={img} alt="questions" className="rounded-full" />
             </button>
         </Link>
     );

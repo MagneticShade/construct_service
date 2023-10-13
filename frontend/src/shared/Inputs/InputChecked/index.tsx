@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { CheckedButton } from "../../Buttons/CheckedButton";
 import { IInputDefaultProps } from "./InputDefaultInterface";
 import { useAppDispatch } from "@/src/hooks/useAppDispatch";
@@ -12,25 +12,20 @@ const InputChecked: FC<IInputDefaultProps> = ({
     handleChange,
     disabled,
     reduxVal,
-    reduxOnChange
+    reduxOnChange,
 }) => {
     const [status, setStatus] = useState(false);
     const dispatch = useAppDispatch();
 
-    const change = (e: any) => {
-        if (checked) {
-            if (reduxVal.length > 5) {
-                setStatus(true);
-            } else {
-                setStatus(false);
-            }
+    const change = (e: any) => {        
+        if (e.target.value !== "") {
+            setStatus(true);
+        } else {
+            setStatus(false);
         }
-       dispatch( reduxOnChange(e.target.value));
+        dispatch(reduxOnChange(e.target.value));
         handleChange;
     };
-    useEffect(() => {
-        change;
-    }, [reduxVal]);
 
     return (
         <div className="relative">

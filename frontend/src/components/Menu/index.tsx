@@ -31,7 +31,7 @@ const Menu: FC<IMenuProps> = ({ userImg }) => {
                 <li>
                     <MenuItem img={list} link="/list" />
                 </li>
-                <li>
+                <li className="">
                     <MenuItem
                         img={userImg}
                         link="/profile"

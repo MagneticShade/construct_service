@@ -1,5 +1,4 @@
 import { CheckedButton } from "../../shared/Buttons/CheckedButton";
-import { LinkButton } from "../../shared/Buttons/LinkButton";
 import { Filter } from "../../shared/Filter";
 import { Projects } from "./Projects";
 import Loader from "@/src/shared/Loader";
@@ -77,7 +76,6 @@ const PageProjects = () => {
                     </div>
                 </div>
             </div>
-            <LinkButton link={""} title={"дальше"} buttonActive={false} />
         </>
     );
 };

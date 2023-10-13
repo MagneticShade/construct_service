@@ -9,10 +9,18 @@ interface IuserFetch {
 interface IpostUserProject {
     title: string;
     slogan: string;
+    goal: string;
     description: string;
     tags: string[];
 }
 
+interface IProcedure {
+    background_color: string;
+    blur: number;
+    color: string;
+    count: number;
+    speed: number;
+}
 interface IpostTemplate {
     name: string;
     background_color: string;
@@ -20,6 +28,7 @@ interface IpostTemplate {
     text_align: string;
     scheme: string;
     background_type: string;
+    procedure_background: IProcedure;
 }
 
 interface IpostModule {
@@ -28,6 +37,8 @@ interface IpostModule {
     subheader_text: string;
     text_align: string;
     text_color: string;
+    background_type: string;
+    procedure_background: IProcedure;
 }
 export const axiosInstance = axios.create({
     baseURL: "https://practice-test.ru:8080",
@@ -36,9 +47,7 @@ export const axiosInstance = axios.create({
 //user
 export async function getUserById(userId: string) {
     try {
-        const { data: user } = await axiosInstance.get(
-            `/user/${userId}`
-        );
+        const { data: user } = await axiosInstance.get(`/user/${userId}`);
         return { user };
     } catch (err: any) {
         const status = (err as AxiosError).response?.status;
@@ -46,14 +55,13 @@ export async function getUserById(userId: string) {
     }
 }
 
-
 export async function patchUserById(userId: string, fields: IuserFetch) {
     const { data } = await axiosInstance.patch(`/user/${userId}`, fields);
     return data;
 }
-export async function postUserImage(userId:string,image:FormData){
-    const {data} = await axiosInstance.post(`/user/${userId}/image`, image);
-    return data
+export async function postUserImage(userId: string, image: FormData) {
+    const { data } = await axiosInstance.post(`/user/${userId}/image`, image);
+    return data;
 }
 export async function postUserById(userId: string, fields: IuserFetch) {
     const { data } = await axiosInstance.post(`/user/${userId}`, fields);
@@ -120,8 +128,7 @@ export async function postProjectLogo(templateId: string, formData: any) {
         formData
     );
     return data;
-}   
-
+}
 
 export async function getTemplateImg(templateId: string) {
     const { data } = await axiosInstance.get(`/template/${templateId}/image`);

@@ -11,7 +11,7 @@ import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { getUserWithProjectsByIdThunk } from "@/src/store/slice/UserSlice";
 
 const PageBlanksItem = () => {
-    const {telegramID} = useAppSelector((state) => state.user.user);
+    const { telegramID } = useAppSelector((state) => state.user.user);
     const blanksItem = useAppSelector((state) => state.blanksItem);
     const dispatch = useAppDispatch();
     const [mass, setMass] = useState<any>([]);
@@ -35,15 +35,15 @@ const PageBlanksItem = () => {
     }, [mass]);
 
     async function handleSubmit() {
-        const res = await postProjectByUserId(telegramID,{
+        await postProjectByUserId(telegramID, {
             title: blanksItem.title,
             slogan: blanksItem.slogan,
-            description:blanksItem.description ,
-            tags: blanksItem.tags
-          })
-        
-        console.log(res);
-        dispatch(getUserWithProjectsByIdThunk({userId:telegramID}));
+            goal: "string",
+            description: blanksItem.description,
+            tags: blanksItem.tags,
+        });
+
+        dispatch(getUserWithProjectsByIdThunk({ userId: telegramID }));
     }
 
     return (
@@ -64,7 +64,7 @@ const PageBlanksItem = () => {
                             Выбери до 3х сфер деятельности:
                         </span>
                         <div className="pt-[19px] flex flex-wrap gap-[6px] justify-center">
-                        <Category
+                            <Category
                                 mass={mass}
                                 title="Утки"
                                 handleMass={handleMass}
