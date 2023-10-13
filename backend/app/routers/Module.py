@@ -86,9 +86,9 @@ async def post_module_image(moduleId: ModuleID, file: UploadFile = File()) -> No
 @router.get(
     "/{moduleID}/image",
     tags=["Module"],
-    description="Return template image. If template not exist raises 400 error. If image not exist raises 404 error",
+    description="Return module image. If module not exist raises 400 error. If image not exist raises 404 error",
 )
-async def get_template_image(moduleID: ModuleID) -> FileResponse:
+async def get_module_image(moduleID: ModuleID) -> FileResponse:
     if modules_collection.find_one({"ID": moduleID}) is None:
         raise HTTPException(status_code=400, detail="Module not exist")
     path = f"app/images/{moduleID}"
