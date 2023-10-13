@@ -7,3 +7,5 @@ class UpdateUser(BaseModel):
     birthday: Optional[str] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    status: Optional[str] = None
+    bio: Optional[str] = None

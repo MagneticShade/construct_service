@@ -6,3 +6,5 @@ class NewUser(BaseModel):
     birthday: str
     first_name: str
     last_name: str
+    status: str
+    bio: str
