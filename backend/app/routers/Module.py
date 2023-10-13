@@ -71,13 +71,13 @@ async def delete_module(moduleID: ModuleID) -> None:
     tags=["Module"],
     description="Replace old module background image with new if exist. If image is not png or jpeg raises 400 error. If module not exist raises 400 error",
 )
-async def post_module_image(moduleId: ModuleID, file: UploadFile = File()) -> None:
+async def post_module_image(moduleID: ModuleID, file: UploadFile = File()) -> None:
     if file.content_type not in ("image/png", "image/jpeg"):
         raise HTTPException(status_code=400, detail="Image must be in png format")
-    module = modules_collection.find_one({"ID": moduleId})
+    module = modules_collection.find_one({"ID": moduleID})
     if module is None:
         raise HTTPException(status_code=400, detail="Module not exist")
-    file.filename = f"{moduleId}"
+    file.filename = f"{moduleID}"
     contents = await file.read()
     with open(f"app/images/{file.filename}", "wb") as f:
         f.write(contents)
