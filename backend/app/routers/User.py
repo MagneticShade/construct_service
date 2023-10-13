@@ -84,10 +84,10 @@ async def patch_user(telegramID: TelegramID, updates: UpdateUser) -> None:
 @router.post(
     "/{telegramID}/image",
     tags=["User"],
-    description="Replace old user's image with new if exist. If image is not png raises 400 error. If user not exist raises 400 error",
+    description="Replace old user's image with new if exist. If image is not png or jpeg raises 400 error. If user not exist raises 400 error",
 )
 async def post_user_image(telegramID: TelegramID, file: UploadFile = File()) -> None:
-    if file.content_type != "image/png":
+    if file.content_type not in ("image/png", "image/jpeg"):
         raise HTTPException(status_code=400, detail="Image must be in png format")
     user = users_collection.find_one({"telegramID": telegramID})
     if user is None:
@@ -101,15 +101,15 @@ async def post_user_image(telegramID: TelegramID, file: UploadFile = File()) -> 
 @router.get(
     "/{telegramID}/image",
     tags=["User"],
-    description="Return user's image. If user not exist raises 400 error. If logo not exist returns users telegram image",
+    description="Return user's image. If user not exist raises 400 error. If image not exist returns default image",
 )
 async def get_user_image(telegramID: TelegramID) -> FileResponse:
     if users_collection.find_one({"telegramID": telegramID}) is None:
         raise HTTPException(status_code=400, detail="User not exist")
     path = f"app/images/{telegramID}"
     if os.path.exists(path):
-        return FileResponse(path, media_type="image/jpeg")
-    return FileResponse("app/placeholders/user_image.png", media_type="image/jpeg")
+        return FileResponse(path, media_type="image/png")
+    return FileResponse("app/placeholders/user_image.png", media_type="image/png")
 
 
 @router.post(

@@ -96,13 +96,15 @@ async def post_template_module(templateID: TemplateID, module: NewModule) -> Mod
 @router.post(
     "/{templateID}/image",
     tags=["Template"],
-    description="Replace old template background image with new if exist. If image is not png raises 400 error. If project not exist raises 400 error",
+    description="Replace old template background image with new if exist. If image is not png or jpeg raises 400 error. If project not exist raises 400 error",
 )
 async def post_template_image(
     templateID: TemplateID, file: UploadFile = File()
 ) -> None:
-    if file.content_type != "image/png":
-        raise HTTPException(status_code=400, detail="Image must be in png format")
+    if file.content_type not in ("image/png", "image/jpeg"):
+        raise HTTPException(
+            status_code=400, detail="Image must be in png or jpeg format"
+        )
     template = templates_collection.find_one({"ID": templateID})
     if template is None:
         raise HTTPException(status_code=400, detail="Template not exist")
