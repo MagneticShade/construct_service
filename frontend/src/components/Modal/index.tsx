@@ -81,7 +81,7 @@ const Modal: FC<IModalProps> = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if (countSlashes(pathname) >= 3) {
+        if (countSlashes(pathname) >= 2) {
             setInvested(true);
         } else {
             setInvested(false);

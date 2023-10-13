@@ -11,6 +11,7 @@ interface IpostUserProject {
     slogan: string;
     description: string;
     tags: string[];
+    goal:string;
 }
 
 interface IpostTemplate {

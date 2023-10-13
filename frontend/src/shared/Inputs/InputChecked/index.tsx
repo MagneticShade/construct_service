@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { CheckedButton } from "../../Buttons/CheckedButton";
 import { IInputDefaultProps } from "./InputDefaultInterface";
 import { useAppDispatch } from "@/src/hooks/useAppDispatch";
@@ -9,7 +9,6 @@ const InputChecked: FC<IInputDefaultProps> = ({
     checked = false,
     maxLength,
     placeholder,
-    handleChange,
     disabled,
     reduxVal,
     reduxOnChange
@@ -18,28 +17,23 @@ const InputChecked: FC<IInputDefaultProps> = ({
     const dispatch = useAppDispatch();
 
     const change = (e: any) => {
-        if (checked) {
-            if (reduxVal.length > 5) {
+            if (e.target.value.length >= 1) {
                 setStatus(true);
             } else {
                 setStatus(false);
-            }
-        }
-       dispatch( reduxOnChange(e.target.value));
-        handleChange;
+          }
+        
+       dispatch(reduxOnChange(e.target.value));
     };
-    useEffect(() => {
-        change;
-    }, [reduxVal]);
 
     return (
-        <div className="relative">
+        <div className="relative ">
             <input
                 disabled={disabled}
                 name={name}
                 type={type}
                 maxLength={maxLength}
-                className={`text-[16px] text-[#999] not-italic font-medium font-montserrat capitalize tracking-[-0.96px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5`}
+                className={`blankInput text-[16px] text-[#999] not-italic font-medium font-montserrat capitalize tracking-[-0.96px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5`}
                 placeholder={placeholder}
                 value={reduxVal}
                 onChange={change}

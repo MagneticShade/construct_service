@@ -32,14 +32,14 @@ export const blanksItemSlice = createSlice({
         setTags(state, action: PayloadAction<string[]>) {
             state.tags = action.payload;
         },
-        // setCel(state, action:PayloadAction<string>) {
-        //     state.cel = action.payload;
-        // },
+        setCel(state, action:PayloadAction<string>) {
+            state.cel = action.payload;
+        },
     },
 });
 
 export const { setTitle, setSlogan, setDescription, setTags,
-    //  setCel 
+     setCel 
     } =
     blanksItemSlice.actions;
 export default blanksItemSlice.reducer;

@@ -89,12 +89,12 @@ const PageEdit = () => {
                                 
                                 return (
                                     <SwiperSlide
-                                        {...backspaceLongPress}
+                                        
                                         key={i}
-                                        className="w-auto flex justify-center"
+                                        className="w-auto flex justify-center "
                                     >
                                         <div
-                                            className={`py-[30px] px-[26px] rounded-[15px] flex gap-[10px] justify-center items-center transition-all duration-200 ${
+                                            className={` py-[30px] px-[26px] rounded-[15px] flex gap-[10px] justify-center items-center transition-all duration-200 ${
                                                 activeIndex === i
                                                     ? "scale-[1.2]"
                                                     : ""
@@ -103,8 +103,11 @@ const PageEdit = () => {
                                                 background: _.background_color
 
                                             }}
-                                        >
+                                        >   
+                                        <div {...backspaceLongPress} className={`${buttonActive ? "animate-shake" : ""}`}>
                                             <TwoBlockPreview h={70} w={70} />
+
+                                        </div>
                                             <span
                                                 className={`absolute -bottom-8 text-white transition-all duration-200 ${
                                                     activeIndex === i
