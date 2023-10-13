@@ -40,6 +40,14 @@ const FormHeadersParametrs: FC = () => {
             subheader_text: value.descrModule,
             text_align: align,
             text_color: textColor,
+            background_type: "COLOR",
+            procedure_background: {
+                background_color: "#ffffff",
+                blur: 5,
+                color: "#000000",
+                count: 3,
+                speed: 2,
+            },
         });
         setVisible(true);
     };
