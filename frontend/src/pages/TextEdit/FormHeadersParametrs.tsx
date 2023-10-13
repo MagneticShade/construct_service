@@ -80,16 +80,11 @@ const FormHeadersParametrs: FC = () => {
        
 
         if (modules[activeModule] && formData ) {
-            try{
                 await patchModuleById(modules[activeModule].ID, {
                 background_type: "IMAGE",
             });
             console.log(modules[activeModule].ID);
-            
             await postModuleImg(modules[activeModule].ID, formData); 
-            }catch(err){
-                alert(err);
-            }
            
         }
     };
@@ -240,7 +235,6 @@ const FormHeadersParametrs: FC = () => {
                                         type="file"
                                         className="hidden"
                                         onChange={(e) => {
-                                            alert(e.target.files)
                                             e.target.files &&
                                             setImg(e.target.files[0])}
                                         }

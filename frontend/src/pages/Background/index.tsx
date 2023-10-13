@@ -77,7 +77,6 @@ const PageBackgroundEdit = () => {
     const updateTemplateImg = () => {
         const formData = new FormData();
         formData.append("file", img);
-        alert(JSON.stringify(img))
         if (id && img) {
                 postTemplateImg(id, formData);
                 patchTemplateById(id, {

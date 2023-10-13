@@ -128,17 +128,11 @@ export async function patchTemplateById(templateId: string, fields: any) {
     return data;
 }
 export async function postTemplateImg(templateId: string, formData: any) {
-    try{
-        alert(JSON.stringify(formData))
        const { data } = await axiosInstance.post(
         `/template/${templateId}/image`,
         formData
     );
     return data; 
-    } catch(err){
-        // const dictionary = JSON.stringify(err.request);
-        alert(JSON.stringify(err))
-    }
     
 }
 

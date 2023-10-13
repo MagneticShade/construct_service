@@ -1,6 +1,6 @@
 import { ProfileAvatar } from "@/src/shared/Avatar";
 import { ChangeEvent, useEffect, useState } from "react";
-import cat from "/cat.jpg";
+import profileBg from "/profileBg.jpg";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { Filter } from "@/src/shared/Filter";
 import { InputDefault } from "@/src/shared/Inputs/InputDefault";
@@ -95,7 +95,7 @@ const PageDefaultProfile = () => {
             {file === undefined ? (
                 <ProfileAvatar
                     imgUser={`https://practice-test.ru:8080/user/${user.telegramID}/image`}
-                    bgImg={cat}
+                    bgImg={profileBg}
                     userFIO={`${user.first_name} ${user.last_name} `}
                     userStatus={user.status}
                 />
@@ -104,7 +104,7 @@ const PageDefaultProfile = () => {
                     <ProfileAvatar
                         key={index}
                         imgUser={imageData.src}
-                        bgImg={cat}
+                        bgImg={profileBg}
                         userFIO={`${user.first_name} ${user.last_name} `}
                         userStatus={user.status}
                     />
