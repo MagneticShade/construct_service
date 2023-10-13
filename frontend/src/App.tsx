@@ -7,73 +7,71 @@ import PageProjects from "./pages/Projects";
 import PageEdit from "./pages/Edit";
 // import PageGallery from "./pages/Background/Gallery";
 // import PageBackgroundEdit from "./pages/Background";
-// import { PageDefaultProfile } from "./pages/Profile";
+
 import { PageTextEdit } from "./pages/TextEdit";
 // import YourSite from "./pages/YourSite";
 import { useEffect } from "react";
 import { tg } from "./tg";
-// import EditLogo from "./pages/EditLogo";
+import EditLogo from "./pages/EditLogo";
 import { useAppDispatch } from "./hooks/useAppDispatch";
 import {
     getUserWithProjectsByIdThunk,
-    // setUser,
-    // setUserProjects,
+    setUser,
+
 } from "./store/slice/UserSlice";
 import PageBackgroundEdit from "./pages/Background";
 import YourSite from "./pages/YourSite";
-// import { getUserById, postUserById } from "./axios";
-// interface telegram {
-//     id: number,
-//      first_name:string,
-//       last_name:string
-// }
-
+import { getUserById, postUserById } from "./axios";
+import { PageDefaultProfile } from "./pages/Profile";
+interface telegram {
+    id: number;
+    first_name: string;
+    last_name: string;
+}
 
 function App() {
     const dispatch = useAppDispatch();
     let navigate = useNavigate();
+    const tgUser: telegram = tg.initDataUnsafe.user;
     useEffect(() => {
-        const projectId = localStorage.getItem('projectId');
-        if (!projectId) navigate("/constructorpractice/");
+        const projectId = localStorage.getItem("projectId");
+        if (!projectId) navigate("/");
         tg.ready();
         tg.expand();
         tg.enableClosingConfirmation();
         async function validUser() {
-            // const tgUser:telegram = tg.initDataUnsafe.user ;
-            // if (tgUser.id === undefined) {
+            if (tgUser === undefined) {
                 dispatch(getUserWithProjectsByIdThunk({ userId: "string" }));
-            // } 
-            // else {
-            //     console.log(tgUser.id);
-                
-            //     const { user } = await getUserById(tgUser.id.toString()); // Используйте await для ожидания результата getUser()
-            //     if (!user) {
-            //         kok="pizdec"
-            //         // Выполнить POST-запрос
-            //         await postUserById(tgUser.id.toString(), {
-            //             first_name:tgUser.id.toString(),
-            //             last_name:tgUser.id.toString(),
-            //             birthday: "",
-            //             phone_number: "",
-            //         });
-            //         dispatch(setUser(await user));
-            //     } else  {
-            //         dispatch(
-            //             getUserWithProjectsByIdThunk({ userId: tgUser.id.toString() })
-            //         );
-            //     }
-            // }
+            } else {
+                const resp = await getUserById(`${tgUser.id}`); // Используйте await для ожидания результата getUser()
+                if (resp.status === 400) {
+                    // Выполнить POST-запрос
+                    await postUserById(`${tgUser.id}`, {
+                        first_name: `${tgUser.first_name}`,
+                        last_name: `${tgUser.last_name}`,
+                        birthday: "",
+                        phone_number: "",
+                    });
+                    const resp2 = await getUserById(`${tgUser.id}`); // Используйте await для ожидания результата getUser()
+                    dispatch(setUser(await resp2.user));
+                } else {
+                    dispatch(
+                        getUserWithProjectsByIdThunk({ userId: `${tgUser.id}` })
+                    );
+                }
+            }
         }
-        validUser();
+       validUser()
+          
     }, []);
 
     return (
         <>
             <Home />
             <Routes>
-                <Route path="/constructorpractice/" element={<></>} />
+                <Route path="/" element={<></>} />
                 <Route
-                    path="/constructorpractice/list/edit/"
+                    path="/list/edit/"
                     element={
                         <Modal>
                             <PageEdit />
@@ -81,7 +79,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/blanks"
+                    path="/blanks"
                     element={
                         <Modal>
                             <PageBlanks />
@@ -89,7 +87,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/blanks/:id"
+                    path="/blanks/:id"
                     element={
                         <Modal>
                             <PageBlanksItem />
@@ -97,7 +95,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/list"
+                    path="/list"
                     element={
                         <Modal>
                             <PageProjects />
@@ -105,7 +103,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/constructorpractice/list/edit/text/:id"
+                    path="/list/edit/text/:id"
                     element={
                         <Modal>
                             <PageTextEdit />
@@ -114,7 +112,7 @@ function App() {
                 />
 
                 <Route
-                    path="/constructorpractice/list/edit/background/:id"
+                    path="/list/edit/background/:id"
                     element={
                         <Modal>
                             <PageBackgroundEdit />
@@ -123,16 +121,30 @@ function App() {
                 />
 
                 <Route
-                    path="/constructorpractice/yoursite/:id"
+                    path="/yoursite/:id"
                     element={
                         <Modal>
                             <YourSite />
                         </Modal>
                     }
                 />
-                {/* 
                 <Route
-                    path="/constructorpractice/gallery/"
+                    path="/list/logo/"
+                    element={
+                        <Modal>
+                            <EditLogo />
+                        </Modal>
+                    }   
+                />                 <Route
+                path="/profile/"
+                element={
+                    <Modal>
+                        <PageDefaultProfile />
+                    </Modal>
+                } />
+             
+                {/* <Route
+                    path="/gallery/"
                     element={
                         <Modal>
                             <PageGallery />
@@ -140,24 +152,33 @@ function App() {
                     }
                 />
  
+
+
+
+               
                 <Route
-                    path="/constructorpractice/profile/"
+                    path="/gallery/"
                     element={
                         <Modal>
-                            <PageDefaultProfile />
+                            <PageGallery />
+                        </Modal>
+                    }
+                />
+ 
+
+                {/* 
+                <Route
+                    path="/gallery/"
+                    element={
+                        <Modal>
+                            <PageGallery />
                         </Modal>
                     }
                 />
 
+
  
-                <Route
-                    path="/constructorpractice/list/logo"
-                    element={
-                        <Modal>
-                            <EditLogo />
-                        </Modal>
-                    }
-                /> */}
+                */}
             </Routes>
         </>
     );

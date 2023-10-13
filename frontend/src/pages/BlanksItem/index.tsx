@@ -5,7 +5,7 @@ import maskProject from "/maskProject.png";
 import BlanksItemForm from "./BlanksItemForm";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/src/hooks/useAppDispatch";
-import { setTags } from "@/src/store/slice/BlanksItemSlice";
+import { setCel, setDescription, setSlogan, setTags, setTitle } from "@/src/store/slice/BlanksItemSlice";
 import { postProjectByUserId } from "@/src/axios";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { getUserWithProjectsByIdThunk } from "@/src/store/slice/UserSlice";
@@ -33,17 +33,31 @@ const PageBlanksItem = () => {
         // Вызываем dispatch только после завершения рендеринга
         dispatch(setTags(mass));
     }, [mass]);
-
+    useEffect(() => {
+        return ()=>{
+            dispatch(setTitle(""))
+            dispatch(setSlogan(""))
+            dispatch(setDescription(""))
+            dispatch(setTags([]))
+            dispatch(setCel(""))
+        }
+    }, []);
     async function handleSubmit() {
         const res = await postProjectByUserId(telegramID,{
             title: blanksItem.title,
             slogan: blanksItem.slogan,
             description:blanksItem.description ,
-            tags: blanksItem.tags
+            tags: blanksItem.tags,
+            goal: blanksItem.cel,
           })
         
         console.log(res);
         dispatch(getUserWithProjectsByIdThunk({userId:telegramID}));
+        dispatch(setTitle(""))
+        dispatch(setSlogan(""))
+        dispatch(setDescription(""))
+        dispatch(setTags([]))
+        dispatch(setCel(""))
     }
 
     return (
@@ -56,7 +70,7 @@ const PageBlanksItem = () => {
                 />
                 <div className="container ">
                     <div className="h-full overflow-auto">
-                        <span className="text-[#585858] mt-[14px] text-lg font-medium capitalize">
+                        <span className=" block text-[#585858] mt-[14px] text-lg font-medium capitalize">
                             Твой проект
                         </span>
                         <BlanksItemForm />
@@ -100,7 +114,7 @@ const PageBlanksItem = () => {
             </div>
 
             <LinkButton
-                link={"/constructorpractice/list"}
+                link={"/list"}
                 title="Создать"
                 buttonActive={false}
                 handleClick={handleSubmit}

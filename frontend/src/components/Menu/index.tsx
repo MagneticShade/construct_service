@@ -13,28 +13,28 @@ const Menu: FC<IMenuProps> = ({ userImg }) => {
                 <li>
                     <MenuItem
                         img={questions}
-                        link="/constructorpractice/questions"
+                        link="/questions"
                     />
                 </li>
                 <li>
                     <MenuItem
                         img={gallery}
-                        link="/constructorpractice/gallery"
+                        link="/gallery"
                     />
                 </li>
                 <li>
                     <MenuItem
                         img={rectangle}
-                        link="/constructorpractice/blanks"
+                        link="/blanks"
                     />
                 </li>
                 <li>
-                    <MenuItem img={list} link="/constructorpractice/list" />
+                    <MenuItem img={list} link="/list" />
                 </li>
                 <li>
                     <MenuItem
                         img={userImg}
-                        link="/constructorpractice/profile"
+                        link="/profile"
                     />
                 </li>
             </ul>

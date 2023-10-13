@@ -1,39 +1,44 @@
 import { useAppDispatch } from "@/src/hooks/useAppDispatch";
+import { useAppSelector } from "@/src/hooks/useAppSelector";
 import useCanvas from "@/src/hooks/useCanvas";
 import useRandomColor from "@/src/hooks/useRandomColor";
-import { setBackground } from "@/src/store/slice/ProcedurSlice";
-import { FC, ReactNode, useState } from "react";
+import { setBackground, setColor } from "@/src/store/slice/ProcedurSlice";
+import { FC, ReactNode } from "react";
 
 interface IProcedurProps {
-    valueRange: number;
     children: ReactNode;
-    blur: number
-    count: number
-    size:number
 }
-const Procedur: FC<IProcedurProps> = ({ children, valueRange, blur, count, size }) => {
+const Procedur: FC<IProcedurProps> = ({ children }) => {
     // Создаем рандомнй цвет для бэкграунда и самих кругов
-    const [canvasBackground, setCanvasBackground] = useState(useRandomColor());
-    const [circleColor, setCircleColor] = useState(useRandomColor());
-
-    // хук делающий канвас (НУЖНО ПОМЕНЯТЬ ЛОГИКУ ВНИТРИ НЕГО)
-    const canvasRef = useCanvas(valueRange, circleColor, blur, count, size);
+    const dispatch = useAppDispatch();
+    const { blur, speed, background, color, count, size } = useAppSelector(
+        (state) => state.protcedur
+    );
+    // хук делающий канвас
+    const canvasRef = useCanvas(speed, color, count, size);
 
     // функция по нажатию на ревреш, что бы передать другие рандомные цвета
     const handleColorChange = () => {
-        setCanvasBackground(useRandomColor());
-        setCircleColor(useRandomColor());
+        dispatch(setColor(useRandomColor()));
+        dispatch(setBackground(useRandomColor()));
     };
-    const dispatch = useAppDispatch()
-    dispatch(setBackground(canvasBackground));
+
     return (
         <div className="relative w-full h-[250px] flex justify-center items-center">
             {/* Сам канвас */}
+
+            <div
+                className=" absolute w-full h-full"
+                style={{
+                    backdropFilter: `blur(${blur}px)`,
+                }}
+            ></div>
             <canvas
                 ref={canvasRef}
-                className={`w-full h-full mt-1 z-0 absolute`}
-                style={{ background: canvasBackground }}
+                className="w-full absolute -z-10 h-full"
+                style={{ background: background }}
             ></canvas>
+
             {/* Блоки находящиеся внутри канваса */}
             <div className="container relative z-10">{children}</div>
 
@@ -46,20 +51,3 @@ const Procedur: FC<IProcedurProps> = ({ children, valueRange, blur, count, size 
 };
 
 export default Procedur;
-// // index.tsx
-// import React, { FC, ReactNode } from "react";
-// import useCanvas from "@/src/hooks/useCanvas";
-// import Bokeh from "./Bokeh"; // Путь к Bokeh.ts
-
-// interface IProcedurProps {
-//   valueRange: number;
-//   children: ReactNode;
-// }
-
-// const Procedur: FC<IProcedurProps> = ({ children, valueRange }) => {
-//   const canvasRef = useCanvas(valueRange, circleColor);
-
-//   // Ваш остальной код компонента Procedur
-// };
-
-// export default Procedur;

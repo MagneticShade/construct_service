@@ -1,9 +1,11 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Menu } from "../components/Menu";
 import { useState } from "react";
+import { useAppSelector } from "../hooks/useAppSelector";
 
 const Home = () => {
-    const [activeIndex, setActiveIndex] = useState<number>(0)
+    const [activeIndex, setActiveIndex] = useState<number>(0);
+    const {telegramID} = useAppSelector(state=> state.user.user)
     return (
         <>
             <div className=" h-screen justify-center bg-white">
@@ -31,7 +33,7 @@ const Home = () => {
                                     key={i}
                                 >
                                     <img
-                                        src="/constructorpractice/mask.png"
+                                        src="/mask.png"
                                         alt="mask"
                                         className={`h-[50%] duration-200 ${
                                             activeIndex === i
@@ -45,7 +47,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="container">
-                    <Menu userImg="/constructorpractice/user.jpg" />
+                    <Menu userImg={`https://practice-test.ru:8080/user/${telegramID}/image`} />
                 </div>
             </div>
         </>

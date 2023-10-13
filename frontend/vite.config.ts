@@ -5,10 +5,13 @@ import * as path from "path";
 
 export default defineConfig({
     plugins: [react()],
-    base:"/constructorpractice/",
+    base:"/",
     preview: {
         host: true,
         port: 5173,
+    },
+    server:{
+        host:true,
     },
     // server: { https: true },
     resolve: {

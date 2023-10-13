@@ -63,7 +63,7 @@ const Modal: FC<IModalProps> = ({ children }) => {
             ease: "power3.out", // Вид анимации
         });
         setTimeout(() => {
-            navigate("/constructorpractice/");
+            navigate("/");
         }, 1000);
     };
     // Функция для проверки количества слэшей в строке
@@ -81,7 +81,7 @@ const Modal: FC<IModalProps> = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if (countSlashes(pathname) >= 3) {
+        if (countSlashes(pathname) >= 2) {
             setInvested(true);
         } else {
             setInvested(false);

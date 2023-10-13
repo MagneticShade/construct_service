@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import gsap from "gsap";
 import useDraggableBlock from "@/src/hooks/useDragble";
 import { DeleteButton } from "@/src/shared/Buttons/DeleteButton";
- 
 interface ISelectedBlockProps extends IProjectProps {
     setModalStatus: (status: boolean) => void;
     handleDeleteProject: () => void;
@@ -125,7 +124,7 @@ const SelectedBlock: FC<ISelectedBlockProps> = ({
                                 Шаблоны
                             </Link>
                             <Link
-                                to={"logo/"}
+                                to={`logo/`}
                                 className=" block px-[18px] w-full border-b border-b-[#A6A0A0] text-[16px] whitespace-nowrap ] mb-[5px]"
                             >
                                 Логотип

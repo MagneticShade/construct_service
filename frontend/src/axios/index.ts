@@ -1,16 +1,17 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 interface IuserFetch {
-    phone_number: string;
-    birthday: string;
-    first_name: string;
-    last_name: string;
+    phone_number?: string;
+    birthday?: string;
+    first_name?: string;
+    last_name?: string;
 }
 interface IpostUserProject {
     title: string;
     slogan: string;
     description: string;
     tags: string[];
+    goal:string;
 }
 
 interface IpostTemplate {
@@ -32,26 +33,35 @@ interface IpostModule {
 export const axiosInstance = axios.create({
     baseURL: "https://practice-test.ru:8080",
 });
-//bullshit
 
 //user
 export async function getUserById(userId: string) {
-    const { data: user, status } = await axiosInstance.get(`/user/${userId}`);
-    return { user, status };
+    try {
+        const { data: user } = await axiosInstance.get(
+            `/user/${userId}`
+        );
+        return { user };
+    } catch (err: any) {
+        const status = (err as AxiosError).response?.status;
+        return { status };
+    }
 }
+
 
 export async function patchUserById(userId: string, fields: IuserFetch) {
     const { data } = await axiosInstance.patch(`/user/${userId}`, fields);
     return data;
 }
-
+export async function postUserImage(userId:string,image:FormData){
+    const {data} = await axiosInstance.post(`/user/${userId}/image`, image);
+    return data
+}
 export async function postUserById(userId: string, fields: IuserFetch) {
     const { data } = await axiosInstance.post(`/user/${userId}`, fields);
     return data;
 }
 //project
 export async function getProjectById(projectId: string) {
-
     const { data } = await axiosInstance.get(`/project/${projectId}`);
     return data;
 }
@@ -86,20 +96,36 @@ export async function postTemplateById(
     );
     return data;
 }
-export async function deleteTemplateById(templateId:string){
-    const {data} = await axiosInstance.delete(`/template/${templateId}/`);
+export async function deleteTemplateById(templateId: string) {
+    const { data } = await axiosInstance.delete(`/template/${templateId}/`);
     return data;
 }
-export async function patchTemplateById(templateId:string, fields:any){
-    const {data} = await axiosInstance.patch(`/template/${templateId}`, fields);
+export async function patchTemplateById(templateId: string, fields: any) {
+    const { data } = await axiosInstance.patch(
+        `/template/${templateId}`,
+        fields
+    );
     return data;
 }
 export async function postTemplateImg(templateId: string, formData: any) {
-    debugger
     const { data } = await axiosInstance.post(
         `/template/${templateId}/image`,
         formData
     );
+    return data;
+}
+
+export async function postProjectLogo(templateId: string, formData: any) {
+    const { data } = await axiosInstance.post(
+        `/project/${templateId}/logo`,
+        formData
+    );
+    return data;
+}   
+
+
+export async function getTemplateImg(templateId: string) {
+    const { data } = await axiosInstance.get(`/template/${templateId}/image`);
     return data;
 }
 //module
@@ -111,12 +137,12 @@ export async function postModuleById(templateId: string, fields: IpostModule) {
     );
     return data;
 }
-export async function patchModuleById(moduleId:string, fields:IpostModule){
-    const {data} = await axiosInstance.patch(`/module/${moduleId}`,fields);
+export async function patchModuleById(moduleId: string, fields: IpostModule) {
+    const { data } = await axiosInstance.patch(`/module/${moduleId}`, fields);
     return data;
 }
-export async function getModuleById(moduleId:string){
-    const {data} = await axiosInstance.get(`/module/${moduleId}`);
+export async function getModuleById(moduleId: string) {
+    const { data } = await axiosInstance.get(`/module/${moduleId}`);
     return data;
 }
 export const userId = "string";
