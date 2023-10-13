@@ -17,7 +17,7 @@ const ProfileAvatar: FC<IProfileAvatarProps> = ({
                 />
                 <img
                     src={imgUser}
-                    className="w-32 aspect-square z-10 mt-10 rounded-full bg-black"
+                    className="w-32 aspect-square z-10 mt-10 rounded-full "
                     alt=""
                 />
                 <h2 className="pt-5 text-xl font-bold text-center tracking-[0.4px]">
