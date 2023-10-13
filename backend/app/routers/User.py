@@ -84,11 +84,11 @@ async def patch_user(telegramID: TelegramID, updates: UpdateUser) -> None:
 @router.post(
     "/{telegramID}/image",
     tags=["User"],
-    description="Replace old user's image with new if exist. If image is not svg raises 400 error. If user not exist raises 400 error",
+    description="Replace old user's image with new if exist. If image is not png raises 400 error. If user not exist raises 400 error",
 )
 async def post_user_image(telegramID: TelegramID, file: UploadFile = File()) -> None:
-    if file.content_type != "image/svg+xml":
-        raise HTTPException(status_code=400, detail="Image must be in svg format")
+    if file.content_type != "image/png":
+        raise HTTPException(status_code=400, detail="Image must be in png format")
     user = users_collection.find_one({"telegramID": telegramID})
     if user is None:
         raise HTTPException(status_code=400, detail="User not exist")
