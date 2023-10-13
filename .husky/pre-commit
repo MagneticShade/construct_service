@@ -2,5 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 cd ./frontend
-ls -la
 npm run ts-lint-commit-hook
