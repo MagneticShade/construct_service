@@ -5,7 +5,6 @@ from .. import BackgroundType
 
 class NewTemplate(BaseModel):
     name: str
-    goal: str
     background_color: str
     text_color: str
     text_align: str

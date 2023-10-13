@@ -6,7 +6,6 @@ from .. import BackgroundType
 
 class UpdateTemplate(BaseModel):
     name: Optional[str] = None
-    goal: Optional[str] = None
     background_color: Optional[str] = None
     text_color: Optional[str] = None
     text_align: Optional[str] = None
