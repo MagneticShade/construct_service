@@ -3,7 +3,7 @@ import { useAppSelector } from "@/src/hooks/useAppSelector";
 import useCanvas from "@/src/hooks/useCanvas";
 import useRandomColor from "@/src/hooks/useRandomColor";
 import { setBackground, setColor } from "@/src/store/slice/ProcedurSlice";
-import { FC, ReactNode, React } from "react";
+import { FC, ReactNode, asdasd } from "react";
 
 interface IProcedurProps {
     children: ReactNode;
