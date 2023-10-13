@@ -41,7 +41,7 @@ async def post_user(telegramID: TelegramID, user: NewUser) -> None:
         raise HTTPException(status_code=400, detail="User exist")
     user = User(**user.model_dump(), projects=[], telegramID=telegramID)
     users_collection.insert_one(user.model_dump())
-    TOKEN = os.getenv("TOKEN")
+    TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
     try:
         user_id = int(telegramID)
     except ValueError:
