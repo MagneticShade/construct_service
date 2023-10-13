@@ -16,24 +16,24 @@ const InputChecked: FC<IInputDefaultProps> = ({
     const [status, setStatus] = useState(false);
     const dispatch = useAppDispatch();
 
-    const change = (e: any) => {        
-        if (e.target.value !== "") {
+    const change = (e: any) => {
+        if (e.target.value.length >= 1) {
             setStatus(true);
         } else {
             setStatus(false);
         }
-       dispatch( reduxOnChange(e.target.value));
-       
+
+        dispatch(reduxOnChange(e.target.value));
     };
 
     return (
-        <div className="relative">
+        <div className="relative ">
             <input
                 disabled={disabled}
                 name={name}
                 type={type}
                 maxLength={maxLength}
-                className={`text-[16px] text-[#999] not-italic font-medium font-montserrat capitalize tracking-[-0.96px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5`}
+                className={`blankInput text-[16px] text-[#999] not-italic font-medium font-montserrat capitalize tracking-[-0.96px] bg-[#E7E7E7] rounded-2xl h-[50px] w-full indent-2.5`}
                 placeholder={placeholder}
                 value={reduxVal}
                 onChange={change}

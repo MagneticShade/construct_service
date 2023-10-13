@@ -14,6 +14,7 @@ interface IpostUserProject {
     goal: string;
     description: string;
     tags: string[];
+    goal:string;
 }
 
 interface IProcedure {

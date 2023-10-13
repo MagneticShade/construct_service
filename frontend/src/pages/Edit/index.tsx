@@ -100,12 +100,11 @@ const PageEdit = () => {
 
                                 return (
                                     <SwiperSlide
-                                        {...backspaceLongPress}
                                         key={i}
-                                        className="flex justify-center h-[20vh]"
+                                        className="w-auto flex justify-center "
                                     >
                                         <div
-                                            className={`py-[30px] px-[26px] rounded-[15px] bg-no-repeat bg-cover flex gap-[10px] justify-center items-center transition-all duration-200 ${
+                                            className={` py-[30px] px-[26px] rounded-[15px] flex gap-[10px] justify-center items-center transition-all duration-200 ${
                                                 activeIndex === i
                                                     ? "scale-[1.2]"
                                                     : ""
@@ -121,10 +120,22 @@ const PageEdit = () => {
                                                     "IMAGE"
                                                         ? `url(https://practice-test.ru:8080/template/${_.ID}/image)`
                                                         : "",
-                                               
                                             }}
                                         >
-                                            <TwoBlockPreview h={'10vh'} w={'20vw'} />
+                                            <div
+                                                {...backspaceLongPress}
+                                                className={`${
+                                                    buttonActive
+                                                        ? "animate-shake"
+                                                        : ""
+                                                }`}
+                                            >
+                                                <TwoBlockPreview
+                                                    h={"10vh"}
+                                                    w={"20vw"}
+                                                />
+                                            </div>
+
                                             <span
                                                 className={`absolute -bottom-8 text-white transition-all duration-200 ${
                                                     activeIndex === i
