@@ -23,7 +23,7 @@ const Menu: FC<IMenuProps> = ({ userImg }) => {
                     <MenuItem img={list} link="/list" />
                 </li>
                 <li>
-                    <MenuItem img={userImg} link="/profile" style='rounded-full' />
+                    <MenuItem img={userImg} link="/profile" style='100%' />
                 </li>
             </ul>
         </div>
