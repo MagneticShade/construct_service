@@ -93,7 +93,7 @@ async def post_project_logo(projectID: ProjectID, file: UploadFile = File()) -> 
     if width > 0 or height > 0:
         raise HTTPException(
             status_code=400,
-            detail=f"svg width and height must be < 100 ({width}x{height} was given)",
+            detail=f"svg width and height must be <= 100 ({width}x{height} was given)",
         )
     with open(f"app/images/{file.filename}", "wb") as f:
         f.write(contents)
