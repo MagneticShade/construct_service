@@ -86,7 +86,10 @@ async def post_project_logo(projectID: ProjectID, file: UploadFile = File()) -> 
     attributes = (
         minidom.parseString(contents.decode()).getElementsByTagName("svg")[0].attributes
     )
-    width, height = int(attributes["width"].value), int(attributes["height"].value)
+    width, height = map(
+        lambda x: int(x.replace("px", "")),
+        (attributes["width"].value, attributes["height"].value),
+    )
     if width > 0 or height > 0:
         raise HTTPException(
             status_code=400,
