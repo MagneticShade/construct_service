@@ -1,4 +1,6 @@
-from fastapi import APIRouter, HTTPException
+import os
+from fastapi import APIRouter, File, HTTPException, UploadFile
+from fastapi.responses import FileResponse
 from pymongo.results import UpdateResult
 from app.models import ModuleID, Module, UpdateModule, Template
 from app.database import modules_collection, templates_collection
@@ -62,3 +64,34 @@ async def delete_module(moduleID: ModuleID) -> None:
         template = Template(**template)
         template.modules.remove(module.ID)
         templates_collection.insert_one(template.model_dump())
+
+
+@router.post(
+    "/{moduleID}/image",
+    tags=["Module"],
+    description="Replace old module background image with new if exist. If image is not png raises 400 error. If module not exist raises 400 error",
+)
+async def post_module_image(moduleId: ModuleID, file: UploadFile = File()) -> None:
+    if file.content_type != "image/png":
+        raise HTTPException(status_code=400, detail="Image must be in png format")
+    module = modules_collection.find_one({"ID": moduleId})
+    if module is None:
+        raise HTTPException(status_code=400, detail="Module not exist")
+    file.filename = f"{moduleId}"
+    contents = await file.read()
+    with open(f"app/images/{file.filename}", "wb") as f:
+        f.write(contents)
+
+
+@router.get(
+    "/{moduleID}/image",
+    tags=["Module"],
+    description="Return template image. If template not exist raises 400 error. If image not exist raises 404 error",
+)
+async def get_template_image(moduleID: ModuleID) -> FileResponse:
+    if modules_collection.find_one({"ID": moduleID}) is None:
+        raise HTTPException(status_code=400, detail="Module not exist")
+    path = f"app/images/{moduleID}"
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="Module image not exist")
+    return FileResponse(path, media_type="image/png")
