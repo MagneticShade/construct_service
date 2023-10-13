@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm ts-lint-commit-hook
+cd ./frontend
+ls -la
+npm run ts-lint-commit-hook
