@@ -51,6 +51,8 @@ function App() {
                         last_name: `${tgUser.last_name}`,
                         birthday: "",
                         phone_number: "",
+                        bio:"",
+                        status:""
                     });
                     const resp2 = await getUserById(`${tgUser.id}`); // Используйте await для ожидания результата getUser()
                     dispatch(setUser(await resp2.user));

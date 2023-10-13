@@ -5,6 +5,8 @@ interface IuserFetch {
     birthday?: string;
     first_name?: string;
     last_name?: string;
+    bio:string;
+    status:string;
 }
 interface IpostUserProject {
     title: string;

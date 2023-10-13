@@ -1,5 +1,5 @@
 import { ProfileAvatar } from "@/src/shared/Avatar";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import cat from "/cat.jpg";
 import { useAppSelector } from "@/src/hooks/useAppSelector";
 import { Filter } from "@/src/shared/Filter";
@@ -14,7 +14,6 @@ import { getUserWithProjectsByIdThunk } from "@/src/store/slice/UserSlice";
 import Loader from "@/src/shared/Loader";
 
 const PageDefaultProfile = () => {
-    const profile = useAppSelector((state) => state.profile);
     const user = useAppSelector((state) => state.user.user);
     const { isLoading } = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
@@ -30,8 +29,15 @@ const PageDefaultProfile = () => {
         }
     };
     const [file, setFile] = useState<File | null>();
-    const [phone_number, set_phone_number] = useState(user.phone_number);
-    const [birthday, set_birthday] = useState(user.birthday);
+    const [phone_number, set_phone_number] = useState("");
+    const [birthday, set_birthday] = useState("");
+    const [bio, set_bio] = useState("");
+    
+    useEffect(()=>{
+        set_birthday(user.birthday)
+        set_phone_number(user.phone_number)
+        set_bio(user.bio)
+    },[user])
 
     async function handleSubmit() {
         const formData = new FormData();
@@ -45,6 +51,8 @@ const PageDefaultProfile = () => {
                 first_name: user.first_name,
                 last_name: user.last_name,
                 phone_number,
+                bio,
+                status:user.status
             });
         }
         await dispatch(
@@ -89,7 +97,7 @@ const PageDefaultProfile = () => {
                     imgUser={`https://practice-test.ru:8080/user/${user.telegramID}/image`}
                     bgImg={cat}
                     userFIO={`${user.first_name} ${user.last_name} `}
-                    userStatus={profile.status}
+                    userStatus={user.status}
                 />
             ) : (
                 images.map((imageData, index) => (
@@ -98,7 +106,7 @@ const PageDefaultProfile = () => {
                         imgUser={imageData.src}
                         bgImg={cat}
                         userFIO={`${user.first_name} ${user.last_name} `}
-                        userStatus={profile.status}
+                        userStatus={user.status}
                     />
                 ))
             )}
@@ -128,7 +136,7 @@ const PageDefaultProfile = () => {
                         <InputDefault
                             name="date"
                             type="date"
-                            valueInp={birthday}
+                            valueInp={birthday === "" ? '': birthday}
                             handleChange={(e) => {
                                 console.log(e);
 
@@ -156,7 +164,7 @@ const PageDefaultProfile = () => {
                             handleChange={(e) => {
                                 set_phone_number(e);
                             }}
-                            valueInp={phone_number}
+                            valueInp={phone_number === "" ? '': phone_number}
                             handelFocus={() =>
                                 setVisible({ ...visible, phone: true })
                             }
@@ -189,8 +197,8 @@ const PageDefaultProfile = () => {
                 <div className="pt-4 pb-10">
                     <h4 className="h4">Био</h4>
                     <InputChecked
-                        reduxOnChange={() => {}}
-                        reduxVal={""}
+                        reduxOnChange={(e:any) => set_bio(e)}
+                        reduxVal={bio === "" ? "": bio}
                         checked={false}
                         name="tel"
                         type="text"
@@ -199,7 +207,7 @@ const PageDefaultProfile = () => {
                 </div>
                 {phone_number !== user.phone_number ||
                 birthday !== user.birthday ||
-                file !== undefined ? (
+                 bio !== user.bio || file !== undefined ? (
                     <div className="fixed left-0 bottom-0 w-full">
                         <SubmitButton
                             buttonActive={false}
