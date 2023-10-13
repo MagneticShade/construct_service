@@ -28,10 +28,7 @@ const Procedur: FC<IProcedurProps> = ({ children }) => {
             {/* Сам канвас */}
 
             <div
-                className=" absolute w-full h-full"
-                style={{
-                    backdropFilter: `blur(${blur}px)`,
-                }}
+                className={`absolute w-full h-full backdrop-blur-[${blur}px]`}
             ></div>
             <canvas
                 ref={canvasRef}
