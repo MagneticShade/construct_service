@@ -1,22 +1,26 @@
 from fastapi import APIRouter
-from app.entities import projects
+from app.entities import projects,users
 from app.models import Project,ProjectUpdate
-from uuid import UUID
 
 router=APIRouter(prefix="/project")
 
-@router.get("/{id}")
-def get_user(id:UUID):
+@router.get("/{id}",response_model=Project)
+def get_project(id:str):
     return projects.get_by_id(id)
 
 @router.post("/create/")
-def create_user(user:Project):
-    projects.add(user)
+def create_project(project:Project):
+    projects.add(project)
 
-@router.put("/edit/")
-def edit_user(id:UUID,user:ProjectUpdate):
-    return projects.edit(id,user)
+@router.put("/{id}/edit/")
+def edit_project(id:str,project:ProjectUpdate):
+    return projects.edit(id,project)
 
-@router.delete("/delete/")
-def delete_user(id:UUID):
+@router.delete("/{id}/delete/")
+def delete_project(id:str,user_id:str):
+    users.remove_project(user_id,id)
     projects.delete(id)
+    
+
+
+   

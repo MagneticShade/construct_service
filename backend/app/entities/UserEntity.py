@@ -36,6 +36,18 @@ class UserEntity:
             self.users_collection.find_one_and_delete({"telegramID":self.encode(id)})
         else:
             raise HTTPException(status_code=404)
+    
+    def add_project(self,id:str,project_id:str):
+        if(self.exist(id)):
+            self.users_collection.find_one_and_update({"telegramID":id},{"$push": {"projects": project_id}})
+        else:
+            raise HTTPException(status_code=404)
+
+    def remove_project(self,id:str,project_id:str):
+        if(self.exist(id)):
+            user=User(**self.users_collection.find_one({"telegramID":id}))
+            user.projects.remove(project_id)
+            self.users_collection.find_one_and_update({"telegramID":id},{"projects":user.projects})
 
     def exist(self, id: str) -> bool:
         shuffled=self.encode(id)
